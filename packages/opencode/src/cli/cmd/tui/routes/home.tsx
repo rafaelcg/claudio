@@ -69,11 +69,7 @@ export function Home() {
             </Match>
             <Match when={true}>
               <span style={{ fg: theme.success }}>•</span>{" "}
-              {Locale.pluralize(
-                connectedMcpCount(),
-                tui.t("tui.home.mcp_server_one"),
-                tui.t("tui.home.mcp_servers"),
-              )}
+              {Locale.pluralize(connectedMcpCount(), tui.t("tui.home.mcp_server_one"), tui.t("tui.home.mcp_servers"))}
             </Match>
           </Switch>
         </text>

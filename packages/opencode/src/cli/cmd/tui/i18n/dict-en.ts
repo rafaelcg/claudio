@@ -23,8 +23,7 @@ export const dictEn: Record<string, string> = {
   "tui.sidebar.modified": "Modified Files",
   "tui.sidebar.getting_started": "Getting started",
   "tui.sidebar.getting_body1": "Claudio Code includes free models so you can start immediately.",
-  "tui.sidebar.getting_body2":
-    "Connect from 75+ providers to use other models, including Claude, GPT, Gemini etc",
+  "tui.sidebar.getting_body2": "Connect from 75+ providers to use other models, including Claude, GPT, Gemini etc",
   "tui.sidebar.connect_provider": "Connect provider",
   "tui.sidebar.brand_open": "Open",
   "tui.sidebar.brand_code": "Code",

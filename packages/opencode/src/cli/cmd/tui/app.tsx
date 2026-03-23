@@ -160,13 +160,13 @@ export function tui(input: {
                                     <TuiI18nProvider>
                                       <DialogProvider>
                                         <CommandProvider>
-                                        <FrecencyProvider>
-                                          <PromptHistoryProvider>
-                                            <PromptRefProvider>
-                                              <App />
-                                            </PromptRefProvider>
-                                          </PromptHistoryProvider>
-                                        </FrecencyProvider>
+                                          <FrecencyProvider>
+                                            <PromptHistoryProvider>
+                                              <PromptRefProvider>
+                                                <App />
+                                              </PromptRefProvider>
+                                            </PromptHistoryProvider>
+                                          </FrecencyProvider>
                                         </CommandProvider>
                                       </DialogProvider>
                                     </TuiI18nProvider>
@@ -710,7 +710,10 @@ function App() {
       },
     },
     {
-      title: kv.get("diff_wrap_mode", "word") === "word" ? tui.t("tui.app.diffwrap_disable") : tui.t("tui.app.diffwrap_enable"),
+      title:
+        kv.get("diff_wrap_mode", "word") === "word"
+          ? tui.t("tui.app.diffwrap_disable")
+          : tui.t("tui.app.diffwrap_enable"),
       value: "app.toggle.diffwrap",
       category: tui.t("tui.cat.system"),
       onSelect: (dialog) => {

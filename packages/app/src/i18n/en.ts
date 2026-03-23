@@ -730,7 +730,8 @@ export const dict = {
   "settings.general.row.appearance.title": "Appearance",
   "settings.general.row.appearance.description": "Customise how Claudio Code looks on your device",
   "settings.general.row.colorScheme.title": "Color scheme",
-  "settings.general.row.colorScheme.description": "Choose whether Claudio Code follows the system, light, or dark theme",
+  "settings.general.row.colorScheme.description":
+    "Choose whether Claudio Code follows the system, light, or dark theme",
   "settings.general.row.theme.title": "Theme",
   "settings.general.row.theme.description": "Customise how Claudio Code is themed.",
   "settings.general.row.font.title": "Font",

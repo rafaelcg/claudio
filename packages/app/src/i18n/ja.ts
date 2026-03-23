@@ -421,7 +421,8 @@ export const dict = {
   "error.chain.didYouMean": "もしかして: {{suggestions}}",
   "error.chain.modelNotFound": "モデルが見つかりません: {{provider}}/{{model}}",
   "error.chain.checkConfig": "config (opencode.json) のプロバイダー/モデル名を確認してください",
-  "error.chain.mcpFailed": 'MCPサーバー "{{name}}" が失敗しました。注意: Claudio CodeはまだMCP認証をサポートしていません。',
+  "error.chain.mcpFailed":
+    'MCPサーバー "{{name}}" が失敗しました。注意: Claudio CodeはまだMCP認証をサポートしていません。',
   "error.chain.providerAuthFailed": "プロバイダー認証に失敗しました ({{provider}}): {{message}}",
   "error.chain.providerInitFailed":
     'プロバイダー "{{provider}}" の初期化に失敗しました。認証情報と設定を確認してください。',
@@ -565,7 +566,8 @@ export const dict = {
   "settings.general.row.appearance.title": "外観",
   "settings.general.row.appearance.description": "デバイスでのClaudio Codeの表示をカスタマイズします",
   "settings.general.row.colorScheme.title": "配色",
-  "settings.general.row.colorScheme.description": "Claudio Codeがシステム、ライト、またはダークテーマに従うかを選択します",
+  "settings.general.row.colorScheme.description":
+    "Claudio Codeがシステム、ライト、またはダークテーマに従うかを選択します",
   "settings.general.row.theme.title": "テーマ",
   "settings.general.row.theme.description": "Claudio Codeのテーマをカスタマイズします。",
   "settings.general.row.font.title": "フォント",

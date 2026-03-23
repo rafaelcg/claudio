@@ -633,7 +633,8 @@ export const dict = {
   "settings.general.row.appearance.title": "Внешний вид",
   "settings.general.row.appearance.description": "Настройте как Claudio Code выглядит на вашем устройстве",
   "settings.general.row.colorScheme.title": "Цветовая схема",
-  "settings.general.row.colorScheme.description": "Выберите, следует ли Claudio Code системной, светлой или тёмной теме",
+  "settings.general.row.colorScheme.description":
+    "Выберите, следует ли Claudio Code системной, светлой или тёмной теме",
   "settings.general.row.theme.title": "Тема",
   "settings.general.row.theme.description": "Настройте оформление Claudio Code.",
   "settings.general.row.font.title": "Шрифт",

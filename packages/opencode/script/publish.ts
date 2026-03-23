@@ -35,9 +35,7 @@ for (const filepath of new Bun.Glob("*/package.json").scanSync({ cwd: "./dist" }
 }
 console.log("binaries", binaries)
 if (Object.keys(binaries).length === 0) {
-  throw new Error(
-    "No platform packages in dist/. Run `bun run script/build.ts` first (clean dist is recommended).",
-  )
+  throw new Error("No platform packages in dist/. Run `bun run script/build.ts` first (clean dist is recommended).")
 }
 const version = Object.values(binaries)[0]
 
@@ -70,7 +68,9 @@ await Bun.file(`./dist/${pkg.name}/package.json`).write(
 try {
   const wrapperOnly = process.env.CLAUDIO_PUBLISH_WRAPPER_ONLY === "1"
   if (wrapperOnly) {
-    console.log("CLAUDIO_PUBLISH_WRAPPER_ONLY=1 — skipping native package publishes; publishing @claudio-code/cli only.")
+    console.log(
+      "CLAUDIO_PUBLISH_WRAPPER_ONLY=1 — skipping native package publishes; publishing @claudio-code/cli only.",
+    )
   } else {
     const tasks = Object.entries(binaries).map(async ([name]) => {
       if (process.platform !== "win32") {

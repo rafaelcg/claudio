@@ -2,15 +2,15 @@
 
 ## GitHub Actions secrets / variables
 
-| Name | Used by | Notes |
-|------|---------|--------|
-| `NPM_TOKEN` | **`publish.yml` → `./script/publish.ts`** | Required in **Actions secrets** so CI can run `npm publish`. Granular **automation** token with publish to `@claudio-code` and unscoped `claudio-*` packages. Without it, the publish job fails when it reaches the npm step. |
-| `GITHUB_TOKEN` | Default | Usually sufficient for `contents: write`; some steps use a bot token from `setup-git-committer`. |
-| `CLAUDIO_APP_ID` | `vars` | GitHub App ID for release/version automation (if using `setup-git-committer`). |
-| `CLAUDIO_APP_SECRET` | `secrets` | GitHub App private key / secret for the same flow. |
-| `CLAUDIO_API_KEY` | Version bump job | Optional; upstream used OpenCode API for version helper. |
-| Apple / Tauri / notarization | `publish.yml` desktop jobs | `APPLE_CERTIFICATE`, `APPLE_CERTIFICATE_PASSWORD`, `APPLE_API_*`, `TAURI_SIGNING_*` — only if you ship signed desktop builds. |
-| `AUR_KEY` | Optional AUR publish | Only if `CLAUDIO_PUBLISH_DISTRIBUTIONS=1`. |
+| Name                         | Used by                                   | Notes                                                                                                                                                                                                                         |
+| ---------------------------- | ----------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `NPM_TOKEN`                  | **`publish.yml` → `./script/publish.ts`** | Required in **Actions secrets** so CI can run `npm publish`. Granular **automation** token with publish to `@claudio-code` and unscoped `claudio-*` packages. Without it, the publish job fails when it reaches the npm step. |
+| `GITHUB_TOKEN`               | Default                                   | Usually sufficient for `contents: write`; some steps use a bot token from `setup-git-committer`.                                                                                                                              |
+| `CLAUDIO_APP_ID`             | `vars`                                    | GitHub App ID for release/version automation (if using `setup-git-committer`).                                                                                                                                                |
+| `CLAUDIO_APP_SECRET`         | `secrets`                                 | GitHub App private key / secret for the same flow.                                                                                                                                                                            |
+| `CLAUDIO_API_KEY`            | Version bump job                          | Optional; upstream used OpenCode API for version helper.                                                                                                                                                                      |
+| Apple / Tauri / notarization | `publish.yml` desktop jobs                | `APPLE_CERTIFICATE`, `APPLE_CERTIFICATE_PASSWORD`, `APPLE_API_*`, `TAURI_SIGNING_*` — only if you ship signed desktop builds.                                                                                                 |
+| `AUR_KEY`                    | Optional AUR publish                      | Only if `CLAUDIO_PUBLISH_DISTRIBUTIONS=1`.                                                                                                                                                                                    |
 
 ## Local publish (npm CLI + wrapper)
 

@@ -318,8 +318,7 @@ const createPlatform = (): Platform => {
         .then(() => {
           const notification = new Notification(title, {
             body: description ?? "",
-            icon:
-              "https://raw.githubusercontent.com/rafaelcg/claudio/main/packages/console/app/src/asset/logo-ornate-light.svg",
+            icon: "https://raw.githubusercontent.com/rafaelcg/claudio/main/packages/console/app/src/asset/logo-ornate-light.svg",
           })
           notification.onclick = () => {
             const win = getCurrentWindow()
