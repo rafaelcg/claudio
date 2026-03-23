@@ -11,8 +11,13 @@ type Release = {
   prerelease: boolean
 }
 
-export async function getLatestRelease(skip?: string) {
-  const data = await fetch("https://api.github.com/repos/anomalyco/opencode/releases?per_page=100").then((res) => {
+function getRepoSlug(): string {
+  return process.env.GH_REPO ?? process.env.GITHUB_REPOSITORY ?? "anomalyco/opencode"
+}
+
+export async function getLatestRelease(skip?: string): Promise<string | null> {
+  const repo = getRepoSlug()
+  const data = await fetch(`https://api.github.com/repos/${repo}/releases?per_page=100`).then((res) => {
     if (!res.ok) throw new Error(res.statusText)
     return res.json()
   })
@@ -27,7 +32,25 @@ export async function getLatestRelease(skip?: string) {
     return tag
   }
 
-  throw new Error("No releases found")
+  return null
+}
+
+async function resolveFromRef(from: string | null): Promise<string> {
+  if (from === null) {
+    return await $`git rev-list --max-parents=0 HEAD`.text().then((s) => s.trim())
+  }
+  const fromRef = from.startsWith("v") ? from : `v${from}`
+  let check = await $`git rev-parse --verify ${fromRef}`.nothrow()
+  if (check.exitCode === 0) {
+    return fromRef
+  }
+  await $`git fetch origin --tags --prune`.nothrow()
+  check = await $`git rev-parse --verify ${fromRef}`.nothrow()
+  if (check.exitCode === 0) {
+    return fromRef
+  }
+  console.warn(`changelog: missing ref ${fromRef}, using root commit`)
+  return await $`git rev-list --max-parents=0 HEAD`.text().then((s) => s.trim())
 }
 
 type Commit = {
@@ -37,13 +60,16 @@ type Commit = {
   areas: Set<string>
 }
 
-export async function getCommits(from: string, to: string): Promise<Commit[]> {
-  const fromRef = from.startsWith("v") ? from : `v${from}`
+export async function getCommits(from: string | null, to: string): Promise<Commit[]> {
+  const resolvedFrom = await resolveFromRef(from)
+  const fromSha = await $`git rev-parse ${resolvedFrom}^{commit}`.text().then((s) => s.trim())
   const toRef = to === "HEAD" ? to : to.startsWith("v") ? to : `v${to}`
+  const toSha = await $`git rev-parse ${toRef}`.text().then((s) => s.trim())
+  const repo = getRepoSlug()
 
   // Get commit data with GitHub usernames from the API
   const compare =
-    await $`gh api "/repos/anomalyco/opencode/compare/${fromRef}...${toRef}" --jq '.commits[] | {sha: .sha, login: .author.login, message: .commit.message}'`.text()
+    await $`gh api "/repos/${repo}/compare/${fromSha}...${toSha}" --jq '.commits[] | {sha: .sha, login: .author.login, message: .commit.message}'`.text()
 
   const commitData = new Map<string, { login: string | null; message: string }>()
   for (const line of compare.split("\n").filter(Boolean)) {
@@ -53,7 +79,7 @@ export async function getCommits(from: string, to: string): Promise<Commit[]> {
 
   // Get commits that touch the relevant packages
   const log =
-    await $`git log ${fromRef}..${toRef} --oneline --format="%H" -- packages/opencode packages/sdk packages/plugin packages/desktop packages/app sdks/vscode packages/extensions github`.text()
+    await $`git log ${fromSha}..${toRef} --oneline --format="%H" -- packages/opencode packages/sdk packages/plugin packages/desktop packages/app sdks/vscode packages/extensions github`.text()
   const hashes = log.split("\n").filter(Boolean)
 
   const commits: Commit[] = []
@@ -197,11 +223,14 @@ export async function generateChangelog(commits: Commit[], opencode: Awaited<Ret
   return lines
 }
 
-export async function getContributors(from: string, to: string) {
-  const fromRef = from.startsWith("v") ? from : `v${from}`
+export async function getContributors(from: string | null, to: string) {
+  const resolvedFrom = await resolveFromRef(from)
+  const fromSha = await $`git rev-parse ${resolvedFrom}^{commit}`.text().then((s) => s.trim())
   const toRef = to === "HEAD" ? to : to.startsWith("v") ? to : `v${to}`
+  const toSha = await $`git rev-parse ${toRef}`.text().then((s) => s.trim())
+  const repo = getRepoSlug()
   const compare =
-    await $`gh api "/repos/anomalyco/opencode/compare/${fromRef}...${toRef}" --jq '.commits[] | {login: .author.login, message: .commit.message}'`.text()
+    await $`gh api "/repos/${repo}/compare/${fromSha}...${toSha}" --jq '.commits[] | {login: .author.login, message: .commit.message}'`.text()
   const contributors = new Map<string, Set<string>>()
 
   for (const line of compare.split("\n").filter(Boolean)) {
@@ -218,14 +247,14 @@ export async function getContributors(from: string, to: string) {
   return contributors
 }
 
-export async function buildNotes(from: string, to: string) {
+export async function buildNotes(from: string | null, to: string) {
   const commits = await getCommits(from, to)
 
   if (commits.length === 0) {
     return []
   }
 
-  console.log("generating changelog since " + from)
+  console.log("generating changelog since " + (from ?? "root"))
 
   const opencode = await createOpencode({ port: 0 })
   const notes: string[] = []
@@ -240,7 +269,7 @@ export async function buildNotes(from: string, to: string) {
     if (error instanceof Error && error.name === "TimeoutError") {
       console.log("Changelog generation timed out, using raw commits")
       for (const commit of commits) {
-        const attribution = commit.author && !team.includes(commit.author) ? ` (@${commit.author})` : ""
+        const attribution = commit.author && !Script.team.includes(commit.author) ? ` (@${commit.author})` : ""
         notes.push(`- ${commit.message}${attribution}`)
       }
     } else {
@@ -298,7 +327,7 @@ Examples:
   const to = values.to!
   const from = values.from ?? (await getLatestRelease())
 
-  console.log(`Generating changelog: v${from} -> ${to}\n`)
+  console.log(`Generating changelog: ${from ? `v${from}` : "root"} -> ${to}\n`)
 
   const notes = await buildNotes(from, to)
   console.log("\n=== Final Notes ===")
