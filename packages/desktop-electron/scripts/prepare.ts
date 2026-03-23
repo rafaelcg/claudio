@@ -19,6 +19,6 @@ const dir = "resources/opencode-binaries"
 await $`mkdir -p ${dir}`
 await $`gh run download ${Bun.env.GITHUB_RUN_ID} -n claudio-cli`.cwd(dir)
 
-await copyBinaryToSidecarFolder(windowsify(`${dir}/${sidecarConfig.ocBinary}/bin/opencode`))
+await copyBinaryToSidecarFolder(windowsify(`${dir}/${sidecarConfig.ocBinary}/bin/claudio`))
 
 await $`rm -rf ${dir}`
