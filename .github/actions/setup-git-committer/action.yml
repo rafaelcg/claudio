@@ -2,34 +2,73 @@ name: "Setup Git Committer"
 description: "Create app token and configure git user"
 inputs:
   opencode-app-id:
-    description: "OpenCode GitHub App ID"
-    required: true
+    description: "GitHub App ID (optional if github-token is set)"
+    required: false
+    default: ""
   opencode-app-secret:
-    description: "OpenCode GitHub App private key"
-    required: true
+    description: "GitHub App private key"
+    required: false
+    default: ""
+  github-token:
+    description: "Fallback when app ID is not set (use secrets.GITHUB_TOKEN)"
+    required: false
+    default: ""
 outputs:
   token:
-    description: "GitHub App token"
-    value: ${{ steps.apptoken.outputs.token }}
+    description: "GitHub token for API and git"
+    value: ${{ steps.export.outputs.token }}
   app-slug:
-    description: "GitHub App slug"
-    value: ${{ steps.apptoken.outputs.app-slug }}
+    description: "GitHub App slug or github-actions"
+    value: ${{ steps.export.outputs.app-slug }}
 runs:
   using: "composite"
   steps:
+    - name: Require app credentials or github-token
+      if: inputs.opencode-app-id == '' && inputs.github-token == ''
+      run: |
+        echo "::error::Set repository variable CLAUDIO_APP_ID and secret CLAUDIO_APP_SECRET, or pass github-token (e.g. secrets.GITHUB_TOKEN)."
+        exit 1
+      shell: bash
+
     - name: Create app token
       id: apptoken
+      if: inputs.opencode-app-id != ''
       uses: actions/create-github-app-token@v2
       with:
         app-id: ${{ inputs.opencode-app-id }}
         private-key: ${{ inputs.opencode-app-secret }}
         owner: ${{ github.repository_owner }}
 
+    - name: Fallback GitHub token
+      id: fallback
+      if: inputs.opencode-app-id == ''
+      run: |
+        echo "token=${{ inputs.github-token }}" >> $GITHUB_OUTPUT
+        echo "app-slug=github-actions" >> $GITHUB_OUTPUT
+      shell: bash
+
+    - name: Export composite outputs
+      id: export
+      run: |
+        if [ -n "${{ inputs.opencode-app-id }}" ]; then
+          echo "token=${{ steps.apptoken.outputs.token }}" >> $GITHUB_OUTPUT
+          echo "app-slug=${{ steps.apptoken.outputs.app-slug }}" >> $GITHUB_OUTPUT
+        else
+          echo "token=${{ steps.fallback.outputs.token }}" >> $GITHUB_OUTPUT
+          echo "app-slug=${{ steps.fallback.outputs.app-slug }}" >> $GITHUB_OUTPUT
+        fi
+      shell: bash
+
     - name: Configure git user
       run: |
-        slug="${{ steps.apptoken.outputs.app-slug }}"
-        git config --global user.name "${slug}[bot]"
-        git config --global user.email "${slug}[bot]@users.noreply.github.com"
+        if [ -n "${{ inputs.opencode-app-id }}" ]; then
+          slug="${{ steps.apptoken.outputs.app-slug }}"
+          git config --global user.name "${slug}[bot]"
+          git config --global user.email "${slug}[bot]@users.noreply.github.com"
+        else
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        fi
       shell: bash
 
     - name: Clear checkout auth
@@ -39,5 +78,10 @@ runs:
 
     - name: Configure git remote
       run: |
-        git remote set-url origin https://x-access-token:${{ steps.apptoken.outputs.token }}@github.com/${{ github.repository }}
+        if [ -n "${{ inputs.opencode-app-id }}" ]; then
+          TOKEN="${{ steps.apptoken.outputs.token }}"
+        else
+          TOKEN="${{ inputs.github-token }}"
+        fi
+        git remote set-url origin "https://x-access-token:${TOKEN}@github.com/${{ github.repository }}"
       shell: bash

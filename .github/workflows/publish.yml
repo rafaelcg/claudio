@@ -47,6 +47,7 @@ jobs:
         with:
           opencode-app-id: ${{ vars.CLAUDIO_APP_ID }}
           opencode-app-secret: ${{ secrets.CLAUDIO_APP_SECRET }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Install Claudio Code CLI
         if: inputs.bump || inputs.version
@@ -84,6 +85,7 @@ jobs:
         with:
           opencode-app-id: ${{ vars.CLAUDIO_APP_ID }}
           opencode-app-secret: ${{ secrets.CLAUDIO_APP_SECRET }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build
         id: build
@@ -218,6 +220,7 @@ jobs:
         with:
           opencode-app-id: ${{ vars.CLAUDIO_APP_ID }}
           opencode-app-secret: ${{ secrets.CLAUDIO_APP_SECRET }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build and upload artifacts
         uses: tauri-apps/tauri-action@390cbe447412ced1303d35abe75287949e43437a
@@ -319,6 +322,7 @@ jobs:
         with:
           opencode-app-id: ${{ vars.CLAUDIO_APP_ID }}
           opencode-app-secret: ${{ secrets.CLAUDIO_APP_SECRET }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Prepare
         run: bun ./scripts/prepare.ts
@@ -405,6 +409,7 @@ jobs:
         with:
           opencode-app-id: ${{ vars.CLAUDIO_APP_ID }}
           opencode-app-secret: ${{ secrets.CLAUDIO_APP_SECRET }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - uses: actions/download-artifact@v4
         with:

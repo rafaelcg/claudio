@@ -28,6 +28,7 @@ jobs:
         with:
           opencode-app-id: ${{ vars.CLAUDIO_APP_ID }}
           opencode-app-secret: ${{ secrets.CLAUDIO_APP_SECRET }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - uses: mitchellh/vouch/action/manage-by-issue@main
         with:
