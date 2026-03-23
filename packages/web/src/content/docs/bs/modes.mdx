@@ -28,7 +28,7 @@ Build je **podrazumijevani** režim sa svim omogućenim alatima. Ovo je standard
 Ograničeni način rada dizajniran za planiranje i analizu. U načinu plana, sljedeći alati su onemogućeni prema zadanim postavkama:
 
 - `write` - Ne mogu kreirati nove fajlove
-- `edit` - Ne mogu modificirati postojeće fajlove, osim fajlova koji se nalaze na `.opencode/plans/*.md` radi detaljiziranja samog plana
+- `edit` - Ne mogu modificirati postojeće fajlove, osim fajlova koji se nalaze na `.claudio/plans/*.md` radi detaljiziranja samog plana
 - `patch` - Ne mogu primijeniti zakrpe
 - `bash` - Ne mogu izvršiti naredbe ljuske
   Ovaj način rada je koristan kada želite da AI analizira kod, predlaže promjene ili kreira planove bez ikakvih stvarnih modifikacija u vašoj bazi kodova.
@@ -80,7 +80,7 @@ Konfigurirajte načine rada u svom `opencode.json` konfiguracijskom fajlu:
 Također možete definirati načine rada koristeći markdown datoteke. Postavite ih u:
 
 - Globalno: `~/.config/opencode/modes/`
-- Projekat: `.opencode/modes/`
+- Projekat: `.claudio/modes/`
 
 ```markdown title="~/.config/opencode/modes/review.md"
 ---
@@ -254,9 +254,9 @@ Možete kreirati vlastite prilagođene modove tako što ćete ih dodati u konfig
 
 ### Korištenje markdown fajlova
 
-Kreirajte fajlove načina u `.opencode/modes/` za specifične načine rada ili `~/.config/opencode/modes/` za globalne načine:
+Kreirajte fajlove načina u `.claudio/modes/` za specifične načine rada ili `~/.config/opencode/modes/` za globalne načine:
 
-```markdown title=".opencode/modes/debug.md"
+```markdown title=".claudio/modes/debug.md"
 ---
 temperature: 0.1
 tools:

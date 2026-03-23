@@ -23,7 +23,7 @@ export namespace Foo {
     readonly get: (id: FooID) => Effect.Effect<FooInfo, FooError>
   }
 
-  export class Service extends ServiceMap.Service<Service, Interface>()("@opencode/Foo") {}
+  export class Service extends ServiceMap.Service<Service, Interface>()("@claudio/Foo") {}
 
   export const layer = Layer.effect(
     Service,

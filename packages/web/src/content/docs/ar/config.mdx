@@ -44,15 +44,15 @@ description: استخدام ملف إعدادات OpenCode بصيغة JSON.
 
 1. **الإعدادات البعيدة** (من `.well-known/opencode`) - الإعدادات الافتراضية على مستوى المؤسسة
 2. **الإعدادات العامة** (`~/.config/opencode/opencode.json`) - تفضيلات المستخدم
-3. **إعدادات مخصصة** (`OPENCODE_CONFIG` env var) - تجاوزات مخصصة
+3. **إعدادات مخصصة** (`CLAUDIO_CONFIG` env var) - تجاوزات مخصصة
 4. **إعدادات المشروع** (`opencode.json` داخل المشروع) - إعدادات خاصة بالمشروع
-5. **أدلة `.opencode`** - الوكلاء، الأوامر، الإضافات
-6. **إعدادات ضمنية** (`OPENCODE_CONFIG_CONTENT` env var) - تجاوزات وقت التشغيل
+5. **أدلة `.claudio`** - الوكلاء، الأوامر، الإضافات
+6. **إعدادات ضمنية** (`CLAUDIO_CONFIG_CONTENT` env var) - تجاوزات وقت التشغيل
 
 هذا يعني أن إعدادات المشروع يمكنها تجاوز الإعدادات العامة، وأن الإعدادات العامة يمكنها تجاوز الإعدادات الافتراضية البعيدة على مستوى المؤسسة.
 
 :::note
-يستخدم الدليلان `.opencode` و`~/.config/opencode` **أسماء جمع** للأدلة الفرعية: `agents/` و`commands/` و`modes/` و`plugins/` و`skills/` و`tools/` و`themes/`. كما تُدعَم أسماء المفرد (مثل `agent/`) للتوافق مع الإصدارات السابقة.
+يستخدم الدليلان `.claudio` و`~/.config/opencode` **أسماء جمع** للأدلة الفرعية: `agents/` و`commands/` و`modes/` و`plugins/` و`skills/` و`tools/` و`themes/`. كما تُدعَم أسماء المفرد (مثل `agent/`) للتوافق مع الإصدارات السابقة.
 :::
 
 ---
@@ -117,10 +117,10 @@ description: استخدام ملف إعدادات OpenCode بصيغة JSON.
 
 ### مسار مخصص
 
-حدّد مسار ملف إعدادات مخصصًا باستخدام متغير البيئة `OPENCODE_CONFIG`.
+حدّد مسار ملف إعدادات مخصصًا باستخدام متغير البيئة `CLAUDIO_CONFIG`.
 
 ```bash
-export OPENCODE_CONFIG=/path/to/my/custom-config.json
+export CLAUDIO_CONFIG=/path/to/my/custom-config.json
 opencode run "Hello world"
 ```
 
@@ -130,16 +130,16 @@ opencode run "Hello world"
 
 ### دليل مخصص
 
-حدّد دليل إعدادات مخصصًا باستخدام متغير البيئة `OPENCODE_CONFIG_DIR`.
+حدّد دليل إعدادات مخصصًا باستخدام متغير البيئة `CLAUDIO_CONFIG_DIR`.
 سيتم البحث داخل هذا الدليل عن الوكلاء والأوامر والأوضاع والإضافات تمامًا مثل
-الدليل القياسي `.opencode`، ويجب أن يتبع نفس البنية.
+الدليل القياسي `.claudio`، ويجب أن يتبع نفس البنية.
 
 ```bash
-export OPENCODE_CONFIG_DIR=/path/to/my/config-directory
+export CLAUDIO_CONFIG_DIR=/path/to/my/config-directory
 opencode run "Hello world"
 ```
 
-يُحمَّل الدليل المخصص بعد الإعدادات العامة وأدلة `.opencode`، لذلك **يمكنه تجاوز** إعداداتها.
+يُحمَّل الدليل المخصص بعد الإعدادات العامة وأدلة `.claudio`، لذلك **يمكنه تجاوز** إعداداتها.
 
 ---
 
@@ -335,7 +335,7 @@ opencode run "Hello world"
 }
 ```
 
-يمكنك أيضًا تعريف الوكلاء باستخدام ملفات markdown في `~/.config/opencode/agents/` أو `.opencode/agents/`. [تعرف على المزيد هنا](/docs/agents).
+يمكنك أيضًا تعريف الوكلاء باستخدام ملفات markdown في `~/.config/opencode/agents/` أو `.claudio/agents/`. [تعرف على المزيد هنا](/docs/agents).
 
 ---
 
@@ -399,7 +399,7 @@ opencode run "Hello world"
 }
 ```
 
-يمكنك أيضًا تعريف الأوامر باستخدام ملفات markdown في `~/.config/opencode/commands/` أو `.opencode/commands/`. [تعرف على المزيد هنا](/docs/commands).
+يمكنك أيضًا تعريف الأوامر باستخدام ملفات markdown في `~/.config/opencode/commands/` أو `.claudio/commands/`. [تعرف على المزيد هنا](/docs/commands).
 
 ---
 
@@ -536,7 +536,7 @@ opencode run "Hello world"
 
 [الإضافات](/docs/plugins) توسّع OpenCode بأدوات وخُطافات وتكاملات مخصصة.
 
-ضع ملفات الإضافات في `.opencode/plugins/` أو `~/.config/opencode/plugins/`. يمكنك أيضًا تحميل إضافات من npm عبر الخيار `plugin`.
+ضع ملفات الإضافات في `.claudio/plugins/` أو `~/.config/opencode/plugins/`. يمكنك أيضًا تحميل إضافات من npm عبر الخيار `plugin`.
 
 ```json title="opencode.json"
 {
@@ -639,7 +639,7 @@ opencode run "Hello world"
 ```json title="opencode.json"
 {
   "$schema": "https://opencode.ai/config.json",
-  "model": "{env:OPENCODE_MODEL}",
+  "model": "{env:CLAUDIO_MODEL}",
   "provider": {
     "anthropic": {
       "models": {},

@@ -6,7 +6,7 @@ import { Instance } from "@/project/instance"
 import { type IPty } from "bun-pty"
 import z from "zod"
 import { Log } from "../util/log"
-import { lazy } from "@opencode-ai/util/lazy"
+import { lazy } from "@claudio-code/util/lazy"
 import { Shell } from "@/shell/shell"
 import { Plugin } from "@/plugin"
 import { PtyID } from "./schema"
@@ -113,7 +113,7 @@ export namespace Pty {
     ) => Effect.Effect<{ onMessage: (message: string | ArrayBuffer) => void; onClose: () => void } | undefined>
   }
 
-  export class Service extends ServiceMap.Service<Service, Interface>()("@opencode/Pty") {}
+  export class Service extends ServiceMap.Service<Service, Interface>()("@claudio/Pty") {}
 
   export const layer = Layer.effect(
     Service,
@@ -187,7 +187,7 @@ export namespace Pty {
             ...input.env,
             ...shellEnv.env,
             TERM: "xterm-256color",
-            OPENCODE_TERMINAL: "1",
+            CLAUDIO_TERMINAL: "1",
           } as Record<string, string>
 
           if (process.platform === "win32") {

@@ -40,7 +40,7 @@ impl CommandWrapper for WinCreationFlags {
     }
 }
 
-const CLI_INSTALL_DIR: &str = ".opencode/bin";
+const CLI_INSTALL_DIR: &str = ".claudio/bin";
 const CLI_BINARY_NAME: &str = "opencode";
 const SHELL_ENV_TIMEOUT: Duration = Duration::from_secs(5);
 
@@ -115,7 +115,7 @@ pub fn get_sidecar_path(app: &tauri::AppHandle) -> std::path::PathBuf {
         .expect("Failed to get current binary")
         .parent()
         .expect("Failed to get parent dir")
-        .join("opencode-cli")
+        .join("claudio-cli")
 }
 
 fn is_cli_installed() -> bool {
@@ -375,14 +375,14 @@ pub fn spawn_command(
 
     let mut envs = vec![
         (
-            "OPENCODE_EXPERIMENTAL_ICON_DISCOVERY".to_string(),
+            "CLAUDIO_EXPERIMENTAL_ICON_DISCOVERY".to_string(),
             "true".to_string(),
         ),
         (
-            "OPENCODE_EXPERIMENTAL_FILEWATCHER".to_string(),
+            "CLAUDIO_EXPERIMENTAL_FILEWATCHER".to_string(),
             "true".to_string(),
         ),
-        ("OPENCODE_CLIENT".to_string(), "desktop".to_string()),
+        ("CLAUDIO_CLIENT".to_string(), "desktop".to_string()),
         (
             "XDG_STATE_HOME".to_string(),
             state_dir.to_string_lossy().to_string(),
@@ -397,29 +397,25 @@ pub fn spawn_command(
     let mut cmd = if cfg!(windows) {
         if is_wsl_enabled(app) {
             tracing::info!("WSL is enabled, spawning CLI server in WSL");
-            let version = app.package_info().version.to_string();
             let mut script = vec![
                 "set -e".to_string(),
-                "BIN=\"$HOME/.opencode/bin/opencode\"".to_string(),
+                "BIN=\"$HOME/.claudio/bin/claudio\"".to_string(),
                 "if [ ! -x \"$BIN\" ]; then".to_string(),
-                format!(
-                    "  curl -fsSL https://opencode.ai/install | bash -s -- --version {} --no-modify-path",
-                    shell_escape(&version)
-                ),
+                "  curl -fsSL https://raw.githubusercontent.com/rafaelcg/claudio/main/install.sh | bash".to_string(),
                 "fi".to_string(),
             ];
 
             let mut env_prefix = vec![
-                "OPENCODE_EXPERIMENTAL_ICON_DISCOVERY=true".to_string(),
-                "OPENCODE_EXPERIMENTAL_FILEWATCHER=true".to_string(),
-                "OPENCODE_CLIENT=desktop".to_string(),
+                "CLAUDIO_EXPERIMENTAL_ICON_DISCOVERY=true".to_string(),
+                "CLAUDIO_EXPERIMENTAL_FILEWATCHER=true".to_string(),
+                "CLAUDIO_CLIENT=desktop".to_string(),
                 "XDG_STATE_HOME=\"$HOME/.local/state\"".to_string(),
             ];
             env_prefix.extend(
                 envs.iter()
-                    .filter(|(key, _)| key != "OPENCODE_EXPERIMENTAL_ICON_DISCOVERY")
-                    .filter(|(key, _)| key != "OPENCODE_EXPERIMENTAL_FILEWATCHER")
-                    .filter(|(key, _)| key != "OPENCODE_CLIENT")
+                    .filter(|(key, _)| key != "CLAUDIO_EXPERIMENTAL_ICON_DISCOVERY")
+                    .filter(|(key, _)| key != "CLAUDIO_EXPERIMENTAL_FILEWATCHER")
+                    .filter(|(key, _)| key != "CLAUDIO_CLIENT")
                     .filter(|(key, _)| key != "XDG_STATE_HOME")
                     .map(|(key, value)| format!("{}={}", key, shell_escape(value))),
             );
@@ -560,8 +556,8 @@ pub fn serve(
     tracing::info!(port, "Spawning sidecar");
 
     let envs = [
-        ("OPENCODE_SERVER_USERNAME", "opencode".to_string()),
-        ("OPENCODE_SERVER_PASSWORD", password.to_string()),
+        ("CLAUDIO_SERVER_USERNAME", "opencode".to_string()),
+        ("CLAUDIO_SERVER_PASSWORD", password.to_string()),
     ];
 
     let (events, child) = spawn_command(
@@ -720,7 +716,7 @@ mod tests {
             Some(shell_env),
             vec![
                 ("PATH".to_string(), "/desktop/path".to_string()),
-                ("OPENCODE_CLIENT".to_string(), "desktop".to_string()),
+                ("CLAUDIO_CLIENT".to_string(), "desktop".to_string()),
             ],
         )
         .into_iter()
@@ -728,7 +724,7 @@ mod tests {
 
         assert_eq!(merged.get("PATH"), Some(&"/desktop/path".to_string()));
         assert_eq!(merged.get("HOME"), Some(&"/tmp/home".to_string()));
-        assert_eq!(merged.get("OPENCODE_CLIENT"), Some(&"desktop".to_string()));
+        assert_eq!(merged.get("CLAUDIO_CLIENT"), Some(&"desktop".to_string()));
     }
 
     #[test]

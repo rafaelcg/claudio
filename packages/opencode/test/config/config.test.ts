@@ -13,7 +13,7 @@ import { Filesystem } from "../../src/util/filesystem"
 import { BunProc } from "../../src/bun"
 
 // Get managed config directory from environment (set in preload.ts)
-const managedConfigDir = process.env.OPENCODE_TEST_MANAGED_CONFIG_DIR!
+const managedConfigDir = process.env.CLAUDIO_TEST_MANAGED_CONFIG_DIR!
 
 afterEach(async () => {
   await fs.rm(managedConfigDir, { force: true, recursive: true }).catch(() => {})
@@ -249,7 +249,7 @@ test("resolves env templates in account config with account token", async () => 
   const originalActive = Account.active
   const originalConfig = Account.config
   const originalToken = Account.token
-  const originalControlToken = process.env["OPENCODE_CONSOLE_TOKEN"]
+  const originalControlToken = process.env["CLAUDIO_CONSOLE_TOKEN"]
 
   Account.active = mock(async () => ({
     id: AccountID.make("account-1"),
@@ -262,7 +262,7 @@ test("resolves env templates in account config with account token", async () => 
     provider: {
       opencode: {
         options: {
-          apiKey: "{env:OPENCODE_CONSOLE_TOKEN}",
+          apiKey: "{env:CLAUDIO_CONSOLE_TOKEN}",
         },
       },
     },
@@ -284,9 +284,9 @@ test("resolves env templates in account config with account token", async () => 
     Account.config = originalConfig
     Account.token = originalToken
     if (originalControlToken !== undefined) {
-      process.env["OPENCODE_CONSOLE_TOKEN"] = originalControlToken
+      process.env["CLAUDIO_CONSOLE_TOKEN"] = originalControlToken
     } else {
-      delete process.env["OPENCODE_CONSOLE_TOKEN"]
+      delete process.env["CLAUDIO_CONSOLE_TOKEN"]
     }
   }
 })
@@ -504,10 +504,10 @@ test("migrates mode field to agent field", async () => {
   })
 })
 
-test("loads config from .opencode directory", async () => {
+test("loads config from .claudio directory", async () => {
   await using tmp = await tmpdir({
     init: async (dir) => {
-      const opencodeDir = path.join(dir, ".opencode")
+      const opencodeDir = path.join(dir, ".claudio")
       await fs.mkdir(opencodeDir, { recursive: true })
       const agentDir = path.join(opencodeDir, "agent")
       await fs.mkdir(agentDir, { recursive: true })
@@ -536,10 +536,10 @@ Test agent prompt`,
   })
 })
 
-test("loads agents from .opencode/agents (plural)", async () => {
+test("loads agents from .claudio/agents (plural)", async () => {
   await using tmp = await tmpdir({
     init: async (dir) => {
-      const opencodeDir = path.join(dir, ".opencode")
+      const opencodeDir = path.join(dir, ".claudio")
       await fs.mkdir(opencodeDir, { recursive: true })
 
       const agentsDir = path.join(opencodeDir, "agents")
@@ -587,10 +587,10 @@ Nested agent prompt`,
   })
 })
 
-test("loads commands from .opencode/command (singular)", async () => {
+test("loads commands from .claudio/command (singular)", async () => {
   await using tmp = await tmpdir({
     init: async (dir) => {
-      const opencodeDir = path.join(dir, ".opencode")
+      const opencodeDir = path.join(dir, ".claudio")
       await fs.mkdir(opencodeDir, { recursive: true })
 
       const commandDir = path.join(opencodeDir, "command")
@@ -632,10 +632,10 @@ Nested command template`,
   })
 })
 
-test("loads commands from .opencode/commands (plural)", async () => {
+test("loads commands from .claudio/commands (plural)", async () => {
   await using tmp = await tmpdir({
     init: async (dir) => {
-      const opencodeDir = path.join(dir, ".opencode")
+      const opencodeDir = path.join(dir, ".claudio")
       await fs.mkdir(opencodeDir, { recursive: true })
 
       const commandsDir = path.join(opencodeDir, "commands")
@@ -702,7 +702,7 @@ test("gets config directories", async () => {
   })
 })
 
-test("does not try to install dependencies in read-only OPENCODE_CONFIG_DIR", async () => {
+test("does not try to install dependencies in read-only CLAUDIO_CONFIG_DIR", async () => {
   if (process.platform === "win32") return
 
   await using tmp = await tmpdir<string>({
@@ -719,8 +719,8 @@ test("does not try to install dependencies in read-only OPENCODE_CONFIG_DIR", as
     },
   })
 
-  const prev = process.env.OPENCODE_CONFIG_DIR
-  process.env.OPENCODE_CONFIG_DIR = tmp.extra
+  const prev = process.env.CLAUDIO_CONFIG_DIR
+  process.env.CLAUDIO_CONFIG_DIR = tmp.extra
 
   try {
     await Instance.provide({
@@ -730,12 +730,12 @@ test("does not try to install dependencies in read-only OPENCODE_CONFIG_DIR", as
       },
     })
   } finally {
-    if (prev === undefined) delete process.env.OPENCODE_CONFIG_DIR
-    else process.env.OPENCODE_CONFIG_DIR = prev
+    if (prev === undefined) delete process.env.CLAUDIO_CONFIG_DIR
+    else process.env.CLAUDIO_CONFIG_DIR = prev
   }
 })
 
-test("installs dependencies in writable OPENCODE_CONFIG_DIR", async () => {
+test("installs dependencies in writable CLAUDIO_CONFIG_DIR", async () => {
   await using tmp = await tmpdir<string>({
     init: async (dir) => {
       const cfg = path.join(dir, "configdir")
@@ -744,8 +744,8 @@ test("installs dependencies in writable OPENCODE_CONFIG_DIR", async () => {
     },
   })
 
-  const prev = process.env.OPENCODE_CONFIG_DIR
-  process.env.OPENCODE_CONFIG_DIR = tmp.extra
+  const prev = process.env.CLAUDIO_CONFIG_DIR
+  process.env.CLAUDIO_CONFIG_DIR = tmp.extra
 
   try {
     await Instance.provide({
@@ -759,8 +759,8 @@ test("installs dependencies in writable OPENCODE_CONFIG_DIR", async () => {
     expect(await Filesystem.exists(path.join(tmp.extra, "package.json"))).toBe(true)
     expect(await Filesystem.exists(path.join(tmp.extra, ".gitignore"))).toBe(true)
   } finally {
-    if (prev === undefined) delete process.env.OPENCODE_CONFIG_DIR
-    else process.env.OPENCODE_CONFIG_DIR = prev
+    if (prev === undefined) delete process.env.CLAUDIO_CONFIG_DIR
+    else process.env.CLAUDIO_CONFIG_DIR = prev
   }
 })
 
@@ -852,9 +852,9 @@ test("resolves scoped npm plugins in config", async () => {
 test("merges plugin arrays from global and local configs", async () => {
   await using tmp = await tmpdir({
     init: async (dir) => {
-      // Create a nested project structure with local .opencode config
+      // Create a nested project structure with local .claudio config
       const projectDir = path.join(dir, "project")
-      const opencodeDir = path.join(projectDir, ".opencode")
+      const opencodeDir = path.join(projectDir, ".claudio")
       await fs.mkdir(opencodeDir, { recursive: true })
 
       // Global config with plugins
@@ -866,7 +866,7 @@ test("merges plugin arrays from global and local configs", async () => {
         }),
       )
 
-      // Local .opencode config with different plugins
+      // Local .claudio config with different plugins
       await Filesystem.write(
         path.join(opencodeDir, "opencode.json"),
         JSON.stringify({
@@ -898,7 +898,7 @@ test("merges plugin arrays from global and local configs", async () => {
 test("does not error when only custom agent is a subagent", async () => {
   await using tmp = await tmpdir({
     init: async (dir) => {
-      const opencodeDir = path.join(dir, ".opencode")
+      const opencodeDir = path.join(dir, ".claudio")
       await fs.mkdir(opencodeDir, { recursive: true })
       const agentDir = path.join(opencodeDir, "agent")
       await fs.mkdir(agentDir, { recursive: true })
@@ -931,7 +931,7 @@ test("merges instructions arrays from global and local configs", async () => {
   await using tmp = await tmpdir({
     init: async (dir) => {
       const projectDir = path.join(dir, "project")
-      const opencodeDir = path.join(projectDir, ".opencode")
+      const opencodeDir = path.join(projectDir, ".claudio")
       await fs.mkdir(opencodeDir, { recursive: true })
 
       await Filesystem.write(
@@ -970,7 +970,7 @@ test("deduplicates duplicate instructions from global and local configs", async 
   await using tmp = await tmpdir({
     init: async (dir) => {
       const projectDir = path.join(dir, "project")
-      const opencodeDir = path.join(projectDir, ".opencode")
+      const opencodeDir = path.join(projectDir, ".claudio")
       await fs.mkdir(opencodeDir, { recursive: true })
 
       await Filesystem.write(
@@ -1011,9 +1011,9 @@ test("deduplicates duplicate instructions from global and local configs", async 
 test("deduplicates duplicate plugins from global and local configs", async () => {
   await using tmp = await tmpdir({
     init: async (dir) => {
-      // Create a nested project structure with local .opencode config
+      // Create a nested project structure with local .claudio config
       const projectDir = path.join(dir, "project")
-      const opencodeDir = path.join(projectDir, ".opencode")
+      const opencodeDir = path.join(projectDir, ".claudio")
       await fs.mkdir(opencodeDir, { recursive: true })
 
       // Global config with plugins
@@ -1025,7 +1025,7 @@ test("deduplicates duplicate plugins from global and local configs", async () =>
         }),
       )
 
-      // Local .opencode config with some overlapping plugins
+      // Local .claudio config with some overlapping plugins
       await Filesystem.write(
         path.join(opencodeDir, "opencode.json"),
         JSON.stringify({
@@ -1154,7 +1154,7 @@ test("migrates legacy write tool to edit permission", async () => {
 })
 
 // Managed settings tests
-// Note: preload.ts sets OPENCODE_TEST_MANAGED_CONFIG which Global.Path.managedConfig uses
+// Note: preload.ts sets CLAUDIO_TEST_MANAGED_CONFIG which Global.Path.managedConfig uses
 
 test("managed settings override user settings", async () => {
   await using tmp = await tmpdir({
@@ -1543,7 +1543,7 @@ test("MCP config deep merges preserving base config properties", async () => {
   })
 })
 
-test("local .opencode config can override MCP from project config", async () => {
+test("local .claudio config can override MCP from project config", async () => {
   await using tmp = await tmpdir({
     init: async (dir) => {
       // Project config with disabled MCP
@@ -1560,8 +1560,8 @@ test("local .opencode config can override MCP from project config", async () => 
           },
         }),
       )
-      // Local .opencode directory config enables it
-      const opencodeDir = path.join(dir, ".opencode")
+      // Local .claudio directory config enables it
+      const opencodeDir = path.join(dir, ".claudio")
       await fs.mkdir(opencodeDir, { recursive: true })
       await Filesystem.write(
         path.join(opencodeDir, "opencode.json"),
@@ -1742,7 +1742,7 @@ describe("getPluginName", () => {
 
   test("extracts name from scoped npm package", () => {
     expect(Config.getPluginName("@scope/pkg@1.0.0")).toBe("@scope/pkg")
-    expect(Config.getPluginName("@opencode/plugin@2.0.0")).toBe("@opencode/plugin")
+    expect(Config.getPluginName("@claudio/plugin@2.0.0")).toBe("@claudio/plugin")
   })
 
   test("returns full string for package without version", () => {
@@ -1765,12 +1765,12 @@ describe("deduplicatePlugins", () => {
   })
 
   test("prefers local file over npm package with same name", () => {
-    const plugins = ["oh-my-opencode@2.4.3", "file:///project/.opencode/plugin/oh-my-opencode.js"]
+    const plugins = ["oh-my-opencode@2.4.3", "file:///project/.claudio/plugin/oh-my-opencode.js"]
 
     const result = Config.deduplicatePlugins(plugins)
 
     expect(result.length).toBe(1)
-    expect(result[0]).toBe("file:///project/.opencode/plugin/oh-my-opencode.js")
+    expect(result[0]).toBe("file:///project/.claudio/plugin/oh-my-opencode.js")
   })
 
   test("preserves order of remaining plugins", () => {
@@ -1785,7 +1785,7 @@ describe("deduplicatePlugins", () => {
     await using tmp = await tmpdir({
       init: async (dir) => {
         const projectDir = path.join(dir, "project")
-        const opencodeDir = path.join(projectDir, ".opencode")
+        const opencodeDir = path.join(projectDir, ".claudio")
         const pluginDir = path.join(opencodeDir, "plugin")
         await fs.mkdir(pluginDir, { recursive: true })
 
@@ -1815,10 +1815,10 @@ describe("deduplicatePlugins", () => {
   })
 })
 
-describe("OPENCODE_DISABLE_PROJECT_CONFIG", () => {
+describe("CLAUDIO_DISABLE_PROJECT_CONFIG", () => {
   test("skips project config files when flag is set", async () => {
-    const originalEnv = process.env["OPENCODE_DISABLE_PROJECT_CONFIG"]
-    process.env["OPENCODE_DISABLE_PROJECT_CONFIG"] = "true"
+    const originalEnv = process.env["CLAUDIO_DISABLE_PROJECT_CONFIG"]
+    process.env["CLAUDIO_DISABLE_PROJECT_CONFIG"] = "true"
 
     try {
       await using tmp = await tmpdir({
@@ -1845,22 +1845,22 @@ describe("OPENCODE_DISABLE_PROJECT_CONFIG", () => {
       })
     } finally {
       if (originalEnv === undefined) {
-        delete process.env["OPENCODE_DISABLE_PROJECT_CONFIG"]
+        delete process.env["CLAUDIO_DISABLE_PROJECT_CONFIG"]
       } else {
-        process.env["OPENCODE_DISABLE_PROJECT_CONFIG"] = originalEnv
+        process.env["CLAUDIO_DISABLE_PROJECT_CONFIG"] = originalEnv
       }
     }
   })
 
-  test("skips project .opencode/ directories when flag is set", async () => {
-    const originalEnv = process.env["OPENCODE_DISABLE_PROJECT_CONFIG"]
-    process.env["OPENCODE_DISABLE_PROJECT_CONFIG"] = "true"
+  test("skips project .claudio/ directories when flag is set", async () => {
+    const originalEnv = process.env["CLAUDIO_DISABLE_PROJECT_CONFIG"]
+    process.env["CLAUDIO_DISABLE_PROJECT_CONFIG"] = "true"
 
     try {
       await using tmp = await tmpdir({
         init: async (dir) => {
-          // Create a .opencode directory with a command
-          const opencodeDir = path.join(dir, ".opencode", "command")
+          // Create a .claudio directory with a command
+          const opencodeDir = path.join(dir, ".claudio", "command")
           await fs.mkdir(opencodeDir, { recursive: true })
           await Filesystem.write(path.join(opencodeDir, "test-cmd.md"), "# Test Command\nThis is a test command.")
         },
@@ -1869,23 +1869,23 @@ describe("OPENCODE_DISABLE_PROJECT_CONFIG", () => {
         directory: tmp.path,
         fn: async () => {
           const directories = await Config.directories()
-          // Project .opencode should NOT be in directories list
+          // Project .claudio should NOT be in directories list
           const hasProjectOpencode = directories.some((d) => d.startsWith(tmp.path))
           expect(hasProjectOpencode).toBe(false)
         },
       })
     } finally {
       if (originalEnv === undefined) {
-        delete process.env["OPENCODE_DISABLE_PROJECT_CONFIG"]
+        delete process.env["CLAUDIO_DISABLE_PROJECT_CONFIG"]
       } else {
-        process.env["OPENCODE_DISABLE_PROJECT_CONFIG"] = originalEnv
+        process.env["CLAUDIO_DISABLE_PROJECT_CONFIG"] = originalEnv
       }
     }
   })
 
   test("still loads global config when flag is set", async () => {
-    const originalEnv = process.env["OPENCODE_DISABLE_PROJECT_CONFIG"]
-    process.env["OPENCODE_DISABLE_PROJECT_CONFIG"] = "true"
+    const originalEnv = process.env["CLAUDIO_DISABLE_PROJECT_CONFIG"]
+    process.env["CLAUDIO_DISABLE_PROJECT_CONFIG"] = "true"
 
     try {
       await using tmp = await tmpdir()
@@ -1900,21 +1900,21 @@ describe("OPENCODE_DISABLE_PROJECT_CONFIG", () => {
       })
     } finally {
       if (originalEnv === undefined) {
-        delete process.env["OPENCODE_DISABLE_PROJECT_CONFIG"]
+        delete process.env["CLAUDIO_DISABLE_PROJECT_CONFIG"]
       } else {
-        process.env["OPENCODE_DISABLE_PROJECT_CONFIG"] = originalEnv
+        process.env["CLAUDIO_DISABLE_PROJECT_CONFIG"] = originalEnv
       }
     }
   })
 
   test("skips relative instructions with warning when flag is set but no config dir", async () => {
-    const originalDisable = process.env["OPENCODE_DISABLE_PROJECT_CONFIG"]
-    const originalConfigDir = process.env["OPENCODE_CONFIG_DIR"]
+    const originalDisable = process.env["CLAUDIO_DISABLE_PROJECT_CONFIG"]
+    const originalConfigDir = process.env["CLAUDIO_CONFIG_DIR"]
 
     try {
       // Ensure no config dir is set
-      delete process.env["OPENCODE_CONFIG_DIR"]
-      process.env["OPENCODE_DISABLE_PROJECT_CONFIG"] = "true"
+      delete process.env["CLAUDIO_CONFIG_DIR"]
+      process.env["CLAUDIO_DISABLE_PROJECT_CONFIG"] = "true"
 
       await using tmp = await tmpdir({
         init: async (dir) => {
@@ -1945,21 +1945,21 @@ describe("OPENCODE_DISABLE_PROJECT_CONFIG", () => {
       })
     } finally {
       if (originalDisable === undefined) {
-        delete process.env["OPENCODE_DISABLE_PROJECT_CONFIG"]
+        delete process.env["CLAUDIO_DISABLE_PROJECT_CONFIG"]
       } else {
-        process.env["OPENCODE_DISABLE_PROJECT_CONFIG"] = originalDisable
+        process.env["CLAUDIO_DISABLE_PROJECT_CONFIG"] = originalDisable
       }
       if (originalConfigDir === undefined) {
-        delete process.env["OPENCODE_CONFIG_DIR"]
+        delete process.env["CLAUDIO_CONFIG_DIR"]
       } else {
-        process.env["OPENCODE_CONFIG_DIR"] = originalConfigDir
+        process.env["CLAUDIO_CONFIG_DIR"] = originalConfigDir
       }
     }
   })
 
-  test("OPENCODE_CONFIG_DIR still works when flag is set", async () => {
-    const originalDisable = process.env["OPENCODE_DISABLE_PROJECT_CONFIG"]
-    const originalConfigDir = process.env["OPENCODE_CONFIG_DIR"]
+  test("CLAUDIO_CONFIG_DIR still works when flag is set", async () => {
+    const originalDisable = process.env["CLAUDIO_DISABLE_PROJECT_CONFIG"]
+    const originalConfigDir = process.env["CLAUDIO_CONFIG_DIR"]
 
     try {
       await using configDirTmp = await tmpdir({
@@ -1988,38 +1988,38 @@ describe("OPENCODE_DISABLE_PROJECT_CONFIG", () => {
         },
       })
 
-      process.env["OPENCODE_DISABLE_PROJECT_CONFIG"] = "true"
-      process.env["OPENCODE_CONFIG_DIR"] = configDirTmp.path
+      process.env["CLAUDIO_DISABLE_PROJECT_CONFIG"] = "true"
+      process.env["CLAUDIO_CONFIG_DIR"] = configDirTmp.path
 
       await Instance.provide({
         directory: projectTmp.path,
         fn: async () => {
           const config = await Config.get()
-          // Should load from OPENCODE_CONFIG_DIR, not project
+          // Should load from CLAUDIO_CONFIG_DIR, not project
           expect(config.model).toBe("configdir/model")
         },
       })
     } finally {
       if (originalDisable === undefined) {
-        delete process.env["OPENCODE_DISABLE_PROJECT_CONFIG"]
+        delete process.env["CLAUDIO_DISABLE_PROJECT_CONFIG"]
       } else {
-        process.env["OPENCODE_DISABLE_PROJECT_CONFIG"] = originalDisable
+        process.env["CLAUDIO_DISABLE_PROJECT_CONFIG"] = originalDisable
       }
       if (originalConfigDir === undefined) {
-        delete process.env["OPENCODE_CONFIG_DIR"]
+        delete process.env["CLAUDIO_CONFIG_DIR"]
       } else {
-        process.env["OPENCODE_CONFIG_DIR"] = originalConfigDir
+        process.env["CLAUDIO_CONFIG_DIR"] = originalConfigDir
       }
     }
   })
 })
 
-describe("OPENCODE_CONFIG_CONTENT token substitution", () => {
-  test("substitutes {env:} tokens in OPENCODE_CONFIG_CONTENT", async () => {
-    const originalEnv = process.env["OPENCODE_CONFIG_CONTENT"]
+describe("CLAUDIO_CONFIG_CONTENT token substitution", () => {
+  test("substitutes {env:} tokens in CLAUDIO_CONFIG_CONTENT", async () => {
+    const originalEnv = process.env["CLAUDIO_CONFIG_CONTENT"]
     const originalTestVar = process.env["TEST_CONFIG_VAR"]
     process.env["TEST_CONFIG_VAR"] = "test_api_key_12345"
-    process.env["OPENCODE_CONFIG_CONTENT"] = JSON.stringify({
+    process.env["CLAUDIO_CONFIG_CONTENT"] = JSON.stringify({
       $schema: "https://opencode.ai/config.json",
       username: "{env:TEST_CONFIG_VAR}",
     })
@@ -2035,9 +2035,9 @@ describe("OPENCODE_CONFIG_CONTENT token substitution", () => {
       })
     } finally {
       if (originalEnv !== undefined) {
-        process.env["OPENCODE_CONFIG_CONTENT"] = originalEnv
+        process.env["CLAUDIO_CONFIG_CONTENT"] = originalEnv
       } else {
-        delete process.env["OPENCODE_CONFIG_CONTENT"]
+        delete process.env["CLAUDIO_CONFIG_CONTENT"]
       }
       if (originalTestVar !== undefined) {
         process.env["TEST_CONFIG_VAR"] = originalTestVar
@@ -2047,14 +2047,14 @@ describe("OPENCODE_CONFIG_CONTENT token substitution", () => {
     }
   })
 
-  test("substitutes {file:} tokens in OPENCODE_CONFIG_CONTENT", async () => {
-    const originalEnv = process.env["OPENCODE_CONFIG_CONTENT"]
+  test("substitutes {file:} tokens in CLAUDIO_CONFIG_CONTENT", async () => {
+    const originalEnv = process.env["CLAUDIO_CONFIG_CONTENT"]
 
     try {
       await using tmp = await tmpdir({
         init: async (dir) => {
           await Filesystem.write(path.join(dir, "api_key.txt"), "secret_key_from_file")
-          process.env["OPENCODE_CONFIG_CONTENT"] = JSON.stringify({
+          process.env["CLAUDIO_CONFIG_CONTENT"] = JSON.stringify({
             $schema: "https://opencode.ai/config.json",
             username: "{file:./api_key.txt}",
           })
@@ -2069,9 +2069,9 @@ describe("OPENCODE_CONFIG_CONTENT token substitution", () => {
       })
     } finally {
       if (originalEnv !== undefined) {
-        process.env["OPENCODE_CONFIG_CONTENT"] = originalEnv
+        process.env["CLAUDIO_CONFIG_CONTENT"] = originalEnv
       } else {
-        delete process.env["OPENCODE_CONFIG_CONTENT"]
+        delete process.env["CLAUDIO_CONFIG_CONTENT"]
       }
     }
   })

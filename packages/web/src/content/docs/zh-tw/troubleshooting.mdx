@@ -39,7 +39,7 @@ OpenCode 將工作階段資料和其他應用程式資料儲存在磁碟上：
 
 ## 桌面應用程式
 
-OpenCode Desktop 會在背景執行一個本地 OpenCode 伺服器（即 `opencode-cli` 附屬程序）。大多數問題是由外掛異常、快取損壞或錯誤的伺服器設定引起的。
+OpenCode Desktop 會在背景執行一個本地 OpenCode 伺服器（即 `claudio-cli` 附屬程序）。大多數問題是由外掛異常、快取損壞或錯誤的伺服器設定引起的。
 
 ### 快速檢查
 
@@ -78,7 +78,7 @@ OpenCode 還可以從磁碟載入本地外掛。暫時將這些外掛移走（�
   - **macOS/Linux**: `~/.config/opencode/plugins/`
   - **Windows**: 按 `WIN+R` 並貼上 `%USERPROFILE%\.config\opencode\plugins`
 - **專案外掛**（僅當你使用了專案級設定時）
-  - `<your-project>/.opencode/plugins/`
+  - `<your-project>/.claudio/plugins/`
 
 如果應用程式恢復正常，請逐個重新啟用外掛，找出導致問題的那個。
 
@@ -115,9 +115,9 @@ OpenCode Desktop 可以啟動自己的本地伺服器（預設行為），也可
 
 #### 檢查環境變數
 
-如果你在環境中設定了 `OPENCODE_PORT`，桌面應用程式將嘗試使用該連接埠作為本地伺服器連接埠。
+如果你在環境中設定了 `CLAUDIO_PORT`，桌面應用程式將嘗試使用該連接埠作為本地伺服器連接埠。
 
-- 取消設定 `OPENCODE_PORT`（或選擇一個空閒連接埠）並重新啟動。
+- 取消設定 `CLAUDIO_PORT`（或選擇一個空閒連接埠）並重新啟動。
 
 ---
 

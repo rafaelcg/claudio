@@ -34,7 +34,7 @@ Bygg er **standard**-modusen med alle verktøy aktivert. Dette er standardmoduse
 En begrenset modus designet for planlegging og analyse. I planmodus er følgende verktøy deaktivert som standard:
 
 - `write` - Kan ikke opprette nye filer
-- `edit` - Kan ikke endre eksisterende filer, bortsett fra filer som ligger på `.opencode/plans/*.md` for å detaljere selve planen
+- `edit` - Kan ikke endre eksisterende filer, bortsett fra filer som ligger på `.claudio/plans/*.md` for å detaljere selve planen
 - `patch` - Kan ikke bruke patcher
 - `bash` - Kan ikke utføre shell-kommandoer
 
@@ -88,7 +88,7 @@ Konfigurer moduser i din `opencode.json` konfigurasjonsfil:
 Du kan også definere moduser ved hjelp av markdown-filer. Plasser dem i:
 
 - Globalt: `~/.config/opencode/modes/`
-- Prosjekt: `.opencode/modes/`
+- Prosjekt: `.claudio/modes/`
 
 ```markdown title="~/.config/opencode/modes/review.md"
 ---
@@ -267,9 +267,9 @@ Du kan opprette dine egne tilpassede moduser ved å legge dem til i konfigurasjo
 
 ### Bruke markdown-filer
 
-Opprett modusfiler i `.opencode/modes/` for prosjektspesifikke moduser eller `~/.config/opencode/modes/` for globale moduser:
+Opprett modusfiler i `.claudio/modes/` for prosjektspesifikke moduser eller `~/.config/opencode/modes/` for globale moduser:
 
-```markdown title=".opencode/modes/debug.md"
+```markdown title=".claudio/modes/debug.md"
 ---
 temperature: 0.1
 tools:

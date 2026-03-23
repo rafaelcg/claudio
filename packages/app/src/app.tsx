@@ -1,12 +1,12 @@
 import "@/index.css"
-import { I18nProvider } from "@opencode-ai/ui/context"
-import { DialogProvider } from "@opencode-ai/ui/context/dialog"
-import { FileComponentProvider } from "@opencode-ai/ui/context/file"
-import { MarkedProvider } from "@opencode-ai/ui/context/marked"
-import { File } from "@opencode-ai/ui/file"
-import { Font } from "@opencode-ai/ui/font"
-import { Splash } from "@opencode-ai/ui/logo"
-import { ThemeProvider } from "@opencode-ai/ui/theme"
+import { I18nProvider } from "@claudio-code/ui/context"
+import { DialogProvider } from "@claudio-code/ui/context/dialog"
+import { FileComponentProvider } from "@claudio-code/ui/context/file"
+import { MarkedProvider } from "@claudio-code/ui/context/marked"
+import { File } from "@claudio-code/ui/file"
+import { Font } from "@claudio-code/ui/font"
+import { Splash } from "@claudio-code/ui/logo"
+import { ThemeProvider } from "@claudio-code/ui/theme"
 import { MetaProvider } from "@solidjs/meta"
 import { type BaseRouterProps, Navigate, Route, Router } from "@solidjs/router"
 import { QueryClient, QueryClientProvider } from "@tanstack/solid-query"
@@ -42,6 +42,7 @@ import { PromptProvider } from "@/context/prompt"
 import { ServerConnection, ServerProvider, serverName, useServer } from "@/context/server"
 import { SettingsProvider } from "@/context/settings"
 import { TerminalProvider } from "@/context/terminal"
+import { DialogLanguageOnboarding } from "@/components/dialog-language-onboarding"
 import DirectoryLayout from "@/pages/directory-layout"
 import Layout from "@/pages/layout"
 import { ErrorPage } from "./pages/error"
@@ -64,9 +65,27 @@ function UiI18nBridge(props: ParentProps) {
   return <I18nProvider value={{ locale: language.intl, t: language.t }}>{props.children}</I18nProvider>
 }
 
+function LanguageOnboardingGate(props: ParentProps) {
+  const language = useLanguage()
+  return (
+    <Show
+      when={language.ready()}
+      fallback={
+        <div class="h-dvh w-screen flex flex-col items-center justify-center bg-background-base">
+          <Splash class="w-16 h-20 opacity-50 animate-pulse" />
+        </div>
+      }
+    >
+      <Show when={language.onboarded()} fallback={<DialogLanguageOnboarding />}>
+        {props.children}
+      </Show>
+    </Show>
+  )
+}
+
 declare global {
   interface Window {
-    __OPENCODE__?: {
+    __CLAUDIO__?: {
       updaterEnabled?: boolean
       deepLinks?: string[]
       wsl?: boolean
@@ -141,15 +160,17 @@ export function AppBaseProviders(props: ParentProps) {
       >
         <LanguageProvider>
           <UiI18nBridge>
-            <ErrorBoundary fallback={(error) => <ErrorPage error={error} />}>
-              <QueryProvider>
-                <DialogProvider>
-                  <MarkedProviderWithNativeParser>
-                    <FileComponentProvider component={File}>{props.children}</FileComponentProvider>
-                  </MarkedProviderWithNativeParser>
-                </DialogProvider>
-              </QueryProvider>
-            </ErrorBoundary>
+            <LanguageOnboardingGate>
+              <ErrorBoundary fallback={(error) => <ErrorPage error={error} />}>
+                <QueryProvider>
+                  <DialogProvider>
+                    <MarkedProviderWithNativeParser>
+                      <FileComponentProvider component={File}>{props.children}</FileComponentProvider>
+                    </MarkedProviderWithNativeParser>
+                  </DialogProvider>
+                </QueryProvider>
+              </ErrorBoundary>
+            </LanguageOnboardingGate>
           </UiI18nBridge>
         </LanguageProvider>
       </ThemeProvider>

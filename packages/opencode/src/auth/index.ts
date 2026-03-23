@@ -48,7 +48,7 @@ export namespace Auth {
     readonly remove: (key: string) => Effect.Effect<void, AuthError>
   }
 
-  export class Service extends ServiceMap.Service<Service, Interface>()("@opencode/Auth") {}
+  export class Service extends ServiceMap.Service<Service, Interface>()("@claudio/Auth") {}
 
   export const layer = Layer.effect(
     Service,

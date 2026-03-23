@@ -307,7 +307,7 @@ pub fn run() {
 
     #[cfg(all(target_os = "macos", not(debug_assertions)))]
     let _ = std::process::Command::new("killall")
-        .arg("opencode-cli")
+        .arg("claudio-cli")
         .output();
 
     let mut builder = tauri::Builder::default()
@@ -549,9 +549,9 @@ fn spawn_cli_sync_task(app: AppHandle) {
 
 
 fn get_sidecar_port() -> u32 {
-    option_env!("OPENCODE_PORT")
+    option_env!("CLAUDIO_PORT")
         .map(|s| s.to_string())
-        .or_else(|| std::env::var("OPENCODE_PORT").ok())
+        .or_else(|| std::env::var("CLAUDIO_PORT").ok())
         .and_then(|port_str| port_str.parse().ok())
         .unwrap_or_else(|| {
             TcpListener::bind("127.0.0.1:0")

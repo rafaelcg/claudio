@@ -6,7 +6,7 @@ on:
 
 jobs:
   triage:
-    runs-on: blacksmith-4vcpu-ubuntu-2404
+    runs-on: ubuntu-latest
     permissions:
       contents: read
       issues: write
@@ -24,7 +24,7 @@ jobs:
 
       - name: Triage issue
         env:
-          OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
+          CLAUDIO_API_KEY: ${{ secrets.CLAUDIO_API_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           ISSUE_NUMBER: ${{ github.event.issue.number }}
           ISSUE_TITLE: ${{ github.event.issue.title }}

@@ -34,7 +34,7 @@ opencode는 2개의 붙박이 형태로 옵니다.
 계획 및 분석을 위해 설계된 제한 모드. 계획 모드에서 다음 도구는 기본적으로 비활성화됩니다:
 
 - `write` - 새로운 파일을 만들 수 없습니다
-- `edit` - `.opencode/plans/*.md`에 위치한 파일을 제외하고 기존 파일을 수정할 수 없습니다.
+- `edit` - `.claudio/plans/*.md`에 위치한 파일을 제외하고 기존 파일을 수정할 수 없습니다.
 - `patch` - 패치 적용
 - `bash` - shell 명령을 실행할 수 없습니다
 
@@ -88,7 +88,7 @@ Tab 키를 사용하여 세션 중에 모드를 전환할 수 있습니다. 또�
 Markdown 파일을 사용하여 모드를 정의할 수 있습니다. 그들에 게:
 
 - 글로벌: `~/.config/opencode/modes/`
-- 프로젝트: `.opencode/modes/`
+- 프로젝트: `.claudio/modes/`
 
 ```markdown title="~/.config/opencode/modes/review.md"
 ---
@@ -269,7 +269,7 @@ Markdown 파일 이름은 모드 이름 (예 : `review.md`는 `review` 모드를
 
 프로젝트 별 모드 또는 `~/.config/opencode/modes/`의 모드 파일을 만들 수 있습니다.
 
-```markdown title=".opencode/modes/debug.md"
+```markdown title=".claudio/modes/debug.md"
 ---
 temperature: 0.1
 tools:

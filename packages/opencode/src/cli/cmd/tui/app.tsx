@@ -41,6 +41,10 @@ import { writeHeapSnapshot } from "v8"
 import { PromptRefProvider, usePromptRef } from "./context/prompt"
 import { TuiConfigProvider } from "./context/tui-config"
 import { TuiConfig } from "@/config/tui"
+import { TuiI18nProvider, useTuiI18n } from "./i18n/context"
+import { TuiLanguageOnboarding } from "./i18n/onboarding"
+import { DialogSelect } from "./ui/dialog-select"
+import type { TuiLocale } from "./i18n/types"
 
 async function getTerminalBackgroundColor(): Promise<"dark" | "light"> {
   // can't set raw mode if not a TTY
@@ -153,8 +157,9 @@ export function tui(input: {
                               <LocalProvider>
                                 <KeybindProvider>
                                   <PromptStashProvider>
-                                    <DialogProvider>
-                                      <CommandProvider>
+                                    <TuiI18nProvider>
+                                      <DialogProvider>
+                                        <CommandProvider>
                                         <FrecencyProvider>
                                           <PromptHistoryProvider>
                                             <PromptRefProvider>
@@ -162,8 +167,9 @@ export function tui(input: {
                                             </PromptRefProvider>
                                           </PromptHistoryProvider>
                                         </FrecencyProvider>
-                                      </CommandProvider>
-                                    </DialogProvider>
+                                        </CommandProvider>
+                                      </DialogProvider>
+                                    </TuiI18nProvider>
                                   </PromptStashProvider>
                                 </KeybindProvider>
                               </LocalProvider>
@@ -207,6 +213,7 @@ function App() {
   const dialog = useDialog()
   const local = useLocal()
   const kv = useKV()
+  const tui = useTuiI18n()
   const command = useCommandDialog()
   const sdk = useSDK()
   const toast = useToast()
@@ -216,7 +223,7 @@ function App() {
   const promptRef = usePromptRef()
 
   useKeyboard((evt) => {
-    if (!Flag.OPENCODE_EXPERIMENTAL_DISABLE_COPY_ON_SELECT) return
+    if (!Flag.CLAUDIO_EXPERIMENTAL_DISABLE_COPY_ON_SELECT) return
     if (!renderer.getSelection()) return
 
     // Windows Terminal-like behavior:
@@ -262,7 +269,7 @@ function App() {
 
   // Update terminal window title based on current route and session
   createEffect(() => {
-    if (!terminalTitleEnabled() || Flag.OPENCODE_DISABLE_TERMINAL_TITLE) return
+    if (!terminalTitleEnabled() || Flag.CLAUDIO_DISABLE_TERMINAL_TITLE) return
 
     if (route.data.type === "home") {
       renderer.setTerminalTitle("OpenCode")
@@ -359,10 +366,47 @@ function App() {
   const connected = useConnected()
   command.register(() => [
     {
-      title: "Switch session",
+      title: tui.t("tui.cmd.language"),
+      description: tui.t("tui.cmd.language.desc"),
+      value: "system.language",
+      category: tui.t("tui.cat.system"),
+      slash: {
+        name: "language",
+        aliases: ["lang"],
+      },
+      onSelect: () => {
+        dialog.replace(() => (
+          <DialogSelect<TuiLocale>
+            title={tui.t("tui.cmd.language")}
+            skipFilter
+            current={tui.locale()}
+            options={[
+              {
+                title: tui.t("tui.onboarding.en"),
+                value: "en",
+                onSelect: (d) => {
+                  tui.applyLocale("en")
+                  d.clear()
+                },
+              },
+              {
+                title: tui.t("tui.onboarding.pt"),
+                value: "pt-BR",
+                onSelect: (d) => {
+                  tui.applyLocale("pt-BR")
+                  d.clear()
+                },
+              },
+            ]}
+          />
+        ))
+      },
+    },
+    {
+      title: tui.t("tui.app.session_list"),
       value: "session.list",
       keybind: "session_list",
-      category: "Session",
+      category: tui.t("tui.cat.session"),
       suggested: sync.data.session.length > 0,
       slash: {
         name: "sessions",
@@ -372,12 +416,12 @@ function App() {
         dialog.replace(() => <DialogSessionList />)
       },
     },
-    ...(Flag.OPENCODE_EXPERIMENTAL_WORKSPACES
+    ...(Flag.CLAUDIO_EXPERIMENTAL_WORKSPACES
       ? [
           {
-            title: "Manage workspaces",
+            title: tui.t("tui.app.workspace_list"),
             value: "workspace.list",
-            category: "Workspace",
+            category: tui.t("tui.cat.workspace"),
             suggested: true,
             slash: {
               name: "workspaces",
@@ -389,11 +433,11 @@ function App() {
         ]
       : []),
     {
-      title: "New session",
+      title: tui.t("tui.app.session_new"),
       suggested: route.data.type === "session",
       value: "session.new",
       keybind: "session_new",
-      category: "Session",
+      category: tui.t("tui.cat.session"),
       slash: {
         name: "new",
         aliases: ["clear"],
@@ -413,11 +457,11 @@ function App() {
       },
     },
     {
-      title: "Switch model",
+      title: tui.t("tui.app.model_list"),
       value: "model.list",
       keybind: "model_list",
       suggested: true,
-      category: "Agent",
+      category: tui.t("tui.cat.agent"),
       slash: {
         name: "models",
       },
@@ -426,50 +470,50 @@ function App() {
       },
     },
     {
-      title: "Model cycle",
+      title: tui.t("tui.app.model_cycle"),
       value: "model.cycle_recent",
       keybind: "model_cycle_recent",
-      category: "Agent",
+      category: tui.t("tui.cat.agent"),
       hidden: true,
       onSelect: () => {
         local.model.cycle(1)
       },
     },
     {
-      title: "Model cycle reverse",
+      title: tui.t("tui.app.model_cycle_reverse"),
       value: "model.cycle_recent_reverse",
       keybind: "model_cycle_recent_reverse",
-      category: "Agent",
+      category: tui.t("tui.cat.agent"),
       hidden: true,
       onSelect: () => {
         local.model.cycle(-1)
       },
     },
     {
-      title: "Favorite cycle",
+      title: tui.t("tui.app.model_cycle_favorite"),
       value: "model.cycle_favorite",
       keybind: "model_cycle_favorite",
-      category: "Agent",
+      category: tui.t("tui.cat.agent"),
       hidden: true,
       onSelect: () => {
         local.model.cycleFavorite(1)
       },
     },
     {
-      title: "Favorite cycle reverse",
+      title: tui.t("tui.app.model_cycle_favorite_reverse"),
       value: "model.cycle_favorite_reverse",
       keybind: "model_cycle_favorite_reverse",
-      category: "Agent",
+      category: tui.t("tui.cat.agent"),
       hidden: true,
       onSelect: () => {
         local.model.cycleFavorite(-1)
       },
     },
     {
-      title: "Switch agent",
+      title: tui.t("tui.app.agent_list"),
       value: "agent.list",
       keybind: "agent_list",
-      category: "Agent",
+      category: tui.t("tui.cat.agent"),
       slash: {
         name: "agents",
       },
@@ -478,9 +522,9 @@ function App() {
       },
     },
     {
-      title: "Toggle MCPs",
+      title: tui.t("tui.app.mcp_list"),
       value: "mcp.list",
-      category: "Agent",
+      category: tui.t("tui.cat.agent"),
       slash: {
         name: "mcps",
       },
@@ -489,37 +533,37 @@ function App() {
       },
     },
     {
-      title: "Agent cycle",
+      title: tui.t("tui.app.agent_cycle"),
       value: "agent.cycle",
       keybind: "agent_cycle",
-      category: "Agent",
+      category: tui.t("tui.cat.agent"),
       hidden: true,
       onSelect: () => {
         local.agent.move(1)
       },
     },
     {
-      title: "Variant cycle",
+      title: tui.t("tui.app.variant_cycle"),
       value: "variant.cycle",
       keybind: "variant_cycle",
-      category: "Agent",
+      category: tui.t("tui.cat.agent"),
       hidden: true,
       onSelect: () => {
         local.model.variant.cycle()
       },
     },
     {
-      title: "Agent cycle reverse",
+      title: tui.t("tui.app.agent_cycle_reverse"),
       value: "agent.cycle.reverse",
       keybind: "agent_cycle_reverse",
-      category: "Agent",
+      category: tui.t("tui.cat.agent"),
       hidden: true,
       onSelect: () => {
         local.agent.move(-1)
       },
     },
     {
-      title: "Connect provider",
+      title: tui.t("tui.app.provider_connect"),
       value: "provider.connect",
       suggested: !connected(),
       slash: {
@@ -528,10 +572,10 @@ function App() {
       onSelect: () => {
         dialog.replace(() => <DialogProviderList />)
       },
-      category: "Provider",
+      category: tui.t("tui.cat.provider"),
     },
     {
-      title: "View status",
+      title: tui.t("tui.app.status"),
       keybind: "status_view",
       value: "opencode.status",
       slash: {
@@ -540,10 +584,10 @@ function App() {
       onSelect: () => {
         dialog.replace(() => <DialogStatus />)
       },
-      category: "System",
+      category: tui.t("tui.cat.system"),
     },
     {
-      title: "Switch theme",
+      title: tui.t("tui.app.theme"),
       value: "theme.switch",
       keybind: "theme_list",
       slash: {
@@ -552,19 +596,19 @@ function App() {
       onSelect: () => {
         dialog.replace(() => <DialogThemeList />)
       },
-      category: "System",
+      category: tui.t("tui.cat.system"),
     },
     {
-      title: "Toggle appearance",
+      title: tui.t("tui.app.theme_mode"),
       value: "theme.switch_mode",
       onSelect: (dialog) => {
         setMode(mode() === "dark" ? "light" : "dark")
         dialog.clear()
       },
-      category: "System",
+      category: tui.t("tui.cat.system"),
     },
     {
-      title: "Help",
+      title: tui.t("tui.app.help"),
       value: "help.show",
       slash: {
         name: "help",
@@ -572,30 +616,30 @@ function App() {
       onSelect: () => {
         dialog.replace(() => <DialogHelp />)
       },
-      category: "System",
+      category: tui.t("tui.cat.system"),
     },
     {
-      title: "Open docs",
+      title: tui.t("tui.app.docs"),
       value: "docs.open",
       onSelect: () => {
         open("https://opencode.ai/docs").catch(() => {})
         dialog.clear()
       },
-      category: "System",
+      category: tui.t("tui.cat.system"),
     },
     {
-      title: "Exit the app",
+      title: tui.t("tui.app.exit"),
       value: "app.exit",
       slash: {
         name: "exit",
         aliases: ["quit", "q"],
       },
       onSelect: () => exit(),
-      category: "System",
+      category: tui.t("tui.cat.system"),
     },
     {
-      title: "Toggle debug panel",
-      category: "System",
+      title: tui.t("tui.app.debug"),
+      category: tui.t("tui.cat.system"),
       value: "app.debug",
       onSelect: (dialog) => {
         renderer.toggleDebugOverlay()
@@ -603,8 +647,8 @@ function App() {
       },
     },
     {
-      title: "Toggle console",
-      category: "System",
+      title: tui.t("tui.app.console"),
+      category: tui.t("tui.cat.system"),
       value: "app.console",
       onSelect: (dialog) => {
         renderer.console.toggle()
@@ -612,8 +656,8 @@ function App() {
       },
     },
     {
-      title: "Write heap snapshot",
-      category: "System",
+      title: tui.t("tui.app.heap"),
+      category: tui.t("tui.cat.system"),
       value: "app.heap_snapshot",
       onSelect: (dialog) => {
         const path = writeHeapSnapshot()
@@ -626,10 +670,10 @@ function App() {
       },
     },
     {
-      title: "Suspend terminal",
+      title: tui.t("tui.app.suspend"),
       value: "terminal.suspend",
       keybind: "terminal_suspend",
-      category: "System",
+      category: tui.t("tui.cat.system"),
       hidden: true,
       onSelect: () => {
         process.once("SIGCONT", () => {
@@ -642,10 +686,10 @@ function App() {
       },
     },
     {
-      title: terminalTitleEnabled() ? "Disable terminal title" : "Enable terminal title",
+      title: terminalTitleEnabled() ? tui.t("tui.app.term_title_disable") : tui.t("tui.app.term_title_enable"),
       value: "terminal.title.toggle",
       keybind: "terminal_title_toggle",
-      category: "System",
+      category: tui.t("tui.cat.system"),
       onSelect: (dialog) => {
         setTerminalTitleEnabled((prev) => {
           const next = !prev
@@ -657,18 +701,18 @@ function App() {
       },
     },
     {
-      title: kv.get("animations_enabled", true) ? "Disable animations" : "Enable animations",
+      title: kv.get("animations_enabled", true) ? tui.t("tui.app.anim_disable") : tui.t("tui.app.anim_enable"),
       value: "app.toggle.animations",
-      category: "System",
+      category: tui.t("tui.cat.system"),
       onSelect: (dialog) => {
         kv.set("animations_enabled", !kv.get("animations_enabled", true))
         dialog.clear()
       },
     },
     {
-      title: kv.get("diff_wrap_mode", "word") === "word" ? "Disable diff wrapping" : "Enable diff wrapping",
+      title: kv.get("diff_wrap_mode", "word") === "word" ? tui.t("tui.app.diffwrap_disable") : tui.t("tui.app.diffwrap_enable"),
       value: "app.toggle.diffwrap",
-      category: "System",
+      category: tui.t("tui.cat.system"),
       onSelect: (dialog) => {
         const current = kv.get("diff_wrap_mode", "word")
         kv.set("diff_wrap_mode", current === "word" ? "none" : "word")
@@ -744,15 +788,16 @@ function App() {
       height={dimensions().height}
       backgroundColor={theme.background}
       onMouseDown={(evt) => {
-        if (!Flag.OPENCODE_EXPERIMENTAL_DISABLE_COPY_ON_SELECT) return
+        if (!Flag.CLAUDIO_EXPERIMENTAL_DISABLE_COPY_ON_SELECT) return
         if (evt.button !== MouseButton.RIGHT) return
 
         if (!Selection.copy(renderer, toast)) return
         evt.preventDefault()
         evt.stopPropagation()
       }}
-      onMouseUp={Flag.OPENCODE_EXPERIMENTAL_DISABLE_COPY_ON_SELECT ? undefined : () => Selection.copy(renderer, toast)}
+      onMouseUp={Flag.CLAUDIO_EXPERIMENTAL_DISABLE_COPY_ON_SELECT ? undefined : () => Selection.copy(renderer, toast)}
     >
+      <TuiLanguageOnboarding />
       <Switch>
         <Match when={route.data.type === "home"}>
           <Home />

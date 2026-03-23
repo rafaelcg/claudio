@@ -6,7 +6,7 @@ import { ProjectTable } from "./project.sql"
 import { SessionTable } from "../session/session.sql"
 import { Log } from "../util/log"
 import { Flag } from "@/flag/flag"
-import { fn } from "@opencode-ai/util/fn"
+import { fn } from "@claudio-code/util/fn"
 import { BusEvent } from "@/bus/bus-event"
 import { iife } from "@/util/iife"
 import { GlobalBus } from "@/bus/global"
@@ -115,7 +115,7 @@ export namespace Project {
             id: id ?? ProjectID.global,
             worktree: sandbox,
             sandbox,
-            vcs: Info.shape.vcs.parse(Flag.OPENCODE_FAKE_VCS),
+            vcs: Info.shape.vcs.parse(Flag.CLAUDIO_FAKE_VCS),
           }
         }
 
@@ -134,7 +134,7 @@ export namespace Project {
             id: id ?? ProjectID.global,
             worktree: sandbox,
             sandbox,
-            vcs: Info.shape.vcs.parse(Flag.OPENCODE_FAKE_VCS),
+            vcs: Info.shape.vcs.parse(Flag.CLAUDIO_FAKE_VCS),
           }
         }
 
@@ -164,7 +164,7 @@ export namespace Project {
               id: ProjectID.global,
               worktree: sandbox,
               sandbox,
-              vcs: Info.shape.vcs.parse(Flag.OPENCODE_FAKE_VCS),
+              vcs: Info.shape.vcs.parse(Flag.CLAUDIO_FAKE_VCS),
             }
           }
 
@@ -195,7 +195,7 @@ export namespace Project {
             id,
             worktree: sandbox,
             sandbox,
-            vcs: Info.shape.vcs.parse(Flag.OPENCODE_FAKE_VCS),
+            vcs: Info.shape.vcs.parse(Flag.CLAUDIO_FAKE_VCS),
           }
         }
 
@@ -213,7 +213,7 @@ export namespace Project {
         id: ProjectID.global,
         worktree: "/",
         sandbox: "/",
-        vcs: Info.shape.vcs.parse(Flag.OPENCODE_FAKE_VCS),
+        vcs: Info.shape.vcs.parse(Flag.CLAUDIO_FAKE_VCS),
       }
     })
 
@@ -231,7 +231,7 @@ export namespace Project {
           },
         }
 
-    if (Flag.OPENCODE_EXPERIMENTAL_ICON_DISCOVERY) discover(existing)
+    if (Flag.CLAUDIO_EXPERIMENTAL_ICON_DISCOVERY) discover(existing)
 
     const result: Info = {
       ...existing,

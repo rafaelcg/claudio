@@ -145,7 +145,7 @@ function injectGlobals(win: BrowserWindow, globals: Globals) {
       deepLinks: Array.isArray(deepLinks) ? deepLinks.splice(0) : deepLinks,
     }
     void win.webContents.executeJavaScript(
-      `window.__OPENCODE__ = Object.assign(window.__OPENCODE__ ?? {}, ${JSON.stringify(data)})`,
+      `window.__CLAUDIO__ = Object.assign(window.__CLAUDIO__ ?? {}, ${JSON.stringify(data)})`,
     )
   })
 }

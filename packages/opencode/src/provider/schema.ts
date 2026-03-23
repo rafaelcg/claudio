@@ -13,6 +13,8 @@ export const ProviderID = providerIdSchema.pipe(
     zod: z.string().pipe(z.custom<ProviderID>()),
     // Well-known providers
     opencode: schema.makeUnsafe("opencode"),
+    /** First-party Claudio Code provider (same wire id as legacy `opencode`). */
+    claudio: schema.makeUnsafe("opencode"),
     anthropic: schema.makeUnsafe("anthropic"),
     openai: schema.makeUnsafe("openai"),
     google: schema.makeUnsafe("google"),

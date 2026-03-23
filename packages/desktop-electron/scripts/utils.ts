@@ -3,7 +3,7 @@ import { $ } from "bun"
 export type Channel = "dev" | "beta" | "prod"
 
 export function resolveChannel(): Channel {
-  const raw = Bun.env.OPENCODE_CHANNEL
+  const raw = Bun.env.CLAUDIO_CHANNEL
   if (raw === "dev" || raw === "beta" || raw === "prod") return raw
   return "dev"
 }
@@ -61,7 +61,7 @@ export function getCurrentSidecar(target = RUST_TARGET ?? nativeTarget()) {
 export async function copyBinaryToSidecarFolder(source: string) {
   const dir = `resources`
   await $`mkdir -p ${dir}`
-  const dest = windowsify(`${dir}/opencode-cli`)
+  const dest = windowsify(`${dir}/claudio-cli`)
   await $`cp ${source} ${dest}`
   if (process.platform === "darwin") await $`codesign --force --sign - ${dest}`
 

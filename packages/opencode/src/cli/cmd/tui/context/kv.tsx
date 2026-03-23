@@ -1,7 +1,7 @@
 import { Global } from "@/global"
 import { Filesystem } from "@/util/filesystem"
 import { createSignal, type Setter } from "solid-js"
-import { createStore } from "solid-js/store"
+import { createStore, unwrap } from "solid-js/store"
 import { createSimpleContext } from "./helper"
 import path from "path"
 
@@ -44,7 +44,7 @@ export const { use: useKV, provider: KVProvider } = createSimpleContext({
       },
       set(key: string, value: any) {
         setStore(key, value)
-        Filesystem.writeJson(filePath, store)
+        void Filesystem.writeJson(filePath, unwrap(store))
       },
     }
     return result

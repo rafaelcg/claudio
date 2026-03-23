@@ -9,6 +9,11 @@
     localStorage.removeItem("opencode-theme-css-dark")
   }
 
+  if (themeId === "claudio") {
+    themeId = "opencode"
+    localStorage.setItem(key, themeId)
+  }
+
   var scheme = localStorage.getItem("opencode-color-scheme") || "system"
   var isDark = scheme === "dark" || (scheme === "system" && matchMedia("(prefers-color-scheme: dark)").matches)
   var mode = isDark ? "dark" : "light"

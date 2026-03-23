@@ -45,15 +45,15 @@ Config sources are loaded in this order (later sources override earlier ones):
 
 1. **Remote config** (from `.well-known/opencode`) - organizational defaults
 2. **Global config** (`~/.config/opencode/opencode.json`) - user preferences
-3. **Custom config** (`OPENCODE_CONFIG` env var) - custom overrides
+3. **Custom config** (`CLAUDIO_CONFIG` env var) - custom overrides
 4. **Project config** (`opencode.json` in project) - project-specific settings
-5. **`.opencode` directories** - agents, commands, plugins
-6. **Inline config** (`OPENCODE_CONFIG_CONTENT` env var) - runtime overrides
+5. **`.claudio` directories** - agents, commands, plugins
+6. **Inline config** (`CLAUDIO_CONFIG_CONTENT` env var) - runtime overrides
 
 This means project configs can override global defaults, and global configs can override remote organizational defaults.
 
 :::note
-The `.opencode` and `~/.config/opencode` directories use **plural names** for subdirectories: `agents/`, `commands/`, `modes/`, `plugins/`, `skills/`, `tools/`, and `themes/`. Singular names (e.g., `agent/`) are also supported for backwards compatibility.
+The `.claudio` and `~/.config/opencode` directories use **plural names** for subdirectories: `agents/`, `commands/`, `modes/`, `plugins/`, `skills/`, `tools/`, and `themes/`. Singular names (e.g., `agent/`) are also supported for backwards compatibility.
 :::
 
 ---
@@ -122,10 +122,10 @@ This is also safe to be checked into Git and uses the same schema as the global 
 
 ### Custom path
 
-Specify a custom config file path using the `OPENCODE_CONFIG` environment variable.
+Specify a custom config file path using the `CLAUDIO_CONFIG` environment variable.
 
 ```bash
-export OPENCODE_CONFIG=/path/to/my/custom-config.json
+export CLAUDIO_CONFIG=/path/to/my/custom-config.json
 opencode run "Hello world"
 ```
 
@@ -135,17 +135,17 @@ Custom config is loaded between global and project configs in the precedence ord
 
 ### Custom directory
 
-Specify a custom config directory using the `OPENCODE_CONFIG_DIR`
+Specify a custom config directory using the `CLAUDIO_CONFIG_DIR`
 environment variable. This directory will be searched for agents, commands,
-modes, and plugins just like the standard `.opencode` directory, and should
+modes, and plugins just like the standard `.claudio` directory, and should
 follow the same structure.
 
 ```bash
-export OPENCODE_CONFIG_DIR=/path/to/my/config-directory
+export CLAUDIO_CONFIG_DIR=/path/to/my/config-directory
 opencode run "Hello world"
 ```
 
-The custom directory is loaded after the global config and `.opencode` directories, so it **can override** their settings.
+The custom directory is loaded after the global config and `.claudio` directories, so it **can override** their settings.
 
 ---
 
@@ -174,7 +174,7 @@ Use a dedicated `tui.json` (or `tui.jsonc`) file for TUI-specific settings.
 }
 ```
 
-Use `OPENCODE_TUI_CONFIG` to point to a custom TUI config file.
+Use `CLAUDIO_TUI_CONFIG` to point to a custom TUI config file.
 
 Legacy `theme`, `keybinds`, and `tui` keys in `opencode.json` are deprecated and automatically migrated when possible.
 
@@ -341,7 +341,7 @@ You can configure specialized agents for specific tasks through the `agent` opti
 }
 ```
 
-You can also define agents using markdown files in `~/.config/opencode/agents/` or `.opencode/agents/`. [Learn more here](/docs/agents).
+You can also define agents using markdown files in `~/.config/opencode/agents/` or `.claudio/agents/`. [Learn more here](/docs/agents).
 
 ---
 
@@ -405,7 +405,7 @@ You can configure custom commands for repetitive tasks through the `command` opt
 }
 ```
 
-You can also define commands using markdown files in `~/.config/opencode/commands/` or `.opencode/commands/`. [Learn more here](/docs/commands).
+You can also define commands using markdown files in `~/.config/opencode/commands/` or `.claudio/commands/`. [Learn more here](/docs/commands).
 
 ---
 
@@ -560,7 +560,7 @@ You can configure MCP servers you want to use through the `mcp` option.
 
 [Plugins](/docs/plugins) extend OpenCode with custom tools, hooks, and integrations.
 
-Place plugin files in `.opencode/plugins/` or `~/.config/opencode/plugins/`. You can also load plugins from npm through the `plugin` option.
+Place plugin files in `.claudio/plugins/` or `~/.config/opencode/plugins/`. You can also load plugins from npm through the `plugin` option.
 
 ```json title="opencode.json"
 {
@@ -663,7 +663,7 @@ Use `{env:VARIABLE_NAME}` to substitute environment variables:
 ```json title="opencode.json"
 {
   "$schema": "https://opencode.ai/config.json",
-  "model": "{env:OPENCODE_MODEL}",
+  "model": "{env:CLAUDIO_MODEL}",
   "provider": {
     "anthropic": {
       "models": {},

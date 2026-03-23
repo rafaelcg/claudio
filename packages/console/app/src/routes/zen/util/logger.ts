@@ -1,4 +1,4 @@
-import { Resource } from "@opencode-ai/console-resource"
+import { Resource } from "@claudio-code/console-resource"
 
 export const logger = {
   metric: (values: Record<string, any>) => {

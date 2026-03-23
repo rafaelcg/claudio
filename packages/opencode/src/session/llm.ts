@@ -254,7 +254,7 @@ export namespace LLM {
           "x-opencode-project": Instance.project.id,
           "x-opencode-session": input.sessionID,
           "x-opencode-request": input.user.id,
-          "x-opencode-client": Flag.OPENCODE_CLIENT,
+          "x-claudio-client": Flag.CLAUDIO_CLIENT,
         }),
         ...input.model.headers,
         ...headers,

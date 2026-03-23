@@ -17,18 +17,18 @@ import type {
   ProviderListResponse,
   ProviderAuthMethod,
   VcsInfo,
-} from "@opencode-ai/sdk/v2"
+} from "@claudio-code/sdk/v2"
 import { createStore, produce, reconcile } from "solid-js/store"
 import { useSDK } from "@tui/context/sdk"
-import { Binary } from "@opencode-ai/util/binary"
+import { Binary } from "@claudio-code/util/binary"
 import { createSimpleContext } from "./helper"
 import type { Snapshot } from "@/snapshot"
 import { useExit } from "./exit"
 import { useArgs } from "./args"
 import { batch, onMount } from "solid-js"
 import { Log } from "@/util/log"
-import type { Path } from "@opencode-ai/sdk"
-import type { Workspace } from "@opencode-ai/sdk/v2"
+import type { Path } from "@claudio-code/sdk"
+import type { Workspace } from "@claudio-code/sdk/v2"
 
 export const { use: useSync, provider: SyncProvider } = createSimpleContext({
   name: "Sync",

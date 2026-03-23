@@ -39,7 +39,7 @@ Denne katalogen inneholder:
 
 ## Skrivebordsapp
 
-OpenCode Desktop kjører en lokal OpenCode-server (`opencode-cli` sidevognen) i bakgrunnen. De fleste problemene er forårsaket av en plugin som fungerer dårlig, en ødelagt cache eller en dårlig serverinnstilling.
+OpenCode Desktop kjører en lokal OpenCode-server (`claudio-cli` sidevognen) i bakgrunnen. De fleste problemene er forårsaket av en plugin som fungerer dårlig, en ødelagt cache eller en dårlig serverinnstilling.
 
 ### Raske sjekker
 
@@ -78,7 +78,7 @@ OpenCode kan også laste lokale plugins fra disken. Flytt disse midlertidig ut a
   - **macOS/Linux**: `~/.config/opencode/plugins/`
   - **Windows**: Trykk `WIN+R` og lim inn `%USERPROFILE%\.config\opencode\plugins`
 - **Prosjektplugins** (bare hvis du bruker konfigurasjon per prosjekt)
-  - `<your-project>/.opencode/plugins/`
+  - `<your-project>/.claudio/plugins/`
 
 Hvis appen begynner å fungere igjen, aktiverer du plugins én om gangen for å finne ut hvilken som forårsaker problemet.
 
@@ -115,9 +115,9 @@ Hvis `opencode.json(c)` inneholder en `server`-del, fjern den midlertidig og sta
 
 #### Sjekk miljøvariabler
 
-Hvis du har `OPENCODE_PORT` satt i miljøet ditt, vil skrivebordsappen prøve å bruke den porten for den lokale serveren.
+Hvis du har `CLAUDIO_PORT` satt i miljøet ditt, vil skrivebordsappen prøve å bruke den porten for den lokale serveren.
 
-- Deaktiver `OPENCODE_PORT` (eller velg en ledig port) og start på nytt.
+- Deaktiver `CLAUDIO_PORT` (eller velg en ledig port) og start på nytt.
 
 ---
 

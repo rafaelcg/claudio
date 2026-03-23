@@ -1,19 +1,19 @@
 import type { APIEvent } from "@solidjs/start/server"
-import { and, Database, eq, isNull, lt, or, sql } from "@opencode-ai/console-core/drizzle/index.js"
-import { KeyTable } from "@opencode-ai/console-core/schema/key.sql.js"
-import { BillingTable, LiteTable, SubscriptionTable, UsageTable } from "@opencode-ai/console-core/schema/billing.sql.js"
-import { centsToMicroCents } from "@opencode-ai/console-core/util/price.js"
-import { getMonthlyBounds, getWeekBounds } from "@opencode-ai/console-core/util/date.js"
-import { Identifier } from "@opencode-ai/console-core/identifier.js"
-import { Billing } from "@opencode-ai/console-core/billing.js"
-import { Actor } from "@opencode-ai/console-core/actor.js"
-import { WorkspaceTable } from "@opencode-ai/console-core/schema/workspace.sql.js"
-import { ZenData } from "@opencode-ai/console-core/model.js"
-import { Subscription } from "@opencode-ai/console-core/subscription.js"
-import { BlackData } from "@opencode-ai/console-core/black.js"
-import { UserTable } from "@opencode-ai/console-core/schema/user.sql.js"
-import { ModelTable } from "@opencode-ai/console-core/schema/model.sql.js"
-import { ProviderTable } from "@opencode-ai/console-core/schema/provider.sql.js"
+import { and, Database, eq, isNull, lt, or, sql } from "@claudio-code/console-core/drizzle/index.js"
+import { KeyTable } from "@claudio-code/console-core/schema/key.sql.js"
+import { BillingTable, LiteTable, SubscriptionTable, UsageTable } from "@claudio-code/console-core/schema/billing.sql.js"
+import { centsToMicroCents } from "@claudio-code/console-core/util/price.js"
+import { getMonthlyBounds, getWeekBounds } from "@claudio-code/console-core/util/date.js"
+import { Identifier } from "@claudio-code/console-core/identifier.js"
+import { Billing } from "@claudio-code/console-core/billing.js"
+import { Actor } from "@claudio-code/console-core/actor.js"
+import { WorkspaceTable } from "@claudio-code/console-core/schema/workspace.sql.js"
+import { ZenData } from "@claudio-code/console-core/model.js"
+import { Subscription } from "@claudio-code/console-core/subscription.js"
+import { BlackData } from "@claudio-code/console-core/black.js"
+import { UserTable } from "@claudio-code/console-core/schema/user.sql.js"
+import { ModelTable } from "@claudio-code/console-core/schema/model.sql.js"
+import { ProviderTable } from "@claudio-code/console-core/schema/provider.sql.js"
 import { logger } from "./logger"
 import {
   AuthError,
@@ -39,8 +39,8 @@ import { createRateLimiter } from "./rateLimiter"
 import { createDataDumper } from "./dataDumper"
 import { createTrialLimiter } from "./trialLimiter"
 import { createStickyTracker } from "./stickyProviderTracker"
-import { LiteData } from "@opencode-ai/console-core/lite.js"
-import { Resource } from "@opencode-ai/console-resource"
+import { LiteData } from "@claudio-code/console-core/lite.js"
+import { Resource } from "@claudio-code/console-resource"
 import { i18n, type Key } from "~/i18n"
 import { localeFromRequest } from "~/lib/language"
 
@@ -94,7 +94,7 @@ export async function handler(
     const sessionId = input.request.headers.get("x-opencode-session") ?? ""
     const requestId = input.request.headers.get("x-opencode-request") ?? ""
     const projectId = input.request.headers.get("x-opencode-project") ?? ""
-    const ocClient = input.request.headers.get("x-opencode-client") ?? ""
+    const ocClient = input.request.headers.get("x-claudio-client") ?? ""
     logger.metric({
       is_stream: isStream,
       session: sessionId,
@@ -168,7 +168,7 @@ export async function handler(
           headers.delete("x-opencode-request")
           headers.delete("x-opencode-session")
           headers.delete("x-opencode-project")
-          headers.delete("x-opencode-client")
+          headers.delete("x-claudio-client")
           return headers
         })(),
         body: reqBody,

@@ -31,7 +31,7 @@ export namespace Format {
     readonly status: () => Effect.Effect<Status[]>
   }
 
-  export class Service extends ServiceMap.Service<Service, Interface>()("@opencode/Format") {}
+  export class Service extends ServiceMap.Service<Service, Interface>()("@claudio/Format") {}
 
   export const layer = Layer.effect(
     Service,

@@ -32,7 +32,7 @@ Build 是启用了所有工具的**默认**模式。这是进行开发工作的�
 Plan 是一种为规划和分析设计的受限模式。在 plan 模式下，以下工具默认被禁用：
 
 - `write` - 无法创建新文件
-- `edit` - 无法修改现有文件，但位于 `.opencode/plans/*.md` 的文件除外，用于详细说明计划本身
+- `edit` - 无法修改现有文件，但位于 `.claudio/plans/*.md` 的文件除外，用于详细说明计划本身
 - `patch` - 无法应用补丁
 - `bash` - 无法执行 shell 命令
 
@@ -86,7 +86,7 @@ Plan 是一种为规划和分析设计的受限模式。在 plan 模式下，以
 你还可以使用 Markdown 文件定义模式。将文件放置在以下位置：
 
 - 全局：`~/.config/opencode/modes/`
-- 项目：`.opencode/modes/`
+- 项目：`.claudio/modes/`
 
 ```markdown title="~/.config/opencode/modes/review.md"
 ---
@@ -265,9 +265,9 @@ Markdown 文件名即为模式名称（例如，`review.md` 创建一个名为 `
 
 ### 使用 Markdown 文件
 
-在 `.opencode/modes/` 中创建项目特定的模式文件，或在 `~/.config/opencode/modes/` 中创建全局模式文件：
+在 `.claudio/modes/` 中创建项目特定的模式文件，或在 `~/.config/opencode/modes/` 中创建全局模式文件：
 
-```markdown title=".opencode/modes/debug.md"
+```markdown title=".claudio/modes/debug.md"
 ---
 temperature: 0.1
 tools:

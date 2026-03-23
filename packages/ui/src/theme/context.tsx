@@ -17,7 +17,10 @@ const STORAGE_KEYS = {
 const THEME_STYLE_ID = "oc-theme"
 
 function normalize(id: string | null | undefined) {
-  return id === "oc-1" ? "oc-2" : id
+  if (!id) return id
+  if (id === "oc-1") return "oc-2"
+  if (id === "claudio") return "opencode"
+  return id
 }
 
 function clear() {

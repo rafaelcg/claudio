@@ -27,7 +27,7 @@ describe("tool.skill", () => {
     await using tmp = await tmpdir({
       git: true,
       init: async (dir) => {
-        const skillDir = path.join(dir, ".opencode", "skill", "tool-skill")
+        const skillDir = path.join(dir, ".claudio", "skill", "tool-skill")
         await Bun.write(
           path.join(skillDir, "SKILL.md"),
           `---
@@ -41,20 +41,20 @@ description: Skill for tool tests.
       },
     })
 
-    const home = process.env.OPENCODE_TEST_HOME
-    process.env.OPENCODE_TEST_HOME = tmp.path
+    const home = process.env.CLAUDIO_TEST_HOME
+    process.env.CLAUDIO_TEST_HOME = tmp.path
 
     try {
       await Instance.provide({
         directory: tmp.path,
         fn: async () => {
           const tool = await SkillTool.init()
-          const skillPath = path.join(tmp.path, ".opencode", "skill", "tool-skill", "SKILL.md")
+          const skillPath = path.join(tmp.path, ".claudio", "skill", "tool-skill", "SKILL.md")
           expect(tool.description).toContain(`**tool-skill**: Skill for tool tests.`)
         },
       })
     } finally {
-      process.env.OPENCODE_TEST_HOME = home
+      process.env.CLAUDIO_TEST_HOME = home
     }
   })
 
@@ -67,7 +67,7 @@ description: Skill for tool tests.
           ["alpha-skill", "Alpha skill."],
           ["middle-skill", "Middle skill."],
         ]) {
-          const skillDir = path.join(dir, ".opencode", "skill", name)
+          const skillDir = path.join(dir, ".claudio", "skill", name)
           await Bun.write(
             path.join(skillDir, "SKILL.md"),
             `---
@@ -82,8 +82,8 @@ description: ${description}
       },
     })
 
-    const home = process.env.OPENCODE_TEST_HOME
-    process.env.OPENCODE_TEST_HOME = tmp.path
+    const home = process.env.CLAUDIO_TEST_HOME
+    process.env.CLAUDIO_TEST_HOME = tmp.path
 
     try {
       await Instance.provide({
@@ -104,7 +104,7 @@ description: ${description}
         },
       })
     } finally {
-      process.env.OPENCODE_TEST_HOME = home
+      process.env.CLAUDIO_TEST_HOME = home
     }
   })
 
@@ -112,7 +112,7 @@ description: ${description}
     await using tmp = await tmpdir({
       git: true,
       init: async (dir) => {
-        const skillDir = path.join(dir, ".opencode", "skill", "tool-skill")
+        const skillDir = path.join(dir, ".claudio", "skill", "tool-skill")
         await Bun.write(
           path.join(skillDir, "SKILL.md"),
           `---
@@ -129,8 +129,8 @@ Use this skill.
       },
     })
 
-    const home = process.env.OPENCODE_TEST_HOME
-    process.env.OPENCODE_TEST_HOME = tmp.path
+    const home = process.env.CLAUDIO_TEST_HOME
+    process.env.CLAUDIO_TEST_HOME = tmp.path
 
     try {
       await Instance.provide({
@@ -146,7 +146,7 @@ Use this skill.
           }
 
           const result = await tool.execute({ name: "tool-skill" }, ctx)
-          const dir = path.join(tmp.path, ".opencode", "skill", "tool-skill")
+          const dir = path.join(tmp.path, ".claudio", "skill", "tool-skill")
           const file = path.resolve(dir, "scripts", "demo.txt")
 
           expect(requests.length).toBe(1)
@@ -161,7 +161,7 @@ Use this skill.
         },
       })
     } finally {
-      process.env.OPENCODE_TEST_HOME = home
+      process.env.CLAUDIO_TEST_HOME = home
     }
   })
 })

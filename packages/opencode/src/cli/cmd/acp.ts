@@ -4,7 +4,7 @@ import { cmd } from "./cmd"
 import { AgentSideConnection, ndJsonStream } from "@agentclientprotocol/sdk"
 import { ACP } from "@/acp/agent"
 import { Server } from "@/server/server"
-import { createOpencodeClient } from "@opencode-ai/sdk/v2"
+import { createOpencodeClient } from "@claudio-code/sdk/v2"
 import { withNetworkOptions, resolveNetworkOptions } from "../network"
 
 const log = Log.create({ service: "acp-command" })
@@ -20,7 +20,7 @@ export const AcpCommand = cmd({
     })
   },
   handler: async (args) => {
-    process.env.OPENCODE_CLIENT = "acp"
+    process.env.CLAUDIO_CLIENT = "acp"
     await bootstrap(process.cwd(), async () => {
       const opts = await resolveNetworkOptions(args)
       const server = Server.listen(opts)

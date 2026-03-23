@@ -39,7 +39,7 @@ Dieses Verzeichnis enthaelt:
 
 ## Desktop-App
 
-OpenCode Desktop startet im Hintergrund einen lokalen OpenCode-Server (`opencode-cli`-Sidecar).
+OpenCode Desktop startet im Hintergrund einen lokalen OpenCode-Server (`claudio-cli`-Sidecar).
 Viele Probleme kommen von fehlerhaften Plugins, kaputtem Cache oder falschen Server-Einstellungen.
 
 ### Schnellchecks
@@ -79,7 +79,7 @@ OpenCode kann auch lokale Plugins von der Festplatte laden. Verschiebe diese vor
   - **macOS/Linux**: `~/.config/opencode/plugins/`
   - **Windows**: Druecke `WIN+R` und fuege ein: `%USERPROFILE%\.config\opencode\plugins`
 - **Projekt-Plugins** (nur bei projektspezifischer Konfig)
-  - `<your-project>/.opencode/plugins/`
+  - `<your-project>/.claudio/plugins/`
 
 Wenn die App wieder funktioniert, aktiviere Plugins nacheinander, um den Verursacher zu finden.
 
@@ -116,9 +116,9 @@ Wenn deine `opencode.json(c)` einen `server`-Abschnitt enthaelt, entferne ihn vo
 
 #### Umgebungsvariablen prüfen
 
-Wenn du `OPENCODE_PORT` in deiner Umgebung gesetzt hast, versucht die Desktop-App diesen Port fuer den lokalen Server zu nutzen.
+Wenn du `CLAUDIO_PORT` in deiner Umgebung gesetzt hast, versucht die Desktop-App diesen Port fuer den lokalen Server zu nutzen.
 
-- Setze `OPENCODE_PORT` zurueck (oder waehle einen freien Port) und starte neu.
+- Setze `CLAUDIO_PORT` zurueck (oder waehle einen freien Port) und starte neu.
 
 ---
 

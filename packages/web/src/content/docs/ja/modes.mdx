@@ -33,7 +33,7 @@ Build は、すべてのツールが有効になっている **デフォルト**
 計画と分析のために設計された制限付きモード。Plan モードでは、次のツールはデフォルトで無効になっています。
 
 - `write` - 新しいファイルを作成できません
-- `edit` - 計画自体の詳細を示す `.opencode/plans/*.md` にあるファイルを除き、既存のファイルを変更できません
+- `edit` - 計画自体の詳細を示す `.claudio/plans/*.md` にあるファイルを除き、既存のファイルを変更できません
 - `patch` - パッチを適用できません
 - `bash` - シェルコマンドを実行できません
 
@@ -87,7 +87,7 @@ Build は、すべてのツールが有効になっている **デフォルト**
 Markdown ファイルを使用してモードを定義することもできます。それらを次の場所に置きます。
 
 - グローバル: `~/.config/opencode/modes/`
-- プロジェクト: `.opencode/modes/`
+- プロジェクト: `.claudio/modes/`
 
 ```markdown title="~/.config/opencode/modes/review.md"
 ---
@@ -266,9 +266,9 @@ Markdown ファイル名はモード名になります (例: `review.md` は `re
 
 ### Markdown ファイルの使用
 
-モードファイルをプロジェクト固有モードの場合は `.opencode/modes/` に、グローバルモードの場合は `~/.config/opencode/modes/` に作成します。
+モードファイルをプロジェクト固有モードの場合は `.claudio/modes/` に、グローバルモードの場合は `~/.config/opencode/modes/` に作成します。
 
-```markdown title=".opencode/modes/debug.md"
+```markdown title=".claudio/modes/debug.md"
 ---
 temperature: 0.1
 tools:

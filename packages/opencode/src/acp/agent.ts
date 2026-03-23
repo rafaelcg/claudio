@@ -43,7 +43,7 @@ import { Config } from "@/config/config"
 import { Todo } from "@/session/todo"
 import { z } from "zod"
 import { LoadAPIKeyError } from "ai"
-import type { AssistantMessage, Event, OpencodeClient, SessionMessageResponse, ToolPart } from "@opencode-ai/sdk/v2"
+import type { AssistantMessage, Event, OpencodeClient, SessionMessageResponse, ToolPart } from "@claudio-code/sdk/v2"
 import { applyPatch } from "diff"
 
 type ModeOption = { id: string; name: string; description?: string }
@@ -1564,7 +1564,7 @@ export namespace ACP {
     const opencodeProvider = providers.find((p) => p.id === "opencode")
     if (opencodeProvider) {
       if (opencodeProvider.models["big-pickle"]) {
-        return { providerID: ProviderID.opencode, modelID: ModelID.make("big-pickle") }
+        return { providerID: ProviderID.claudio, modelID: ModelID.make("big-pickle") }
       }
       const [best] = Provider.sort(Object.values(opencodeProvider.models))
       if (best) {
@@ -1586,7 +1586,7 @@ export namespace ACP {
 
     if (specified) return specified
 
-    return { providerID: ProviderID.opencode, modelID: ModelID.make("big-pickle") }
+    return { providerID: ProviderID.claudio, modelID: ModelID.make("big-pickle") }
   }
 
   function parseUri(

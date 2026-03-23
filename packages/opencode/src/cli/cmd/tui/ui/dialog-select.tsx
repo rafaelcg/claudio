@@ -10,6 +10,7 @@ import { useDialog, type DialogContext } from "@tui/ui/dialog"
 import { useKeybind } from "@tui/context/keybind"
 import { Keybind } from "@/util/keybind"
 import { Locale } from "@/util/locale"
+import { useTuiI18n } from "@tui/i18n/context"
 
 export interface DialogSelectProps<T> {
   title: string
@@ -50,6 +51,7 @@ export type DialogSelectRef<T> = {
 export function DialogSelect<T>(props: DialogSelectProps<T>) {
   const dialog = useDialog()
   const { theme } = useTheme()
+  const i18n = useTuiI18n()
   const [store, setStore] = createStore({
     selected: 0,
     filter: "",
@@ -259,7 +261,7 @@ export function DialogSelect<T>(props: DialogSelectProps<T>) {
                 input.focus()
               }, 1)
             }}
-            placeholder={props.placeholder ?? "Search"}
+            placeholder={props.placeholder ?? i18n.t("tui.ui.search")}
           />
         </box>
       </box>

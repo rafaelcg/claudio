@@ -1,4 +1,4 @@
-import { createOpencodeClient } from "@opencode-ai/sdk/v2/client"
+import { createOpencodeClient } from "@claudio-code/sdk/v2/client"
 import type { ServerConnection } from "@/context/server"
 
 export function createSdkForServer({

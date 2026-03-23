@@ -1,4 +1,4 @@
-import type { ToolPart } from "@opencode-ai/sdk/v2/client"
+import type { ToolPart } from "@claudio-code/sdk/v2/client"
 import type { Page } from "@playwright/test"
 import { test, expect } from "../fixtures"
 import { withSession } from "../actions"

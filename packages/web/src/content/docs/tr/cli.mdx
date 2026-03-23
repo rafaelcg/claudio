@@ -360,7 +360,7 @@ API erişimi için headless bir opencode sunucusu başlatır. Tam HTTP arayüzü
 opencode serve
 ```
 
-Bu, TUI arayüzü olmadan opencode işlevselliğine API erişimi sağlayan bir HTTP sunucusunu başlatır. HTTP temel kimlik doğrulamasını etkinleştirmek için `OPENCODE_SERVER_PASSWORD` öğesini ayarlayın (kullanıcı adı varsayılan olarak `opencode` şeklindedir).
+Bu, TUI arayüzü olmadan opencode işlevselliğine API erişimi sağlayan bir HTTP sunucusunu başlatır. HTTP temel kimlik doğrulamasını etkinleştirmek için `CLAUDIO_SERVER_PASSWORD` öğesini ayarlayın (kullanıcı adı varsayılan olarak `opencode` şeklindedir).
 
 #### Bayraklar
 
@@ -456,7 +456,7 @@ Web arayüzüyle başsız bir opencode sunucusu başlatın.
 opencode web
 ```
 
-Bu, bir HTTP sunucusunu başlatır ve bir web arayüzü aracılığıyla opencode'a erişmek için bir web tarayıcısı açar. HTTP temel kimlik doğrulamasını etkinleştirmek için `OPENCODE_SERVER_PASSWORD` öğesini ayarlayın (kullanıcı adı varsayılan olarak `opencode` şeklindedir).
+Bu, bir HTTP sunucusunu başlatır ve bir web arayüzü aracılığıyla opencode'a erişmek için bir web tarayıcısı açar. HTTP temel kimlik doğrulamasını etkinleştirmek için `CLAUDIO_SERVER_PASSWORD` öğesini ayarlayın (kullanıcı adı varsayılan olarak `opencode` şeklindedir).
 
 #### Bayraklar
 
@@ -555,31 +555,31 @@ opencode ortam değişkenleri kullanılarak yapılandırılabilir.
 
 | Değişken                              | Tip     | Açıklama                                                                    |
 | ------------------------------------- | ------- | --------------------------------------------------------------------------- |
-| `OPENCODE_AUTO_SHARE`                 | boolean | Oturumları otomatik olarak paylaş                                           |
-| `OPENCODE_GIT_BASH_PATH`              | string  | Windows'ta yürütülebilir Git Bash'in Yolu                                   |
-| `OPENCODE_CONFIG`                     | string  | Yapılandırma dosyasının yolu                                                |
-| `OPENCODE_TUI_CONFIG`                 | string  | TUI yapılandırma dosyasının yolu                                            |
-| `OPENCODE_CONFIG_DIR`                 | string  | Yapılandırma dizinine giden yol                                             |
-| `OPENCODE_CONFIG_CONTENT`             | string  | Satır içi JSON config içeriği                                               |
-| `OPENCODE_DISABLE_AUTOUPDATE`         | boolean | Otomatik güncelleme kontrollerini devre dışı bırak                          |
-| `OPENCODE_DISABLE_PRUNE`              | boolean | Eski verilerin temizlenmesini devre dışı bırak                              |
-| `OPENCODE_DISABLE_TERMINAL_TITLE`     | boolean | Otomatik terminal başlığı güncellemelerini devre dışı bırakın               |
-| `OPENCODE_PERMISSION`                 | string  | Satır içi JSON izin config'i                                                |
-| `OPENCODE_DISABLE_DEFAULT_PLUGINS`    | boolean | Varsayılan eklentileri devre dışı bırakın                                   |
-| `OPENCODE_DISABLE_LSP_DOWNLOAD`       | boolean | Otomatik LSP sunucu indirmelerini devre dışı bırakın                        |
-| `OPENCODE_ENABLE_EXPERIMENTAL_MODELS` | boolean | Deneysel modelleri etkinleştir                                              |
-| `OPENCODE_DISABLE_AUTOCOMPACT`        | boolean | Otomatik context sıkıştırmayı devre dışı bırak                              |
-| `OPENCODE_DISABLE_CLAUDE_CODE`        | boolean | `.claude`'den okumayı devre dışı bırak (istem + beceriler)                  |
-| `OPENCODE_DISABLE_CLAUDE_CODE_PROMPT` | boolean | `~/.claude/CLAUDE.md` dosyasını okumayı devre dışı bırak                    |
-| `OPENCODE_DISABLE_CLAUDE_CODE_SKILLS` | boolean | `.claude/skills` yüklemesini devre dışı bırak                               |
-| `OPENCODE_DISABLE_MODELS_FETCH`       | boolean | Uzak kaynaklardan model getirmeyi devre dışı bırakın                        |
-| `OPENCODE_FAKE_VCS`                   | string  | Test amaçlı sahte VCS sağlayıcısı                                           |
-| `OPENCODE_DISABLE_FILETIME_CHECK`     | boolean | Optimizasyon için dosya süresi kontrolünü devre dışı bırakın                |
-| `OPENCODE_CLIENT`                     | string  | Client kimliği (varsayılan: `cli`)                                          |
-| `OPENCODE_ENABLE_EXA`                 | boolean | Exa web arama araçlarını etkinleştir                                        |
-| `OPENCODE_SERVER_PASSWORD`            | string  | `serve`/`web` için temel kimlik doğrulamayı etkinleştirin                   |
-| `OPENCODE_SERVER_USERNAME`            | string  | Temel kimlik doğrulama kullanıcı adını geçersiz kıl (varsayılan `opencode`) |
-| `OPENCODE_MODELS_URL`                 | string  | Model yapılandırmasını almak için özel URL                                  |
+| `CLAUDIO_AUTO_SHARE`                 | boolean | Oturumları otomatik olarak paylaş                                           |
+| `CLAUDIO_GIT_BASH_PATH`              | string  | Windows'ta yürütülebilir Git Bash'in Yolu                                   |
+| `CLAUDIO_CONFIG`                     | string  | Yapılandırma dosyasının yolu                                                |
+| `CLAUDIO_TUI_CONFIG`                 | string  | TUI yapılandırma dosyasının yolu                                            |
+| `CLAUDIO_CONFIG_DIR`                 | string  | Yapılandırma dizinine giden yol                                             |
+| `CLAUDIO_CONFIG_CONTENT`             | string  | Satır içi JSON config içeriği                                               |
+| `CLAUDIO_DISABLE_AUTOUPDATE`         | boolean | Otomatik güncelleme kontrollerini devre dışı bırak                          |
+| `CLAUDIO_DISABLE_PRUNE`              | boolean | Eski verilerin temizlenmesini devre dışı bırak                              |
+| `CLAUDIO_DISABLE_TERMINAL_TITLE`     | boolean | Otomatik terminal başlığı güncellemelerini devre dışı bırakın               |
+| `CLAUDIO_PERMISSION`                 | string  | Satır içi JSON izin config'i                                                |
+| `CLAUDIO_DISABLE_DEFAULT_PLUGINS`    | boolean | Varsayılan eklentileri devre dışı bırakın                                   |
+| `CLAUDIO_DISABLE_LSP_DOWNLOAD`       | boolean | Otomatik LSP sunucu indirmelerini devre dışı bırakın                        |
+| `CLAUDIO_ENABLE_EXPERIMENTAL_MODELS` | boolean | Deneysel modelleri etkinleştir                                              |
+| `CLAUDIO_DISABLE_AUTOCOMPACT`        | boolean | Otomatik context sıkıştırmayı devre dışı bırak                              |
+| `CLAUDIO_DISABLE_CLAUDE_CODE`        | boolean | `.claude`'den okumayı devre dışı bırak (istem + beceriler)                  |
+| `CLAUDIO_DISABLE_CLAUDE_CODE_PROMPT` | boolean | `~/.claude/CLAUDE.md` dosyasını okumayı devre dışı bırak                    |
+| `CLAUDIO_DISABLE_CLAUDE_CODE_SKILLS` | boolean | `.claude/skills` yüklemesini devre dışı bırak                               |
+| `CLAUDIO_DISABLE_MODELS_FETCH`       | boolean | Uzak kaynaklardan model getirmeyi devre dışı bırakın                        |
+| `CLAUDIO_FAKE_VCS`                   | string  | Test amaçlı sahte VCS sağlayıcısı                                           |
+| `CLAUDIO_DISABLE_FILETIME_CHECK`     | boolean | Optimizasyon için dosya süresi kontrolünü devre dışı bırakın                |
+| `CLAUDIO_CLIENT`                     | string  | Client kimliği (varsayılan: `cli`)                                          |
+| `CLAUDIO_ENABLE_EXA`                 | boolean | Exa web arama araçlarını etkinleştir                                        |
+| `CLAUDIO_SERVER_PASSWORD`            | string  | `serve`/`web` için temel kimlik doğrulamayı etkinleştirin                   |
+| `CLAUDIO_SERVER_USERNAME`            | string  | Temel kimlik doğrulama kullanıcı adını geçersiz kıl (varsayılan `opencode`) |
+| `CLAUDIO_MODELS_URL`                 | string  | Model yapılandırmasını almak için özel URL                                  |
 
 ---
 
@@ -589,16 +589,16 @@ Bu ortam değişkenleri değişebilecek veya kaldırılabilecek deneysel özelli
 
 | Değişken                                        | Tip     | Tanım                                                   |
 | ----------------------------------------------- | ------- | ------------------------------------------------------- |
-| `OPENCODE_EXPERIMENTAL`                         | boolean | Tüm deneysel özellikleri etkinleştir                    |
-| `OPENCODE_EXPERIMENTAL_ICON_DISCOVERY`          | boolean | Simge bulmayı etkinleştir                               |
-| `OPENCODE_EXPERIMENTAL_DISABLE_COPY_ON_SELECT`  | boolean | TUI'da seçim yapıldığında kopyalamayı devre dışı bırak  |
-| `OPENCODE_EXPERIMENTAL_BASH_DEFAULT_TIMEOUT_MS` | number  | MS cinsinden bash komutları için varsayılan zaman aşımı |
-| `OPENCODE_EXPERIMENTAL_OUTPUT_TOKEN_MAX`        | number  | LLM yanıtları için maksimum çıktı belirteçleri          |
-| `OPENCODE_EXPERIMENTAL_FILEWATCHER`             | boolean | Tüm dizin için dosya izleyiciyi etkinleştir             |
-| `OPENCODE_EXPERIMENTAL_OXFMT`                   | boolean | Oxfmt biçimlendiriciyi etkinleştir                      |
-| `OPENCODE_EXPERIMENTAL_LSP_TOOL`                | boolean | Deneysel LSP aracını etkinleştir                        |
-| `OPENCODE_EXPERIMENTAL_DISABLE_FILEWATCHER`     | boolean | Dosya izleyiciyi devre dışı bırak                       |
-| `OPENCODE_EXPERIMENTAL_EXA`                     | boolean | Deneysel Exa özelliklerini etkinleştirin                |
-| `OPENCODE_EXPERIMENTAL_LSP_TY`                  | boolean | python dosyaları için TY LSP'yi etkinleştir             |
-| `OPENCODE_EXPERIMENTAL_MARKDOWN`                | boolean | Deneysel işaretleme özelliklerini etkinleştir           |
-| `OPENCODE_EXPERIMENTAL_PLAN_MODE`               | boolean | Plan modunu etkinleştir                                 |
+| `CLAUDIO_EXPERIMENTAL`                         | boolean | Tüm deneysel özellikleri etkinleştir                    |
+| `CLAUDIO_EXPERIMENTAL_ICON_DISCOVERY`          | boolean | Simge bulmayı etkinleştir                               |
+| `CLAUDIO_EXPERIMENTAL_DISABLE_COPY_ON_SELECT`  | boolean | TUI'da seçim yapıldığında kopyalamayı devre dışı bırak  |
+| `CLAUDIO_EXPERIMENTAL_BASH_DEFAULT_TIMEOUT_MS` | number  | MS cinsinden bash komutları için varsayılan zaman aşımı |
+| `CLAUDIO_EXPERIMENTAL_OUTPUT_TOKEN_MAX`        | number  | LLM yanıtları için maksimum çıktı belirteçleri          |
+| `CLAUDIO_EXPERIMENTAL_FILEWATCHER`             | boolean | Tüm dizin için dosya izleyiciyi etkinleştir             |
+| `CLAUDIO_EXPERIMENTAL_OXFMT`                   | boolean | Oxfmt biçimlendiriciyi etkinleştir                      |
+| `CLAUDIO_EXPERIMENTAL_LSP_TOOL`                | boolean | Deneysel LSP aracını etkinleştir                        |
+| `CLAUDIO_EXPERIMENTAL_DISABLE_FILEWATCHER`     | boolean | Dosya izleyiciyi devre dışı bırak                       |
+| `CLAUDIO_EXPERIMENTAL_EXA`                     | boolean | Deneysel Exa özelliklerini etkinleştirin                |
+| `CLAUDIO_EXPERIMENTAL_LSP_TY`                  | boolean | python dosyaları için TY LSP'yi etkinleştir             |
+| `CLAUDIO_EXPERIMENTAL_MARKDOWN`                | boolean | Deneysel işaretleme özelliklerini etkinleştir           |
+| `CLAUDIO_EXPERIMENTAL_PLAN_MODE`               | boolean | Plan modunu etkinleştir                                 |

@@ -118,7 +118,7 @@ class TokenRefreshRequest extends Schema.Class<TokenRefreshRequest>("TokenRefres
   client_id: Schema.String,
 }) {}
 
-const clientId = "opencode-cli"
+const clientId = "claudio-cli"
 
 const mapAccountServiceError =
   (message = "Account service operation failed") =>
@@ -146,7 +146,7 @@ export namespace Account {
     readonly poll: (input: Login) => Effect.Effect<PollResult, AccountError>
   }
 
-  export class Service extends ServiceMap.Service<Service, Interface>()("@opencode/Account") {}
+  export class Service extends ServiceMap.Service<Service, Interface>()("@claudio/Account") {}
 
   export const layer: Layer.Layer<Service, never, AccountRepo | HttpClient.HttpClient> = Layer.effect(
     Service,

@@ -1,7 +1,7 @@
 #!/usr/bin/env bun
 import { $ } from "bun"
 
-import { Script } from "@opencode-ai/script"
+import { Script } from "@claudio-code/script"
 import { copyBinaryToSidecarFolder, getCurrentSidecar, resolveChannel, windowsify } from "./utils"
 
 const channel = resolveChannel()
@@ -17,7 +17,7 @@ const sidecarConfig = getCurrentSidecar()
 const dir = "resources/opencode-binaries"
 
 await $`mkdir -p ${dir}`
-await $`gh run download ${Bun.env.GITHUB_RUN_ID} -n opencode-cli`.cwd(dir)
+await $`gh run download ${Bun.env.GITHUB_RUN_ID} -n claudio-cli`.cwd(dir)
 
 await copyBinaryToSidecarFolder(windowsify(`${dir}/${sidecarConfig.ocBinary}/bin/opencode`))
 

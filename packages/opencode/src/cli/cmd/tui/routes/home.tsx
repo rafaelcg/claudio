@@ -15,11 +15,13 @@ import { Installation } from "@/installation"
 import { useKV } from "../context/kv"
 import { useCommandDialog } from "../component/dialog-command"
 import { useLocal } from "../context/local"
+import { useTuiI18n } from "@tui/i18n/context"
 
 // TODO: what is the best way to do this?
 let once = false
 
 export function Home() {
+  const tui = useTuiI18n()
   const sync = useSync()
   const kv = useKV()
   const { theme } = useTheme()
@@ -45,10 +47,10 @@ export function Home() {
 
   command.register(() => [
     {
-      title: tipsHidden() ? "Show tips" : "Hide tips",
+      title: tipsHidden() ? tui.t("tui.home.tips_show") : tui.t("tui.home.tips_hide"),
       value: "tips.toggle",
       keybind: "tips_toggle",
-      category: "System",
+      category: tui.t("tui.cat.system"),
       onSelect: (dialog) => {
         kv.set("tips_hidden", !tipsHidden())
         dialog.clear()
@@ -62,12 +64,16 @@ export function Home() {
         <text fg={theme.text}>
           <Switch>
             <Match when={mcpError()}>
-              <span style={{ fg: theme.error }}>•</span> mcp errors{" "}
+              <span style={{ fg: theme.error }}>•</span> {tui.t("tui.home.mcp_errors")}{" "}
               <span style={{ fg: theme.textMuted }}>ctrl+x s</span>
             </Match>
             <Match when={true}>
               <span style={{ fg: theme.success }}>•</span>{" "}
-              {Locale.pluralize(connectedMcpCount(), "{} mcp server", "{} mcp servers")}
+              {Locale.pluralize(
+                connectedMcpCount(),
+                tui.t("tui.home.mcp_server_one"),
+                tui.t("tui.home.mcp_servers"),
+              )}
             </Match>
           </Switch>
         </text>
@@ -109,7 +115,7 @@ export function Home() {
     <>
       <box flexGrow={1} alignItems="center" paddingLeft={2} paddingRight={2}>
         <box flexGrow={1} minHeight={0} />
-        <box height={4} minHeight={0} flexShrink={1} />
+        <box height={3} minHeight={0} flexShrink={1} />
         <box flexShrink={0}>
           <Logo />
         </box>

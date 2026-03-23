@@ -16,23 +16,23 @@ import { useNavigate, useParams } from "@solidjs/router"
 import { useLayout, LocalProject } from "@/context/layout"
 import { useGlobalSync } from "@/context/global-sync"
 import { Persist, persisted } from "@/utils/persist"
-import { base64Encode } from "@opencode-ai/util/encode"
+import { base64Encode } from "@claudio-code/util/encode"
 import { decode64 } from "@/utils/base64"
-import { ResizeHandle } from "@opencode-ai/ui/resize-handle"
-import { Button } from "@opencode-ai/ui/button"
-import { IconButton } from "@opencode-ai/ui/icon-button"
-import { Tooltip } from "@opencode-ai/ui/tooltip"
-import { DropdownMenu } from "@opencode-ai/ui/dropdown-menu"
-import { Dialog } from "@opencode-ai/ui/dialog"
-import { getFilename } from "@opencode-ai/util/path"
-import { Session, type Message } from "@opencode-ai/sdk/v2/client"
+import { ResizeHandle } from "@claudio-code/ui/resize-handle"
+import { Button } from "@claudio-code/ui/button"
+import { IconButton } from "@claudio-code/ui/icon-button"
+import { Tooltip } from "@claudio-code/ui/tooltip"
+import { DropdownMenu } from "@claudio-code/ui/dropdown-menu"
+import { Dialog } from "@claudio-code/ui/dialog"
+import { getFilename } from "@claudio-code/util/path"
+import { Session, type Message } from "@claudio-code/sdk/v2/client"
 import { usePlatform } from "@/context/platform"
 import { useSettings } from "@/context/settings"
 import { createStore, produce, reconcile } from "solid-js/store"
 import { DragDropProvider, DragDropSensors, DragOverlay, SortableProvider, closestCenter } from "@thisbeyond/solid-dnd"
 import type { DragEvent } from "@thisbeyond/solid-dnd"
 import { useProviders } from "@/hooks/use-providers"
-import { showToast, Toast, toaster } from "@opencode-ai/ui/toast"
+import { showToast, Toast, toaster } from "@claudio-code/ui/toast"
 import { useGlobalSDK } from "@/context/global-sdk"
 import { clearWorkspaceTerminals } from "@/context/terminal"
 import { dropSessionCaches, pickSessionCacheEvictions } from "@/context/global-sync/session-cache"
@@ -47,18 +47,19 @@ import {
 } from "@/context/global-sync/session-prefetch"
 import { useNotification } from "@/context/notification"
 import { usePermission } from "@/context/permission"
-import { Binary } from "@opencode-ai/util/binary"
-import { retry } from "@opencode-ai/util/retry"
+import { Binary } from "@claudio-code/util/binary"
+import { retry } from "@claudio-code/util/retry"
 import { playSound, soundSrc } from "@/utils/sound"
 import { createAim } from "@/utils/aim"
 import { setNavigate } from "@/utils/notification-click"
 import { Worktree as WorktreeState } from "@/utils/worktree"
 import { setSessionHandoff } from "@/pages/session/handoff"
 
-import { useDialog } from "@opencode-ai/ui/context/dialog"
-import { useTheme, type ColorScheme } from "@opencode-ai/ui/theme"
+import { useDialog } from "@claudio-code/ui/context/dialog"
+import { useTheme, type ColorScheme } from "@claudio-code/ui/theme"
 import { DialogSelectProvider } from "@/components/dialog-select-provider"
 import { DialogSelectServer } from "@/components/dialog-select-server"
+import { DialogLanguage } from "@/components/dialog-language"
 import { DialogSettings } from "@/components/dialog-settings"
 import { useCommand, type CommandOption } from "@/context/command"
 import { ConstrainDragXAxis, getDraggableId } from "@/utils/solid-dnd"
@@ -1177,6 +1178,26 @@ export default function Layout(props: ParentProps) {
       title: language.t("command.language.cycle"),
       category: language.t("command.category.language"),
       onSelect: () => cycleLanguage(1),
+    })
+
+    const openLanguageDialog = () => dialog.show(() => <DialogLanguage />)
+
+    commands.push({
+      id: "language.dialog",
+      title: language.t("command.language.pick"),
+      description: language.t("command.language.pick.description"),
+      category: language.t("command.category.language"),
+      slash: "language",
+      onSelect: openLanguageDialog,
+    })
+
+    commands.push({
+      id: "language.dialog.short",
+      title: language.t("command.language.pick"),
+      description: language.t("command.language.pick.description"),
+      category: language.t("command.category.language"),
+      slash: "lang",
+      onSelect: openLanguageDialog,
     })
 
     for (const locale of language.locales) {

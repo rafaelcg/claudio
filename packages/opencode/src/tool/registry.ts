@@ -16,7 +16,7 @@ import type { Agent } from "../agent/agent"
 import { Tool } from "./tool"
 import { Config } from "../config/config"
 import path from "path"
-import { type ToolContext as PluginToolContext, type ToolDefinition } from "@opencode-ai/plugin"
+import { type ToolContext as PluginToolContext, type ToolDefinition } from "@claudio-code/plugin"
 import z from "zod"
 import { Plugin } from "../plugin"
 import { ProviderID, type ModelID } from "../provider/schema"
@@ -49,7 +49,7 @@ export namespace ToolRegistry {
     ) => Effect.Effect<(Awaited<ReturnType<Tool.Info["init"]>> & { id: string })[]>
   }
 
-  export class Service extends ServiceMap.Service<Service, Interface>()("@opencode/ToolRegistry") {}
+  export class Service extends ServiceMap.Service<Service, Interface>()("@claudio/ToolRegistry") {}
 
   export const layer = Layer.effect(
     Service,
@@ -111,7 +111,7 @@ export namespace ToolRegistry {
 
       async function all(custom: Tool.Info[]): Promise<Tool.Info[]> {
         const cfg = await Config.get()
-        const question = ["app", "cli", "desktop"].includes(Flag.OPENCODE_CLIENT) || Flag.OPENCODE_ENABLE_QUESTION_TOOL
+        const question = ["app", "cli", "desktop"].includes(Flag.CLAUDIO_CLIENT) || Flag.CLAUDIO_ENABLE_QUESTION_TOOL
 
         return [
           InvalidTool,
@@ -129,9 +129,9 @@ export namespace ToolRegistry {
           CodeSearchTool,
           SkillTool,
           ApplyPatchTool,
-          ...(Flag.OPENCODE_EXPERIMENTAL_LSP_TOOL ? [LspTool] : []),
+          ...(Flag.CLAUDIO_EXPERIMENTAL_LSP_TOOL ? [LspTool] : []),
           ...(cfg.experimental?.batch_tool === true ? [BatchTool] : []),
-          ...(Flag.OPENCODE_EXPERIMENTAL_PLAN_MODE && Flag.OPENCODE_CLIENT === "cli" ? [PlanExitTool] : []),
+          ...(Flag.CLAUDIO_EXPERIMENTAL_PLAN_MODE && Flag.CLAUDIO_CLIENT === "cli" ? [PlanExitTool] : []),
           ...custom,
         ]
       }
@@ -164,7 +164,7 @@ export namespace ToolRegistry {
               .filter((tool) => {
                 // Enable websearch/codesearch for zen users OR via enable flag
                 if (tool.id === "codesearch" || tool.id === "websearch") {
-                  return model.providerID === ProviderID.opencode || Flag.OPENCODE_ENABLE_EXA
+                  return model.providerID === ProviderID.claudio || Flag.CLAUDIO_ENABLE_EXA
                 }
 
                 // use apply tool in same format as codex

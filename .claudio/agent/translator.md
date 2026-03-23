@@ -13,7 +13,7 @@ Requirements:
 - Preserve meaning, intent, tone, and formatting (including Markdown/MDX structure).
 - Preserve all technical terms and artifacts exactly: product/company names, API names, identifiers, code, commands/flags, file paths, URLs, versions, error messages, config keys/values, and anything inside inline code or code blocks.
 - Also preserve every term listed in the Do-Not-Translate glossary below.
-- Also apply locale-specific guidance from `.opencode/glossary/<locale>.md` when available (for example, `zh-cn.md`).
+- Also apply locale-specific guidance from `.claudio/glossary/<locale>.md` when available (for example, `zh-cn.md`).
 - Do not modify fenced code blocks.
 - Output ONLY the translation (no commentary).
 
@@ -581,48 +581,48 @@ NODE_ENV
 NODE_EXTRA_CA_CERTS
 NPM_AUTH_TOKEN
 OC_ALLOW_WAYLAND
-OPENCODE_API_KEY
-OPENCODE_AUTH_JSON
-OPENCODE_AUTO_SHARE
-OPENCODE_CLIENT
-OPENCODE_CONFIG
-OPENCODE_CONFIG_CONTENT
-OPENCODE_CONFIG_DIR
-OPENCODE_DISABLE_AUTOCOMPACT
-OPENCODE_DISABLE_AUTOUPDATE
-OPENCODE_DISABLE_CLAUDE_CODE
-OPENCODE_DISABLE_CLAUDE_CODE_PROMPT
-OPENCODE_DISABLE_CLAUDE_CODE_SKILLS
-OPENCODE_DISABLE_DEFAULT_PLUGINS
-OPENCODE_DISABLE_FILETIME_CHECK
-OPENCODE_DISABLE_LSP_DOWNLOAD
-OPENCODE_DISABLE_MODELS_FETCH
-OPENCODE_DISABLE_PRUNE
-OPENCODE_DISABLE_TERMINAL_TITLE
-OPENCODE_ENABLE_EXA
-OPENCODE_ENABLE_EXPERIMENTAL_MODELS
-OPENCODE_EXPERIMENTAL
-OPENCODE_EXPERIMENTAL_BASH_DEFAULT_TIMEOUT_MS
-OPENCODE_EXPERIMENTAL_DISABLE_COPY_ON_SELECT
-OPENCODE_EXPERIMENTAL_DISABLE_FILEWATCHER
-OPENCODE_EXPERIMENTAL_EXA
-OPENCODE_EXPERIMENTAL_FILEWATCHER
-OPENCODE_EXPERIMENTAL_ICON_DISCOVERY
-OPENCODE_EXPERIMENTAL_LSP_TOOL
-OPENCODE_EXPERIMENTAL_LSP_TY
-OPENCODE_EXPERIMENTAL_MARKDOWN
-OPENCODE_EXPERIMENTAL_OUTPUT_TOKEN_MAX
-OPENCODE_EXPERIMENTAL_OXFMT
-OPENCODE_EXPERIMENTAL_PLAN_MODE
-OPENCODE_ENABLE_QUESTION_TOOL
-OPENCODE_FAKE_VCS
-OPENCODE_GIT_BASH_PATH
-OPENCODE_MODEL
-OPENCODE_MODELS_URL
-OPENCODE_PERMISSION
-OPENCODE_PORT
-OPENCODE_SERVER_PASSWORD
-OPENCODE_SERVER_USERNAME
+CLAUDIO_API_KEY
+CLAUDIO_AUTH_JSON
+CLAUDIO_AUTO_SHARE
+CLAUDIO_CLIENT
+CLAUDIO_CONFIG
+CLAUDIO_CONFIG_CONTENT
+CLAUDIO_CONFIG_DIR
+CLAUDIO_DISABLE_AUTOCOMPACT
+CLAUDIO_DISABLE_AUTOUPDATE
+CLAUDIO_DISABLE_CLAUDE_CODE
+CLAUDIO_DISABLE_CLAUDE_CODE_PROMPT
+CLAUDIO_DISABLE_CLAUDE_CODE_SKILLS
+CLAUDIO_DISABLE_DEFAULT_PLUGINS
+CLAUDIO_DISABLE_FILETIME_CHECK
+CLAUDIO_DISABLE_LSP_DOWNLOAD
+CLAUDIO_DISABLE_MODELS_FETCH
+CLAUDIO_DISABLE_PRUNE
+CLAUDIO_DISABLE_TERMINAL_TITLE
+CLAUDIO_ENABLE_EXA
+CLAUDIO_ENABLE_EXPERIMENTAL_MODELS
+CLAUDIO_EXPERIMENTAL
+CLAUDIO_EXPERIMENTAL_BASH_DEFAULT_TIMEOUT_MS
+CLAUDIO_EXPERIMENTAL_DISABLE_COPY_ON_SELECT
+CLAUDIO_EXPERIMENTAL_DISABLE_FILEWATCHER
+CLAUDIO_EXPERIMENTAL_EXA
+CLAUDIO_EXPERIMENTAL_FILEWATCHER
+CLAUDIO_EXPERIMENTAL_ICON_DISCOVERY
+CLAUDIO_EXPERIMENTAL_LSP_TOOL
+CLAUDIO_EXPERIMENTAL_LSP_TY
+CLAUDIO_EXPERIMENTAL_MARKDOWN
+CLAUDIO_EXPERIMENTAL_OUTPUT_TOKEN_MAX
+CLAUDIO_EXPERIMENTAL_OXFMT
+CLAUDIO_EXPERIMENTAL_PLAN_MODE
+CLAUDIO_ENABLE_QUESTION_TOOL
+CLAUDIO_FAKE_VCS
+CLAUDIO_GIT_BASH_PATH
+CLAUDIO_MODEL
+CLAUDIO_MODELS_URL
+CLAUDIO_PERMISSION
+CLAUDIO_PORT
+CLAUDIO_SERVER_PASSWORD
+CLAUDIO_SERVER_USERNAME
 PROJECT_ROOT
 RESOURCE_NAME
 RUST_LOG
@@ -636,8 +636,8 @@ XDG_CONFIG_HOME
 ```text
 ../../../config.mjs
 @astrojs/starlight/components
-@opencode-ai/plugin
-@opencode-ai/sdk
+@claudio-code/plugin
+@claudio-code/sdk
 path
 shescape
 zod
@@ -720,7 +720,7 @@ zenobi-us/opencode-skillful
 ## Paths, filenames, globs, and URLs
 
 ```text
-./.opencode/themes/*.json
+./.claudio/themes/*.json
 ./<project-slug>/storage/
 ./config/#custom-directory
 ./global/storage/
@@ -739,17 +739,17 @@ zenobi-us/opencode-skillful
 .NET SDK
 .npmrc
 .ocamlformat
-.opencode
-.opencode/
-.opencode/agents/
-.opencode/commands/
-.opencode/commands/test.md
-.opencode/modes/
-.opencode/plans/*.md
-.opencode/plugins/
-.opencode/skills/<name>/SKILL.md
-.opencode/skills/git-release/SKILL.md
-.opencode/tools/
+.claudio
+.claudio/
+.claudio/agents/
+.claudio/commands/
+.claudio/commands/test.md
+.claudio/modes/
+.claudio/plans/*.md
+.claudio/plugins/
+.claudio/skills/<name>/SKILL.md
+.claudio/skills/git-release/SKILL.md
+.claudio/tools/
 .well-known/opencode
 { type: "raw" \| "patch", content: string }
 {file:path/to/file}
@@ -760,9 +760,9 @@ zenobi-us/opencode-skillful
 %USERPROFILE%\.config\opencode\plugins
 %USERPROFILE%\.local\share\opencode
 %USERPROFILE%\.local\share\opencode\log
-<project-root>/.opencode/themes/*.json
+<project-root>/.claudio/themes/*.json
 <providerId>/<modelId>
-<your-project>/.opencode/plugins/
+<your-project>/.claudio/plugins/
 ~
 ~/...
 ~/.agents/skills/*/SKILL.md
@@ -883,7 +883,7 @@ WIN+R
 ## Model ID strings referenced
 
 ```text
-{env:OPENCODE_MODEL}
+{env:CLAUDIO_MODEL}
 anthropic/claude-3-5-sonnet-20241022
 anthropic/claude-haiku-4-20250514
 anthropic/claude-haiku-4-5

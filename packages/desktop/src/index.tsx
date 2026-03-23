@@ -10,7 +10,7 @@ import {
   PlatformProvider,
   ServerConnection,
   useCommand,
-} from "@opencode-ai/app"
+} from "@claudio-code/app"
 import type { AsyncStorage } from "@solid-primitives/storage"
 import { getCurrentWindow } from "@tauri-apps/api/window"
 import { readImage } from "@tauri-apps/plugin-clipboard-manager"
@@ -47,9 +47,9 @@ const deepLinkEvent = "opencode:deep-link"
 
 const emitDeepLinks = (urls: string[]) => {
   if (urls.length === 0) return
-  window.__OPENCODE__ ??= {}
-  const pending = window.__OPENCODE__.deepLinks ?? []
-  window.__OPENCODE__.deepLinks = [...pending, ...urls]
+  window.__CLAUDIO__ ??= {}
+  const pending = window.__CLAUDIO__.deepLinks ?? []
+  window.__CLAUDIO__.deepLinks = [...pending, ...urls]
   window.dispatchEvent(new CustomEvent(deepLinkEvent, { detail: { urls } }))
 }
 
@@ -67,12 +67,12 @@ const createPlatform = (): Platform => {
   })()
 
   const wslHome = async () => {
-    if (os !== "windows" || !window.__OPENCODE__?.wsl) return undefined
+    if (os !== "windows" || !window.__CLAUDIO__?.wsl) return undefined
     return commands.wslPath("~", "windows").catch(() => undefined)
   }
 
   const handleWslPicker = async <T extends string | string[]>(result: T | null): Promise<T | null> => {
-    if (!result || !window.__OPENCODE__?.wsl) return result
+    if (!result || !window.__CLAUDIO__?.wsl) return result
     if (Array.isArray(result)) {
       return Promise.all(result.map((path) => commands.wslPath(path, "linux").catch(() => path))) as any
     }
@@ -318,7 +318,8 @@ const createPlatform = (): Platform => {
         .then(() => {
           const notification = new Notification(title, {
             body: description ?? "",
-            icon: "https://opencode.ai/favicon-96x96-v3.png",
+            icon:
+              "https://raw.githubusercontent.com/rafaelcg/claudio/main/packages/console/app/src/asset/logo-ornate-light.svg",
           })
           notification.onclick = () => {
             const win = getCurrentWindow()
@@ -343,7 +344,7 @@ const createPlatform = (): Platform => {
     getWslEnabled: async () => {
       const next = await commands.getWslConfig().catch(() => null)
       if (next) return next.enabled
-      return window.__OPENCODE__!.wsl ?? false
+      return window.__CLAUDIO__!.wsl ?? false
     },
 
     setWslEnabled: async (enabled) => {

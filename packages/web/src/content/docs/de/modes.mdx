@@ -34,7 +34,7 @@ Build ist der **Standardmodus**, bei dem alle Tools aktiviert sind. Dies ist der
 Ein eingeschränkter Modus für Planung und Analyse. Im Planmodus sind die folgenden Tools standardmäßig deaktiviert:
 
 - `write` – Es können keine neuen Dateien erstellt werden
-- `edit` – Vorhandene Dateien können nicht geändert werden, mit Ausnahme der Dateien unter `.opencode/plans/*.md`, um den Plan selbst detailliert darzustellen
+- `edit` – Vorhandene Dateien können nicht geändert werden, mit Ausnahme der Dateien unter `.claudio/plans/*.md`, um den Plan selbst detailliert darzustellen
 - `patch` – Patches können nicht angewendet werden
 - `bash` – Shell-Befehle können nicht ausgeführt werden
 
@@ -88,7 +88,7 @@ Konfigurieren Sie Modi in Ihrer `opencode.json`-Konfigurationsdatei:
 Sie können Modi auch mithilfe von Markdown-Dateien definieren. Platzieren Sie sie in:
 
 - Global: `~/.config/opencode/modes/`
-- Projekt: `.opencode/modes/`
+- Projekt: `.claudio/modes/`
 
 ```markdown title="~/.config/opencode/modes/review.md"
 ---
@@ -268,9 +268,9 @@ Sie können Ihre eigenen benutzerdefinierten Modi erstellen, indem Sie diese zur
 
 ### Verwendung von Markdown-Dateien
 
-Erstellen Sie Modusdateien in `.opencode/modes/` für projektspezifische Modi oder `~/.config/opencode/modes/` für globale Modi:
+Erstellen Sie Modusdateien in `.claudio/modes/` für projektspezifische Modi oder `~/.config/opencode/modes/` für globale Modi:
 
-```markdown title=".opencode/modes/debug.md"
+```markdown title=".claudio/modes/debug.md"
 ---
 temperature: 0.1
 tools:

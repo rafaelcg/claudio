@@ -1,7 +1,7 @@
 import * as i18n from "@solid-primitives/i18n"
 import { createEffect, createMemo } from "solid-js"
 import { createStore } from "solid-js/store"
-import { createSimpleContext } from "@opencode-ai/ui/context"
+import { createSimpleContext } from "@claudio-code/ui/context"
 import { Persist, persisted } from "@/utils/persist"
 import { dict as en } from "@/i18n/en"
 import { dict as zh } from "@/i18n/zh"
@@ -20,23 +20,23 @@ import { dict as br } from "@/i18n/br"
 import { dict as th } from "@/i18n/th"
 import { dict as bs } from "@/i18n/bs"
 import { dict as tr } from "@/i18n/tr"
-import { dict as uiEn } from "@opencode-ai/ui/i18n/en"
-import { dict as uiZh } from "@opencode-ai/ui/i18n/zh"
-import { dict as uiZht } from "@opencode-ai/ui/i18n/zht"
-import { dict as uiKo } from "@opencode-ai/ui/i18n/ko"
-import { dict as uiDe } from "@opencode-ai/ui/i18n/de"
-import { dict as uiEs } from "@opencode-ai/ui/i18n/es"
-import { dict as uiFr } from "@opencode-ai/ui/i18n/fr"
-import { dict as uiDa } from "@opencode-ai/ui/i18n/da"
-import { dict as uiJa } from "@opencode-ai/ui/i18n/ja"
-import { dict as uiPl } from "@opencode-ai/ui/i18n/pl"
-import { dict as uiRu } from "@opencode-ai/ui/i18n/ru"
-import { dict as uiAr } from "@opencode-ai/ui/i18n/ar"
-import { dict as uiNo } from "@opencode-ai/ui/i18n/no"
-import { dict as uiBr } from "@opencode-ai/ui/i18n/br"
-import { dict as uiTh } from "@opencode-ai/ui/i18n/th"
-import { dict as uiBs } from "@opencode-ai/ui/i18n/bs"
-import { dict as uiTr } from "@opencode-ai/ui/i18n/tr"
+import { dict as uiEn } from "@claudio-code/ui/i18n/en"
+import { dict as uiZh } from "@claudio-code/ui/i18n/zh"
+import { dict as uiZht } from "@claudio-code/ui/i18n/zht"
+import { dict as uiKo } from "@claudio-code/ui/i18n/ko"
+import { dict as uiDe } from "@claudio-code/ui/i18n/de"
+import { dict as uiEs } from "@claudio-code/ui/i18n/es"
+import { dict as uiFr } from "@claudio-code/ui/i18n/fr"
+import { dict as uiDa } from "@claudio-code/ui/i18n/da"
+import { dict as uiJa } from "@claudio-code/ui/i18n/ja"
+import { dict as uiPl } from "@claudio-code/ui/i18n/pl"
+import { dict as uiRu } from "@claudio-code/ui/i18n/ru"
+import { dict as uiAr } from "@claudio-code/ui/i18n/ar"
+import { dict as uiNo } from "@claudio-code/ui/i18n/no"
+import { dict as uiBr } from "@claudio-code/ui/i18n/br"
+import { dict as uiTh } from "@claudio-code/ui/i18n/th"
+import { dict as uiBs } from "@claudio-code/ui/i18n/bs"
+import { dict as uiTr } from "@claudio-code/ui/i18n/tr"
 
 export type Locale =
   | "en"
@@ -145,29 +145,6 @@ const DICT: Record<Locale, Dictionary> = {
   tr: { ...base, ...i18n.flatten({ ...tr, ...uiTr }) },
 }
 
-const localeMatchers: Array<{ locale: Locale; match: (language: string) => boolean }> = [
-  { locale: "en", match: (language) => language.startsWith("en") },
-  { locale: "zht", match: (language) => language.startsWith("zh") && language.includes("hant") },
-  { locale: "zh", match: (language) => language.startsWith("zh") },
-  { locale: "ko", match: (language) => language.startsWith("ko") },
-  { locale: "de", match: (language) => language.startsWith("de") },
-  { locale: "es", match: (language) => language.startsWith("es") },
-  { locale: "fr", match: (language) => language.startsWith("fr") },
-  { locale: "da", match: (language) => language.startsWith("da") },
-  { locale: "ja", match: (language) => language.startsWith("ja") },
-  { locale: "pl", match: (language) => language.startsWith("pl") },
-  { locale: "ru", match: (language) => language.startsWith("ru") },
-  { locale: "ar", match: (language) => language.startsWith("ar") },
-  {
-    locale: "no",
-    match: (language) => language.startsWith("no") || language.startsWith("nb") || language.startsWith("nn"),
-  },
-  { locale: "br", match: (language) => language.startsWith("pt") },
-  { locale: "th", match: (language) => language.startsWith("th") },
-  { locale: "bs", match: (language) => language.startsWith("bs") },
-  { locale: "tr", match: (language) => language.startsWith("tr") },
-]
-
 type ParityKey = "command.session.previous.unseen" | "command.session.next.unseen"
 const PARITY_CHECK: Record<Exclude<Locale, "en">, Record<ParityKey, string>> = {
   zh,
@@ -189,36 +166,33 @@ const PARITY_CHECK: Record<Exclude<Locale, "en">, Record<ParityKey, string>> = {
 }
 void PARITY_CHECK
 
-function detectLocale(): Locale {
-  if (typeof navigator !== "object") return "en"
-
-  const languages = navigator.languages?.length ? navigator.languages : [navigator.language]
-  for (const language of languages) {
-    if (!language) continue
-    const normalized = language.toLowerCase()
-    const match = localeMatchers.find((entry) => entry.match(normalized))
-    if (match) return match.locale
-  }
-
-  return "en"
-}
-
 function normalizeLocale(value: string): Locale {
   return LOCALES.includes(value as Locale) ? (value as Locale) : "en"
+}
+
+function migrateLanguage(value: unknown) {
+  if (!value || typeof value !== "object") return value
+  const o = value as Record<string, unknown>
+  if (!("onboarded" in o)) return { ...o, onboarded: true }
+  return value
 }
 
 export const { use: useLanguage, provider: LanguageProvider } = createSimpleContext({
   name: "Language",
   init: () => {
     const [store, setStore, _, ready] = persisted(
-      Persist.global("language", ["language.v1"]),
+      {
+        ...Persist.global("language", ["language.v1"]),
+        migrate: migrateLanguage,
+      },
       createStore({
-        locale: detectLocale() as Locale,
+        locale: "en" as Locale,
+        onboarded: false,
       }),
     )
 
     const locale = createMemo<Locale>(() => normalizeLocale(store.locale))
-    console.log("locale", locale())
+    const onboarded = createMemo(() => store.onboarded)
     const intl = createMemo(() => INTL[locale()])
 
     const dict = createMemo<Dictionary>(() => DICT[locale()])
@@ -235,6 +209,10 @@ export const { use: useLanguage, provider: LanguageProvider } = createSimpleCont
 
     return {
       ready,
+      onboarded,
+      complete() {
+        setStore("onboarded", true)
+      },
       locale,
       intl,
       locales: LOCALES,

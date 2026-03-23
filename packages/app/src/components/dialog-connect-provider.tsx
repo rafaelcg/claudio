@@ -1,14 +1,14 @@
-import type { ProviderAuthAuthorization } from "@opencode-ai/sdk/v2/client"
-import { Button } from "@opencode-ai/ui/button"
-import { useDialog } from "@opencode-ai/ui/context/dialog"
-import { Dialog } from "@opencode-ai/ui/dialog"
-import { Icon } from "@opencode-ai/ui/icon"
-import { IconButton } from "@opencode-ai/ui/icon-button"
-import { List, type ListRef } from "@opencode-ai/ui/list"
-import { ProviderIcon } from "@opencode-ai/ui/provider-icon"
-import { Spinner } from "@opencode-ai/ui/spinner"
-import { TextField } from "@opencode-ai/ui/text-field"
-import { showToast } from "@opencode-ai/ui/toast"
+import type { ProviderAuthAuthorization } from "@claudio-code/sdk/v2/client"
+import { Button } from "@claudio-code/ui/button"
+import { useDialog } from "@claudio-code/ui/context/dialog"
+import { Dialog } from "@claudio-code/ui/dialog"
+import { Icon } from "@claudio-code/ui/icon"
+import { IconButton } from "@claudio-code/ui/icon-button"
+import { List, type ListRef } from "@claudio-code/ui/list"
+import { ProviderIcon } from "@claudio-code/ui/provider-icon"
+import { Spinner } from "@claudio-code/ui/spinner"
+import { TextField } from "@claudio-code/ui/text-field"
+import { showToast } from "@claudio-code/ui/toast"
 import { createMemo, Match, onCleanup, onMount, Switch } from "solid-js"
 import { createStore, produce } from "solid-js/store"
 import { Link } from "@/components/link"
@@ -395,14 +395,14 @@ export function DialogConnectProvider(props: { provider: string }) {
         <Switch>
           <Match when={provider().id === "opencode"}>
             <div class="flex flex-col gap-4">
-              <div class="text-14-regular text-text-base">{language.t("provider.connect.opencodeZen.line1")}</div>
-              <div class="text-14-regular text-text-base">{language.t("provider.connect.opencodeZen.line2")}</div>
+              <div class="text-14-regular text-text-base">{language.t("provider.connect.claudioZen.line1")}</div>
+              <div class="text-14-regular text-text-base">{language.t("provider.connect.claudioZen.line2")}</div>
               <div class="text-14-regular text-text-base">
-                {language.t("provider.connect.opencodeZen.visit.prefix")}
+                {language.t("provider.connect.claudioZen.visit.prefix")}
                 <Link href="https://opencode.ai/zen" tabIndex={-1}>
-                  {language.t("provider.connect.opencodeZen.visit.link")}
+                  {language.t("provider.connect.claudioZen.visit.link")}
                 </Link>
-                {language.t("provider.connect.opencodeZen.visit.suffix")}
+                {language.t("provider.connect.claudioZen.visit.suffix")}
               </div>
             </div>
           </Match>

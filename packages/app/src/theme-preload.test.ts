@@ -34,6 +34,15 @@ describe("theme preload", () => {
     expect(document.getElementById("oc-theme-preload")).toBeNull()
   })
 
+  test("migrates claudio theme id to opencode", () => {
+    localStorage.setItem("opencode-theme-id", "claudio")
+
+    run()
+
+    expect(localStorage.getItem("opencode-theme-id")).toBe("opencode")
+    expect(document.documentElement.dataset.theme).toBe("opencode")
+  })
+
   test("keeps cached css for non-default themes", () => {
     localStorage.setItem("opencode-theme-id", "nightowl")
     localStorage.setItem("opencode-theme-css-light", "--background-base:#fff;")

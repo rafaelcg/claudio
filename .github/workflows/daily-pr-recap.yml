@@ -8,7 +8,7 @@ on:
 
 jobs:
   pr-recap:
-    runs-on: blacksmith-4vcpu-ubuntu-2404
+    runs-on: ubuntu-latest
     permissions:
       contents: read
       pull-requests: read
@@ -26,9 +26,9 @@ jobs:
       - name: Generate daily PR recap
         id: recap
         env:
-          OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
+          CLAUDIO_API_KEY: ${{ secrets.CLAUDIO_API_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          OPENCODE_PERMISSION: |
+          CLAUDIO_PERMISSION: |
             {
               "bash": {
                 "*": "deny",

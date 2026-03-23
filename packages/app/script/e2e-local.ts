@@ -55,33 +55,33 @@ const extraArgs = (() => {
 const [serverPort, webPort] = await Promise.all([freePort(), freePort()])
 
 const sandbox = await fs.mkdtemp(path.join(os.tmpdir(), "opencode-e2e-"))
-const keepSandbox = process.env.OPENCODE_E2E_KEEP_SANDBOX === "1"
+const keepSandbox = process.env.CLAUDIO_E2E_KEEP_SANDBOX === "1"
 
 const serverEnv = {
   ...process.env,
-  OPENCODE_DISABLE_SHARE: process.env.OPENCODE_DISABLE_SHARE ?? "true",
-  OPENCODE_DISABLE_LSP_DOWNLOAD: "true",
-  OPENCODE_DISABLE_DEFAULT_PLUGINS: "true",
-  OPENCODE_EXPERIMENTAL_DISABLE_FILEWATCHER: "true",
-  OPENCODE_TEST_HOME: path.join(sandbox, "home"),
+  CLAUDIO_DISABLE_SHARE: process.env.CLAUDIO_DISABLE_SHARE ?? "true",
+  CLAUDIO_DISABLE_LSP_DOWNLOAD: "true",
+  CLAUDIO_DISABLE_DEFAULT_PLUGINS: "true",
+  CLAUDIO_EXPERIMENTAL_DISABLE_FILEWATCHER: "true",
+  CLAUDIO_TEST_HOME: path.join(sandbox, "home"),
   XDG_DATA_HOME: path.join(sandbox, "share"),
   XDG_CACHE_HOME: path.join(sandbox, "cache"),
   XDG_CONFIG_HOME: path.join(sandbox, "config"),
   XDG_STATE_HOME: path.join(sandbox, "state"),
-  OPENCODE_E2E_PROJECT_DIR: repoDir,
-  OPENCODE_E2E_SESSION_TITLE: "E2E Session",
-  OPENCODE_E2E_MESSAGE: "Seeded for UI e2e",
-  OPENCODE_E2E_MODEL: "opencode/gpt-5-nano",
-  OPENCODE_CLIENT: "app",
-  OPENCODE_STRICT_CONFIG_DEPS: "true",
+  CLAUDIO_E2E_PROJECT_DIR: repoDir,
+  CLAUDIO_E2E_SESSION_TITLE: "E2E Session",
+  CLAUDIO_E2E_MESSAGE: "Seeded for UI e2e",
+  CLAUDIO_E2E_MODEL: "opencode/gpt-5-nano",
+  CLAUDIO_CLIENT: "app",
+  CLAUDIO_STRICT_CONFIG_DEPS: "true",
 } satisfies Record<string, string>
 
 const runnerEnv = {
   ...serverEnv,
   PLAYWRIGHT_SERVER_HOST: "127.0.0.1",
   PLAYWRIGHT_SERVER_PORT: String(serverPort),
-  VITE_OPENCODE_SERVER_HOST: "127.0.0.1",
-  VITE_OPENCODE_SERVER_PORT: String(serverPort),
+  VITE_CLAUDIO_SERVER_HOST: "127.0.0.1",
+  VITE_CLAUDIO_SERVER_PORT: String(serverPort),
   PLAYWRIGHT_PORT: String(webPort),
 } satisfies Record<string, string>
 
@@ -145,8 +145,8 @@ try {
   } else {
     Object.assign(process.env, serverEnv)
     process.env.AGENT = "1"
-    process.env.OPENCODE = "1"
-    process.env.OPENCODE_PID = String(process.pid)
+    process.env.CLAUDIO = "1"
+    process.env.CLAUDIO_PID = String(process.pid)
 
     const log = await import("../../opencode/src/util/log")
     const install = await import("../../opencode/src/installation")

@@ -34,7 +34,7 @@ Derleme, tüm araçların etkin olduğu **varsayılan** moddur. Bu, dosya işlem
 Planlama ve analiz için tasarlanmış sınırlı bir mod. Plan modunda aşağıdaki araçlar varsayılan olarak devre dışıdır:
 
 - `write` - Yeni dosyalar oluşturulamıyor
-- `edit` - Planın kendisini detaylandırmak için `.opencode/plans/*.md` adresinde bulunan dosyalar dışında mevcut dosyalar değiştirilemez
+- `edit` - Planın kendisini detaylandırmak için `.claudio/plans/*.md` adresinde bulunan dosyalar dışında mevcut dosyalar değiştirilemez
 - `patch` - Yamalar uygulanamaz
 - `bash` - Kabuk komutları yürütülemiyor
 
@@ -88,7 +88,7 @@ Yerleşik modları özelleştirebilir veya yapılandırma aracılığıyla kendi
 Markdown dosyalarını kullanarak modları da tanımlayabilirsiniz. Bunları şuraya yerleştirin:
 
 - Global: `~/.config/opencode/modes/`
-- Project: `.opencode/modes/`
+- Project: `.claudio/modes/`
 
 ```markdown title="~/.config/opencode/modes/review.md"
 ---
@@ -268,9 +268,9 @@ Yapılandırmaya ekleyerek kendi özel modlarınızı oluşturabilirsiniz. Her i
 
 ### Markdown dosyaları kullanma
 
-Projeye özel modlar için `.opencode/modes/` veya genel modlar için `~/.config/opencode/modes/`'de mod dosyaları oluşturun:
+Projeye özel modlar için `.claudio/modes/` veya genel modlar için `~/.config/opencode/modes/`'de mod dosyaları oluşturun:
 
-```markdown title=".opencode/modes/debug.md"
+```markdown title=".claudio/modes/debug.md"
 ---
 temperature: 0.1
 tools:

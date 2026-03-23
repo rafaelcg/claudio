@@ -1,7 +1,7 @@
 #!/usr/bin/env bun
 import { $ } from "bun"
 
-import { Script } from "@opencode-ai/script"
+import { Script } from "@claudio-code/script"
 import { copyBinaryToSidecarFolder, getCurrentSidecar, windowsify } from "./utils"
 
 const pkg = await Bun.file("./package.json").json()
@@ -14,6 +14,6 @@ const sidecarConfig = getCurrentSidecar()
 const dir = "src-tauri/target/opencode-binaries"
 
 await $`mkdir -p ${dir}`
-await $`gh run download ${Bun.env.GITHUB_RUN_ID} -n opencode-cli`.cwd(dir)
+await $`gh run download ${Bun.env.GITHUB_RUN_ID} -n claudio-cli`.cwd(dir)
 
 await copyBinaryToSidecarFolder(windowsify(`${dir}/${sidecarConfig.ocBinary}/bin/opencode`))

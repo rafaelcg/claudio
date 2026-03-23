@@ -1,14 +1,14 @@
-import type { Hooks, PluginInput, Plugin as PluginInstance } from "@opencode-ai/plugin"
+import type { Hooks, PluginInput, Plugin as PluginInstance } from "@claudio-code/plugin"
 import { Config } from "../config/config"
 import { Bus } from "../bus"
 import { Log } from "../util/log"
-import { createOpencodeClient } from "@opencode-ai/sdk"
+import { createOpencodeClient } from "@claudio-code/sdk"
 import { Server } from "../server/server"
 import { BunProc } from "../bun"
 import { Flag } from "../flag/flag"
 import { CodexAuthPlugin } from "./codex"
 import { Session } from "../session"
-import { NamedError } from "@opencode-ai/util/error"
+import { NamedError } from "@claudio-code/util/error"
 import { CopilotAuthPlugin } from "./copilot"
 import { gitlabAuthPlugin as GitlabAuthPlugin } from "opencode-gitlab-auth"
 import { Effect, Layer, ServiceMap } from "effect"
@@ -41,10 +41,14 @@ export namespace Plugin {
     readonly init: () => Effect.Effect<void>
   }
 
-  export class Service extends ServiceMap.Service<Service, Interface>()("@opencode/Plugin") {}
+  export class Service extends ServiceMap.Service<Service, Interface>()("@claudio/Plugin") {}
 
   // Built-in plugins that are directly imported (not installed from npm)
-  const INTERNAL_PLUGINS: PluginInstance[] = [CodexAuthPlugin, CopilotAuthPlugin, GitlabAuthPlugin]
+  const INTERNAL_PLUGINS: PluginInstance[] = [
+    CodexAuthPlugin,
+    CopilotAuthPlugin,
+    GitlabAuthPlugin as unknown as PluginInstance,
+  ]
 
   // Old npm package names for plugins that are now built-in — skip if users still have them in config
   const DEPRECATED_PLUGIN_PACKAGES = ["opencode-openai-codex-auth", "opencode-copilot-auth"]
@@ -60,9 +64,9 @@ export namespace Plugin {
             const client = createOpencodeClient({
               baseUrl: "http://localhost:4096",
               directory: ctx.directory,
-              headers: Flag.OPENCODE_SERVER_PASSWORD
+              headers: Flag.CLAUDIO_SERVER_PASSWORD
                 ? {
-                    Authorization: `Basic ${Buffer.from(`${Flag.OPENCODE_SERVER_USERNAME ?? "opencode"}:${Flag.OPENCODE_SERVER_PASSWORD}`).toString("base64")}`,
+                    Authorization: `Basic ${Buffer.from(`${Flag.CLAUDIO_SERVER_USERNAME ?? "opencode"}:${Flag.CLAUDIO_SERVER_PASSWORD}`).toString("base64")}`,
                   }
                 : undefined,
               fetch: async (...args) => Server.Default().fetch(...args),

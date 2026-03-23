@@ -16,7 +16,7 @@ export function createMenu(deps: Deps) {
 
   const template: Electron.MenuItemConstructorOptions[] = [
     {
-      label: "OpenCode",
+      label: "Claudio Code",
       submenu: [
         { role: "about" },
         {
@@ -101,18 +101,21 @@ export function createMenu(deps: Deps) {
     {
       label: "Help",
       submenu: [
-        { label: "OpenCode Documentation", click: () => shell.openExternal("https://opencode.ai/docs") },
+        {
+          label: "Claudio Code (documentação)",
+          click: () => shell.openExternal("https://github.com/rafaelcg/claudio/blob/main/README.md"),
+        },
         { label: "Support Forum", click: () => shell.openExternal("https://discord.com/invite/opencode") },
         { type: "separator" },
         { type: "separator" },
         {
           label: "Share Feedback",
           click: () =>
-            shell.openExternal("https://github.com/anomalyco/opencode/issues/new?template=feature_request.yml"),
+            shell.openExternal("https://github.com/rafaelcg/claudio/issues/new?template=feature_request.yml"),
         },
         {
           label: "Report a Bug",
-          click: () => shell.openExternal("https://github.com/anomalyco/opencode/issues/new?template=bug_report.yml"),
+          click: () => shell.openExternal("https://github.com/rafaelcg/claudio/issues/new?template=bug_report.yml"),
         },
       ],
     },

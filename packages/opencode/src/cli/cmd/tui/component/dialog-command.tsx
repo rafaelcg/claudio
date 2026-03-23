@@ -10,6 +10,7 @@ import {
   type ParentProps,
 } from "solid-js"
 import { useKeyboard } from "@opentui/solid"
+import { useTuiI18n } from "@tui/i18n/context"
 import { type KeybindKey, useKeybind } from "@tui/context/keybind"
 
 type Context = ReturnType<typeof init>
@@ -29,6 +30,7 @@ export type CommandOption = DialogSelectOption<string> & {
 }
 
 function init() {
+  const i18n = useTuiI18n()
   const [registrations, setRegistrations] = createSignal<Accessor<CommandOption[]>[]>([])
   const [suspendCount, setSuspendCount] = createSignal(0)
   const dialog = useDialog()
@@ -52,7 +54,7 @@ function init() {
       .map((option) => ({
         ...option,
         value: `suggested:${option.value}`,
-        category: "Suggested",
+        category: i18n.t("tui.ui.suggested"),
       })),
   )
   const suspended = () => suspendCount() > 0
@@ -138,10 +140,11 @@ export function CommandProvider(props: ParentProps) {
 }
 
 function DialogCommand(props: { options: CommandOption[]; suggestedOptions: CommandOption[] }) {
+  const i18n = useTuiI18n()
   let ref: DialogSelectRef<string>
   const list = () => {
     if (ref?.filter) return props.options
     return [...props.suggestedOptions, ...props.options]
   }
-  return <DialogSelect ref={(r) => (ref = r)} title="Commands" options={list()} />
+  return <DialogSelect ref={(r) => (ref = r)} title={i18n.t("tui.ui.commands")} options={list()} />
 }

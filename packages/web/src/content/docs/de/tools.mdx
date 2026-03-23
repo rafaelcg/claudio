@@ -180,7 +180,7 @@ Dieses Tool listet Verzeichnisinhalte auf. Es akzeptiert Glob-Muster zum Filtern
 Interagiere mit deinen konfigurierten LSP-Servern fuer Code-Intelligence-Features wie Definitionen, Referenzen, Hover-Infos und Call-Hierarchien.
 
 :::note
-Dieses Tool ist nur verfuegbar, wenn `OPENCODE_EXPERIMENTAL_LSP_TOOL=true` (oder `OPENCODE_EXPERIMENTAL=true`) gesetzt ist.
+Dieses Tool ist nur verfuegbar, wenn `CLAUDIO_EXPERIMENTAL_LSP_TOOL=true` (oder `CLAUDIO_EXPERIMENTAL=true`) gesetzt ist.
 :::
 
 ```json title="opencode.json" {4}
@@ -298,12 +298,12 @@ Erlaubt dem LLM, Webseiten abzurufen und zu lesen. Nuetzlich zum Nachschlagen vo
 Durchsucht das Web nach Informationen.
 
 :::note
-Dieses Tool ist nur verfuegbar, wenn der OpenCode-Provider genutzt wird oder die Umgebungsvariable `OPENCODE_ENABLE_EXA` auf einen 'truthy' Wert (z. B. `true` oder `1`) gesetzt ist.
+Dieses Tool ist nur verfuegbar, wenn der OpenCode-Provider genutzt wird oder die Umgebungsvariable `CLAUDIO_ENABLE_EXA` auf einen 'truthy' Wert (z. B. `true` oder `1`) gesetzt ist.
 
 Zum Aktivieren beim Start von OpenCode:
 
 ```bash
-OPENCODE_ENABLE_EXA=1 opencode
+CLAUDIO_ENABLE_EXA=1 opencode
 ```
 
 :::

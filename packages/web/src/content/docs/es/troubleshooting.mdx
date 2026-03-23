@@ -39,7 +39,7 @@ Este directorio contiene:
 
 ## Aplicación de escritorio
 
-OpenCode Desktop ejecuta un servidor OpenCode local (el sidecar `opencode-cli`) en segundo plano. La mayoría de los problemas se deben a un complemento que no funciona correctamente, una memoria caché dañada o una mala configuración del servidor.
+OpenCode Desktop ejecuta un servidor OpenCode local (el sidecar `claudio-cli`) en segundo plano. La mayoría de los problemas se deben a un complemento que no funciona correctamente, una memoria caché dañada o una mala configuración del servidor.
 
 ### Comprobaciones rápidas
 
@@ -78,7 +78,7 @@ OpenCode también puede cargar complementos locales desde el disco. Quítelos te
   - **macOS/Linux**: `~/.config/opencode/plugins/`
   - **Windows**: Presione `WIN+R` y pegue `%USERPROFILE%\.config\opencode\plugins`
 - **Complementos de proyecto** (solo si usas la configuración por proyecto)
-  - `<your-project>/.opencode/plugins/`
+  - `<your-project>/.claudio/plugins/`
 
 Si la aplicación comienza a funcionar nuevamente, vuelva a habilitar los complementos uno a la vez para encontrar cuál está causando el problema.
 
@@ -115,9 +115,9 @@ Si su `opencode.json(c)` contiene una sección `server`, elimínela temporalment
 
 #### Verificar variables de entorno
 
-Si tiene `OPENCODE_PORT` configurado en su entorno, la aplicación de escritorio intentará usar ese puerto para el servidor local.
+Si tiene `CLAUDIO_PORT` configurado en su entorno, la aplicación de escritorio intentará usar ese puerto para el servidor local.
 
-- Desarme `OPENCODE_PORT` (o elija un puerto libre) y reinicie.
+- Desarme `CLAUDIO_PORT` (o elija un puerto libre) y reinicie.
 
 ---
 

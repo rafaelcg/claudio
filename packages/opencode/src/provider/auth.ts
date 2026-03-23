@@ -1,5 +1,5 @@
-import type { AuthOuathResult, Hooks } from "@opencode-ai/plugin"
-import { NamedError } from "@opencode-ai/util/error"
+import type { AuthOuathResult, Hooks } from "@claudio-code/plugin"
+import { NamedError } from "@claudio-code/util/error"
 import { Auth } from "@/auth"
 import { InstanceState } from "@/effect/instance-state"
 import { makeRunPromise } from "@/effect/run-service"
@@ -109,7 +109,7 @@ export namespace ProviderAuth {
     pending: Map<ProviderID, AuthOuathResult>
   }
 
-  export class Service extends ServiceMap.Service<Service, Interface>()("@opencode/ProviderAuth") {}
+  export class Service extends ServiceMap.Service<Service, Interface>()("@claudio/ProviderAuth") {}
 
   export const layer = Layer.effect(
     Service,

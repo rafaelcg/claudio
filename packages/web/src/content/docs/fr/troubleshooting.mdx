@@ -39,7 +39,7 @@ Ce répertoire contient :
 
 ## Application de bureau
 
-OpenCode Desktop exécute un serveur OpenCode local (le side-car `opencode-cli`) en arrière-plan. La plupart des problèmes sont causés par un plugin qui se comporte mal, un cache corrompu ou un mauvais paramètre du serveur.
+OpenCode Desktop exécute un serveur OpenCode local (le side-car `claudio-cli`) en arrière-plan. La plupart des problèmes sont causés par un plugin qui se comporte mal, un cache corrompu ou un mauvais paramètre du serveur.
 
 ### Vérifications rapides
 
@@ -78,7 +78,7 @@ OpenCode peut également charger des plugins locaux à partir du disque. Écarte
   - **macOS/Linux** : `~/.config/opencode/plugins/`
   - **Windows** : appuyez sur `WIN+R` et collez `%USERPROFILE%\.config\opencode\plugins`
 - **Plugins de projet** (uniquement si vous utilisez une configuration par projet)
-  - `<your-project>/.opencode/plugins/`
+  - `<your-project>/.claudio/plugins/`
 
 Si l'application recommence à fonctionner, réactivez les plugins un par un pour trouver celui à l'origine du problème.
 
@@ -115,9 +115,9 @@ Si votre `opencode.json(c)` contient une section `server`, supprimez-la temporai
 
 #### Vérifier les variables d'environnement
 
-Si `OPENCODE_PORT` est défini dans votre environnement, l'application de bureau tentera d'utiliser ce port pour le serveur local.
+Si `CLAUDIO_PORT` est défini dans votre environnement, l'application de bureau tentera d'utiliser ce port pour le serveur local.
 
-- Désactivez `OPENCODE_PORT` (ou choisissez un port libre) et redémarrez.
+- Désactivez `CLAUDIO_PORT` (ou choisissez un port libre) et redémarrez.
 
 ---
 

@@ -33,7 +33,7 @@ Build e la modalita **predefinita** con tutti gli strumenti abilitati. E la moda
 Una modalita limitata pensata per pianificazione e analisi. In modalita plan, i seguenti strumenti sono disabilitati per impostazione predefinita:
 
 - `write` - Non puo creare nuovi file
-- `edit` - Non puo modificare file esistenti, tranne i file in `.opencode/plans/*.md` per dettagliare il piano
+- `edit` - Non puo modificare file esistenti, tranne i file in `.claudio/plans/*.md` per dettagliare il piano
 - `patch` - Non puo applicare patch
 - `bash` - Non puo eseguire comandi shell
 
@@ -87,7 +87,7 @@ Configura le modalita nel file di configurazione `opencode.json`:
 Puoi anche definire modalita usando file markdown. Mettili in:
 
 - Globale: `~/.config/opencode/modes/`
-- Progetto: `.opencode/modes/`
+- Progetto: `.claudio/modes/`
 
 ```markdown title="~/.config/opencode/modes/review.md"
 ---
@@ -267,9 +267,9 @@ Puoi creare modalita personalizzate aggiungendole alla configurazione. Ecco esem
 
 ### Usando file markdown
 
-Crea file di modalita in `.opencode/modes/` per modalita specifiche del progetto oppure in `~/.config/opencode/modes/` per modalita globali:
+Crea file di modalita in `.claudio/modes/` per modalita specifiche del progetto oppure in `~/.config/opencode/modes/` per modalita globali:
 
-```markdown title=".opencode/modes/debug.md"
+```markdown title=".claudio/modes/debug.md"
 ---
 temperature: 0.1
 tools:

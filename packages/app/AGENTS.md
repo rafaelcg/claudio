@@ -4,7 +4,8 @@
 
 ## Local Dev
 
-- `opencode dev web` proxies `https://app.opencode.ai`, so local UI/CSS changes will not show there.
+- From the repo root, `bun run dev` runs the opencode CLI (`packages/opencode`). For the web UI (Vite), use `bun run dev:app` or `bun run dev:web` (same script). The app defaults to port **3000** (`vite.config.ts`).
+- `opencode dev web` proxies `https://app.claudio.ai`, so local UI/CSS changes will not show there.
 - For local UI changes, run the backend and app dev servers separately.
 - Backend (from `packages/opencode`): `bun run --conditions=browser ./src/index.ts serve --port 4096`
 - App (from `packages/app`): `bun dev -- --port 4444`

@@ -8,7 +8,7 @@ import { Log } from "../util/log"
 import { BunProc } from "../bun"
 import { Hash } from "../util/hash"
 import { Plugin } from "../plugin"
-import { NamedError } from "@opencode-ai/util/error"
+import { NamedError } from "@claudio-code/util/error"
 import { ModelsDev } from "./models"
 import { Auth } from "../auth"
 import { Env } from "../env"
@@ -1129,7 +1129,7 @@ export namespace Provider {
           (providerID === ProviderID.openrouter && modelID === "openai/gpt-5-chat")
         )
           delete provider.models[modelID]
-        if (model.status === "alpha" && !Flag.OPENCODE_ENABLE_EXPERIMENTAL_MODELS) delete provider.models[modelID]
+        if (model.status === "alpha" && !Flag.CLAUDIO_ENABLE_EXPERIMENTAL_MODELS) delete provider.models[modelID]
         if (model.status === "deprecated") delete provider.models[modelID]
         if (
           (configProvider?.blacklist && configProvider.blacklist.includes(modelID)) ||

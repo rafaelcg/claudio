@@ -4,17 +4,19 @@ import { createStore } from "solid-js/store"
 import { useTheme } from "../../context/theme"
 import { Locale } from "@/util/locale"
 import path from "path"
-import type { AssistantMessage } from "@opencode-ai/sdk/v2"
+import type { AssistantMessage } from "@claudio-code/sdk/v2"
 import { Global } from "@/global"
 import { Installation } from "@/installation"
 import { useKeybind } from "../../context/keybind"
 import { useDirectory } from "../../context/directory"
 import { useKV } from "../../context/kv"
 import { TodoItem } from "../../component/todo-item"
+import { useTuiI18n } from "@tui/i18n/context"
 
 export function Sidebar(props: { sessionID: string; overlay?: boolean }) {
   const sync = useSync()
   const { theme } = useTheme()
+  const t = useTuiI18n().t
   const session = createMemo(() => sync.session.get(props.sessionID)!)
   const diff = createMemo(() => sync.data.session_diff[props.sessionID] ?? [])
   const todo = createMemo(() => sync.data.todo[props.sessionID] ?? [])
@@ -100,11 +102,17 @@ export function Sidebar(props: { sessionID: string; overlay?: boolean }) {
             </box>
             <box>
               <text fg={theme.text}>
-                <b>Context</b>
+                <b>{t("tui.sidebar.context")}</b>
               </text>
-              <text fg={theme.textMuted}>{context()?.tokens ?? 0} tokens</text>
-              <text fg={theme.textMuted}>{context()?.percentage ?? 0}% used</text>
-              <text fg={theme.textMuted}>{cost()} spent</text>
+              <text fg={theme.textMuted}>
+                {context()?.tokens ?? 0} {t("tui.sidebar.tokens")}
+              </text>
+              <text fg={theme.textMuted}>
+                {context()?.percentage ?? 0}% {t("tui.sidebar.used")}
+              </text>
+              <text fg={theme.textMuted}>
+                {cost()} {t("tui.sidebar.spent")}
+              </text>
             </box>
             <Show when={mcpEntries().length > 0}>
               <box>
@@ -121,8 +129,13 @@ export function Sidebar(props: { sessionID: string; overlay?: boolean }) {
                     <Show when={!expanded.mcp}>
                       <span style={{ fg: theme.textMuted }}>
                         {" "}
-                        ({connectedMcpCount()} active
-                        {errorMcpCount() > 0 ? `, ${errorMcpCount()} error${errorMcpCount() > 1 ? "s" : ""}` : ""})
+                        ({connectedMcpCount()} {t("tui.sidebar.active")}
+                        {errorMcpCount() > 0
+                          ? `, ${errorMcpCount()} ${
+                              errorMcpCount() > 1 ? t("tui.sidebar.errors") : t("tui.sidebar.error")
+                            }`
+                          : ""}
+                        )
                       </span>
                     </Show>
                   </text>
@@ -151,12 +164,14 @@ export function Sidebar(props: { sessionID: string; overlay?: boolean }) {
                           {key}{" "}
                           <span style={{ fg: theme.textMuted }}>
                             <Switch fallback={item.status}>
-                              <Match when={item.status === "connected"}>Connected</Match>
+                              <Match when={item.status === "connected"}>{t("tui.sidebar.connected")}</Match>
                               <Match when={item.status === "failed" && item}>{(val) => <i>{val().error}</i>}</Match>
-                              <Match when={item.status === "disabled"}>Disabled</Match>
-                              <Match when={(item.status as string) === "needs_auth"}>Needs auth</Match>
+                              <Match when={item.status === "disabled"}>{t("tui.sidebar.disabled")}</Match>
+                              <Match when={(item.status as string) === "needs_auth"}>
+                                {t("tui.sidebar.needs_auth")}
+                              </Match>
                               <Match when={(item.status as string) === "needs_client_registration"}>
-                                Needs client ID
+                                {t("tui.sidebar.needs_client_id")}
                               </Match>
                             </Switch>
                           </span>
@@ -183,9 +198,7 @@ export function Sidebar(props: { sessionID: string; overlay?: boolean }) {
               <Show when={sync.data.lsp.length <= 2 || expanded.lsp}>
                 <Show when={sync.data.lsp.length === 0}>
                   <text fg={theme.textMuted}>
-                    {sync.data.config.lsp === false
-                      ? "LSPs have been disabled in settings"
-                      : "LSPs will activate as files are read"}
+                    {sync.data.config.lsp === false ? t("tui.sidebar.lsp_off") : t("tui.sidebar.lsp_idle")}
                   </text>
                 </Show>
                 <For each={sync.data.lsp}>
@@ -221,7 +234,7 @@ export function Sidebar(props: { sessionID: string; overlay?: boolean }) {
                     <text fg={theme.text}>{expanded.todo ? "▼" : "▶"}</text>
                   </Show>
                   <text fg={theme.text}>
-                    <b>Todo</b>
+                    <b>{t("tui.sidebar.todo")}</b>
                   </text>
                 </box>
                 <Show when={todo().length <= 2 || expanded.todo}>
@@ -240,7 +253,7 @@ export function Sidebar(props: { sessionID: string; overlay?: boolean }) {
                     <text fg={theme.text}>{expanded.diff ? "▼" : "▶"}</text>
                   </Show>
                   <text fg={theme.text}>
-                    <b>Modified Files</b>
+                    <b>{t("tui.sidebar.modified")}</b>
                   </text>
                 </box>
                 <Show when={diff().length <= 2 || expanded.diff}>
@@ -286,18 +299,16 @@ export function Sidebar(props: { sessionID: string; overlay?: boolean }) {
               <box flexGrow={1} gap={1}>
                 <box flexDirection="row" justifyContent="space-between">
                   <text fg={theme.text}>
-                    <b>Getting started</b>
+                    <b>{t("tui.sidebar.getting_started")}</b>
                   </text>
                   <text fg={theme.textMuted} onMouseDown={() => kv.set("dismissed_getting_started", true)}>
                     ✕
                   </text>
                 </box>
-                <text fg={theme.textMuted}>OpenCode includes free models so you can start immediately.</text>
-                <text fg={theme.textMuted}>
-                  Connect from 75+ providers to use other models, including Claude, GPT, Gemini etc
-                </text>
+                <text fg={theme.textMuted}>{t("tui.sidebar.getting_body1")}</text>
+                <text fg={theme.textMuted}>{t("tui.sidebar.getting_body2")}</text>
                 <box flexDirection="row" gap={1} justifyContent="space-between">
-                  <text fg={theme.text}>Connect provider</text>
+                  <text fg={theme.text}>{t("tui.sidebar.connect_provider")}</text>
                   <text fg={theme.textMuted}>/connect</text>
                 </box>
               </box>
@@ -308,9 +319,9 @@ export function Sidebar(props: { sessionID: string; overlay?: boolean }) {
             <span style={{ fg: theme.text }}>{directory().split("/").at(-1)}</span>
           </text>
           <text fg={theme.textMuted}>
-            <span style={{ fg: theme.success }}>•</span> <b>Open</b>
+            <span style={{ fg: theme.success }}>•</span> <b>{t("tui.sidebar.brand_open")}</b>
             <span style={{ fg: theme.text }}>
-              <b>Code</b>
+              <b>{t("tui.sidebar.brand_code")}</b>
             </span>{" "}
             <span>{Installation.VERSION}</span>
           </text>

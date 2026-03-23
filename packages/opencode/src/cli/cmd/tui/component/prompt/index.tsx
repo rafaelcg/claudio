@@ -22,7 +22,7 @@ import { useRenderer } from "@opentui/solid"
 import { Editor } from "@tui/util/editor"
 import { useExit } from "../../context/exit"
 import { Clipboard } from "../../util/clipboard"
-import type { FilePart } from "@opencode-ai/sdk/v2"
+import type { FilePart } from "@claudio-code/sdk/v2"
 import { TuiEvent } from "../../event"
 import { iife } from "@/util/iife"
 import { Locale } from "@/util/locale"
@@ -35,6 +35,9 @@ import { useToast } from "../../ui/toast"
 import { useKV } from "../../context/kv"
 import { useTextareaKeybindings } from "../textarea-keybindings"
 import { DialogSkill } from "../dialog-skill"
+import { useTuiI18n } from "@tui/i18n/context"
+
+const PLACEHOLDER_ROTATION = 3
 
 export type PromptProps = {
   sessionID?: string
@@ -57,9 +60,6 @@ export type PromptRef = {
   submit(): void
 }
 
-const PLACEHOLDERS = ["Fix a TODO in the codebase", "What is the tech stack of this project?", "Fix broken tests"]
-const SHELL_PLACEHOLDERS = ["ls -la", "git status", "pwd"]
-
 export function Prompt(props: PromptProps) {
   let input: TextareaRenderable
   let anchor: BoxRenderable
@@ -79,11 +79,12 @@ export function Prompt(props: PromptProps) {
   const renderer = useRenderer()
   const { theme, syntax } = useTheme()
   const kv = useKV()
+  const tui = useTuiI18n()
 
   function promptModelWarning() {
     toast.show({
       variant: "warning",
-      message: "Connect a provider to send prompts",
+      message: tui.t("tui.prompt.connect_toast"),
       duration: 3000,
     })
     if (sync.data.provider.length === 0) {
@@ -129,7 +130,7 @@ export function Prompt(props: PromptProps) {
     interrupt: number
     placeholder: number
   }>({
-    placeholder: Math.floor(Math.random() * PLACEHOLDERS.length),
+    placeholder: Math.floor(Math.random() * PLACEHOLDER_ROTATION),
     prompt: {
       input: "",
       parts: [],
@@ -143,7 +144,7 @@ export function Prompt(props: PromptProps) {
     on(
       () => props.sessionID,
       () => {
-        setStore("placeholder", Math.floor(Math.random() * PLACEHOLDERS.length))
+        setStore("placeholder", Math.floor(Math.random() * PLACEHOLDER_ROTATION))
       },
       { defer: true },
     ),
@@ -764,12 +765,16 @@ export function Prompt(props: PromptProps) {
   })
 
   const placeholderText = createMemo(() => {
+    tui.locale()
     if (props.sessionID) return undefined
     if (store.mode === "shell") {
-      const example = SHELL_PLACEHOLDERS[store.placeholder % SHELL_PLACEHOLDERS.length]
-      return `Run a command... "${example}"`
+      const keys = ["tui.prompt.shell_ex_1", "tui.prompt.shell_ex_2", "tui.prompt.shell_ex_3"] as const
+      const example = tui.t(keys[store.placeholder % 3])
+      return `${tui.t("tui.prompt.run_cmd")} "${example}"`
     }
-    return `Ask anything... "${PLACEHOLDERS[store.placeholder % PLACEHOLDERS.length]}"`
+    const keys = ["tui.prompt.ex_1", "tui.prompt.ex_2", "tui.prompt.ex_3"] as const
+    const example = tui.t(keys[store.placeholder % 3])
+    return `${tui.t("tui.prompt.ask_lead")} "${example}"`
   })
 
   const spinnerDef = createMemo(() => {
@@ -886,7 +891,7 @@ export function Prompt(props: PromptProps) {
                   }
                 }
                 if (e.name === "!" && input.visualCursor.offset === 0) {
-                  setStore("placeholder", Math.floor(Math.random() * SHELL_PLACEHOLDERS.length))
+                  setStore("placeholder", Math.floor(Math.random() * PLACEHOLDER_ROTATION))
                   setStore("mode", "shell")
                   e.preventDefault()
                   return
@@ -1106,7 +1111,7 @@ export function Prompt(props: PromptProps) {
                       const r = retry()
                       if (!r) return
                       if (isTruncated()) {
-                        DialogAlert.show(dialog, "Retry Error", r.message)
+                        DialogAlert.show(dialog, tui.t("tui.prompt.retry_error_title"), r.message)
                       }
                     }
 
@@ -1114,9 +1119,9 @@ export function Prompt(props: PromptProps) {
                       const r = retry()
                       if (!r) return ""
                       const baseMessage = message()
-                      const truncatedHint = isTruncated() ? " (click to expand)" : ""
+                      const truncatedHint = isTruncated() ? tui.t("tui.prompt.expand") : ""
                       const duration = formatDuration(seconds())
-                      const retryInfo = ` [retrying ${duration ? `in ${duration} ` : ""}attempt #${r.attempt}]`
+                      const retryInfo = ` [${tui.t("tui.prompt.retrying")} ${duration ? `${tui.t("tui.prompt.in")} ${duration} ` : ""}${tui.t("tui.prompt.attempt")} #${r.attempt}]`
                       return baseMessage + truncatedHint + retryInfo
                     }
 
@@ -1133,7 +1138,7 @@ export function Prompt(props: PromptProps) {
               <text fg={store.interrupt > 0 ? theme.primary : theme.text}>
                 esc{" "}
                 <span style={{ fg: store.interrupt > 0 ? theme.primary : theme.textMuted }}>
-                  {store.interrupt > 0 ? "again to interrupt" : "interrupt"}
+                  {store.interrupt > 0 ? tui.t("tui.prompt.interrupt_again") : tui.t("tui.prompt.interrupt")}
                 </span>
               </text>
             </box>
@@ -1144,19 +1149,22 @@ export function Prompt(props: PromptProps) {
                 <Match when={store.mode === "normal"}>
                   <Show when={local.model.variant.list().length > 0}>
                     <text fg={theme.text}>
-                      {keybind.print("variant_cycle")} <span style={{ fg: theme.textMuted }}>variants</span>
+                      {keybind.print("variant_cycle")}{" "}
+                      <span style={{ fg: theme.textMuted }}>{tui.t("tui.prompt.variants")}</span>
                     </text>
                   </Show>
                   <text fg={theme.text}>
-                    {keybind.print("agent_cycle")} <span style={{ fg: theme.textMuted }}>agents</span>
+                    {keybind.print("agent_cycle")}{" "}
+                    <span style={{ fg: theme.textMuted }}>{tui.t("tui.prompt.agents")}</span>
                   </text>
                   <text fg={theme.text}>
-                    {keybind.print("command_list")} <span style={{ fg: theme.textMuted }}>commands</span>
+                    {keybind.print("command_list")}{" "}
+                    <span style={{ fg: theme.textMuted }}>{tui.t("tui.prompt.commands")}</span>
                   </text>
                 </Match>
                 <Match when={store.mode === "shell"}>
                   <text fg={theme.text}>
-                    esc <span style={{ fg: theme.textMuted }}>exit shell mode</span>
+                    esc <span style={{ fg: theme.textMuted }}>{tui.t("tui.prompt.exit_shell")}</span>
                   </text>
                 </Match>
               </Switch>

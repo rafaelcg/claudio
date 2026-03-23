@@ -67,15 +67,15 @@
     0 0 0 1px var(--border-weak-base, rgba(17, 0, 0, 0.12)), 0 1px 2px -1px rgba(19, 16, 16, 0.04),
     0 1px 2px 0 rgba(19, 16, 16, 0.06), 0 1px 3px 0 rgba(19, 16, 16, 0.08);
   --shadow-xs-border-select:
-    0 0 0 3px var(--border-weak-selected, rgba(1, 103, 255, 0.29)),
-    0 0 0 1px var(--border-selected, rgba(0, 74, 255, 0.99)), 0 1px 2px -1px rgba(19, 16, 16, 0.25),
+    0 0 0 3px var(--border-weak-selected, rgba(8, 160, 110, 0.29)),
+    0 0 0 1px var(--border-selected, rgba(10, 143, 92, 0.99)), 0 1px 2px -1px rgba(19, 16, 16, 0.25),
     0 1px 2px 0 rgba(19, 16, 16, 0.08), 0 1px 3px 0 rgba(19, 16, 16, 0.12);
   --shadow-xs-border-focus:
     0 0 0 1px var(--border-base, rgba(11, 6, 0, 0.2)), 0 1px 2px -1px rgba(19, 16, 16, 0.25),
     0 1px 2px 0 rgba(19, 16, 16, 0.08), 0 1px 3px 0 rgba(19, 16, 16, 0.12), 0 0 0 2px var(--background-weak, #f1f0f0),
-    0 0 0 3px var(--border-selected, rgba(0, 74, 255, 0.99));
+    0 0 0 3px var(--border-selected, rgba(10, 143, 92, 0.99));
   --shadow-xs-border-hover:
-    0 0 0 1px var(--border-weak-selected, rgba(0, 112, 255, 0.22)), 0 1px 2px -1px rgba(19, 16, 16, 0.04),
+    0 0 0 1px var(--border-weak-selected, rgba(8, 150, 105, 0.22)), 0 1px 2px -1px rgba(19, 16, 16, 0.04),
     0 1px 2px 0 rgba(19, 16, 16, 0.06), 0 1px 3px 0 rgba(19, 16, 16, 0.08);
   --shadow-xs-border-critical-base: 0 0 0 1px var(--border-critical-selected, #fc543a);
   --shadow-xs-border-critical-focus:
@@ -98,7 +98,7 @@
   --base: rgba(0, 0, 0, 0.034);
   --surface-base-hover: rgba(0, 0, 0, 0.059);
   --surface-base-active: rgba(0, 0, 0, 0.051);
-  --surface-base-interactive-active: rgba(3, 76, 255, 0.09);
+  --surface-base-interactive-active: rgba(10, 143, 92, 0.09);
   --base2: rgba(0, 0, 0, 0.034);
   --base3: rgba(0, 0, 0, 0.034);
   --surface-inset-base: rgba(0, 0, 0, 0.034);
@@ -119,12 +119,12 @@
   --surface-strong: #ffffff;
   --surface-stronger-non-alpha: var(--surface-raised-stronger-non-alpha);
   --surface-raised-stronger-non-alpha: #ffffff;
-  --surface-brand-base: #dcde8d;
-  --surface-brand-hover: #d0d283;
-  --surface-interactive-base: #ecf3ff;
-  --surface-interactive-hover: #e0eaff;
-  --surface-interactive-weak: #f7faff;
-  --surface-interactive-weak-hover: #ecf3ff;
+  --surface-brand-base: #c8e8d4;
+  --surface-brand-hover: #b5dfc4;
+  --surface-interactive-base: #ecfdf5;
+  --surface-interactive-hover: #d1fae5;
+  --surface-interactive-weak: #f7fefb;
+  --surface-interactive-weak-hover: #ecfdf5;
   --surface-success-base: #dbfed7;
   --surface-success-weak: #f0feee;
   --surface-success-strong: #12c905;
@@ -139,11 +139,11 @@
   --surface-info-strong: #a753ae;
   --surface-diff-unchanged-base: #ffffff00;
   --surface-diff-skip-base: #f8f8f8;
-  --surface-diff-hidden-base: #eaf4ff;
-  --surface-diff-hidden-weak: #f6faff;
-  --surface-diff-hidden-weaker: #fbfdff;
-  --surface-diff-hidden-strong: #cae3ff;
-  --surface-diff-hidden-stronger: #2090f5;
+  --surface-diff-hidden-base: #e8f7f0;
+  --surface-diff-hidden-weak: #f4fdfa;
+  --surface-diff-hidden-weaker: #fbfffe;
+  --surface-diff-hidden-strong: #c5ead8;
+  --surface-diff-hidden-stronger: #0a8f5c;
   --surface-diff-add-base: #e3fae1;
   --surface-diff-add-weak: #f4fcf3;
   --surface-diff-add-weaker: #fbfefb;
@@ -156,9 +156,9 @@
   --surface-diff-delete-stronger: #fc533a;
   --input-base: #fcfcfc;
   --input-hover: #f8f8f8;
-  --input-active: #fcfdff;
-  --input-selected: #e0eaff;
-  --input-focus: #fcfdff;
+  --input-active: #f7fefb;
+  --input-selected: #d1fae5;
+  --input-focus: #f7fefb;
   --input-disabled: #ededed;
   --text-base: #6f6f6f;
   --text-weak: #8f8f8f;
@@ -168,7 +168,7 @@
   --text-invert-weak: #f3f3f3;
   --text-invert-weaker: #ededed;
   --text-invert-strong: #fcfcfc;
-  --text-interactive-base: #034cff;
+  --text-interactive-base: #0a8f5c;
   --text-on-brand-base: rgba(0, 0, 0, 0.574);
   --text-on-interactive-base: #fcfcfc;
   --text-on-interactive-weak: rgba(0, 0, 0, 0.574);
@@ -199,33 +199,33 @@
   --border-base: rgba(0, 0, 0, 0.162);
   --border-hover: rgba(0, 0, 0, 0.236);
   --border-active: rgba(0, 0, 0, 0.46);
-  --border-selected: rgba(3, 76, 255, 0.99);
+  --border-selected: rgba(10, 143, 92, 0.99);
   --border-disabled: rgba(0, 0, 0, 0.236);
   --border-focus: rgba(0, 0, 0, 0.46);
   --border-weak-base: #e5e5e5;
   --border-strong-base: rgba(0, 0, 0, 0.151);
   --border-strong-hover: rgba(0, 0, 0, 0.232);
   --border-strong-active: rgba(0, 0, 0, 0.151);
-  --border-strong-selected: rgba(3, 76, 255, 0.31);
+  --border-strong-selected: rgba(10, 143, 92, 0.31);
   --border-strong-disabled: rgba(0, 0, 0, 0.118);
   --border-strong-focus: rgba(0, 0, 0, 0.151);
   --border-weak-hover: rgba(0, 0, 0, 0.118);
   --border-weak-active: rgba(0, 0, 0, 0.151);
-  --border-weak-selected: rgba(3, 76, 255, 0.24);
+  --border-weak-selected: rgba(10, 143, 92, 0.24);
   --border-weak-disabled: rgba(0, 0, 0, 0.118);
   --border-weak-focus: rgba(0, 0, 0, 0.151);
   --border-weaker-base: #f0f0f0;
   --border-weaker-hover: rgba(0, 0, 0, 0.075);
   --border-weaker-active: rgba(0, 0, 0, 0.118);
-  --border-weaker-selected: rgba(3, 76, 255, 0.16);
+  --border-weaker-selected: rgba(10, 143, 92, 0.16);
   --border-weaker-disabled: rgba(0, 0, 0, 0.034);
   --border-weaker-focus: rgba(0, 0, 0, 0.118);
-  --border-interactive-base: #a3c1fd;
-  --border-interactive-hover: #7ea9ff;
-  --border-interactive-active: #034cff;
-  --border-interactive-selected: #034cff;
+  --border-interactive-base: #a3e8d4;
+  --border-interactive-hover: #5dd4a8;
+  --border-interactive-active: #0a8f5c;
+  --border-interactive-selected: #0a8f5c;
   --border-interactive-disabled: #c7c7c7;
-  --border-interactive-focus: #034cff;
+  --border-interactive-focus: #0a8f5c;
   --border-success-base: #96ec8e;
   --border-success-hover: #7add71;
   --border-success-selected: #12c905;
@@ -259,7 +259,7 @@
   --icon-strong-disabled: #c7c7c7;
   --icon-strong-focus: #020202;
   --icon-brand-base: #171717;
-  --icon-interactive-base: #034cff;
+  --icon-interactive-base: #0a8f5c;
   --icon-success-base: #7add71;
   --icon-success-hover: #4cc944;
   --icon-success-active: #078901;
@@ -278,8 +278,8 @@
   --icon-on-interactive-base: #fcfcfc;
   --icon-agent-plan-base: #a753ae;
   --icon-agent-docs-base: #fcb239;
-  --icon-agent-ask-base: #2090f5;
-  --icon-agent-build-base: #034cff;
+  --icon-agent-ask-base: #0d9488;
+  --icon-agent-build-base: #0a8f5c;
   --icon-on-success-base: rgba(18, 201, 5, 0.9);
   --icon-on-success-hover: rgba(45, 186, 38, 0.9);
   --icon-on-success-selected: rgba(7, 137, 1, 0.9);
@@ -319,16 +319,16 @@
   --syntax-diff-unknown: #ff0000;
   --markdown-heading: #d68c27;
   --markdown-text: #1a1a1a;
-  --markdown-link: #3b7dd8;
+  --markdown-link: #0a8f5c;
   --markdown-link-text: #318795;
   --markdown-code: #3d9a57;
   --markdown-block-quote: #b0851f;
   --markdown-emph: #b0851f;
   --markdown-strong: #d68c27;
   --markdown-horizontal-rule: #8a8a8a;
-  --markdown-list-item: #3b7dd8;
+  --markdown-list-item: #0a8f5c;
   --markdown-list-enumeration: #318795;
-  --markdown-image: #3b7dd8;
+  --markdown-image: #0a8f5c;
   --markdown-image-text: #318795;
   --markdown-code-block: #1a1a1a;
   --avatar-background-pink: #feeef8;
@@ -358,7 +358,7 @@
     --base: rgba(255, 255, 255, 0.034);
     --surface-base-hover: rgba(255, 255, 255, 0.039);
     --surface-base-active: rgba(255, 255, 255, 0.059);
-    --surface-base-interactive-active: rgba(3, 76, 255, 0.125);
+    --surface-base-interactive-active: rgba(10, 143, 92, 0.125);
     --base2: rgba(255, 255, 255, 0.034);
     --base3: rgba(255, 255, 255, 0.034);
     --surface-inset-base: rgba(0, 0, 0, 0.5);
@@ -379,12 +379,12 @@
     --surface-strong: rgba(255, 255, 255, 0.169);
     --surface-stronger-non-alpha: var(--surface-raised-stronger-non-alpha);
     --surface-raised-stronger-non-alpha: #1c1c1c;
-    --surface-brand-base: #fab283;
-    --surface-brand-hover: #eda779;
-    --surface-interactive-base: #091f52;
-    --surface-interactive-hover: #091f52;
-    --surface-interactive-weak: #0b1730;
-    --surface-interactive-weak-hover: #ecf3ff;
+    --surface-brand-base: #166534;
+    --surface-brand-hover: #14532d;
+    --surface-interactive-base: #052e24;
+    --surface-interactive-hover: #052e24;
+    --surface-interactive-weak: #0a3026;
+    --surface-interactive-weak-hover: #e8fff5;
     --surface-success-base: #062d04;
     --surface-success-weak: #0a1e08;
     --surface-success-strong: #12c905;
@@ -416,9 +416,9 @@
     --surface-diff-delete-stronger: #faa494;
     --input-base: #1c1c1c;
     --input-hover: #1c1c1c;
-    --input-active: #091123;
-    --input-selected: #0b1730;
-    --input-focus: #091123;
+    --input-active: #0a1f1a;
+    --input-selected: #0a2820;
+    --input-focus: #0a1f1a;
     --input-disabled: #282828;
     --text-base: rgba(255, 255, 255, 0.618);
     --text-weak: rgba(255, 255, 255, 0.422);
@@ -428,7 +428,7 @@
     --text-invert-weak: #707070;
     --text-invert-weaker: #505050;
     --text-invert-strong: #ededed;
-    --text-interactive-base: #9dbefe;
+    --text-interactive-base: #6ee7b7;
     --text-on-brand-base: rgba(255, 255, 255, 0.603);
     --text-on-interactive-base: #ededed;
     --text-on-interactive-weak: rgba(255, 255, 255, 0.603);
@@ -459,33 +459,33 @@
     --border-base: rgba(255, 255, 255, 0.195);
     --border-hover: rgba(255, 255, 255, 0.284);
     --border-active: rgba(255, 255, 255, 0.418);
-    --border-selected: #9dbefe;
+    --border-selected: #6ee7b7;
     --border-disabled: rgba(255, 255, 255, 0.284);
     --border-focus: rgba(255, 255, 255, 0.418);
     --border-weak-base: #282828;
     --border-strong-base: rgba(255, 255, 255, 0.266);
     --border-strong-hover: rgba(255, 255, 255, 0.266);
     --border-strong-active: rgba(255, 255, 255, 0.266);
-    --border-strong-selected: rgba(3, 76, 255, 0.62);
+    --border-strong-selected: rgba(16, 185, 129, 0.62);
     --border-strong-disabled: rgba(255, 255, 255, 0.138);
     --border-strong-focus: rgba(255, 255, 255, 0.266);
     --border-weak-hover: rgba(255, 255, 255, 0.181);
     --border-weak-active: rgba(255, 255, 255, 0.266);
-    --border-weak-selected: rgba(3, 76, 255, 0.62);
+    --border-weak-selected: rgba(16, 185, 129, 0.62);
     --border-weak-disabled: rgba(255, 255, 255, 0.138);
     --border-weak-focus: rgba(255, 255, 255, 0.266);
     --border-weaker-base: #202020;
     --border-weaker-hover: rgba(255, 255, 255, 0.084);
     --border-weaker-active: rgba(255, 255, 255, 0.138);
-    --border-weaker-selected: rgba(3, 76, 255, 0.32);
+    --border-weaker-selected: rgba(16, 185, 129, 0.32);
     --border-weaker-disabled: rgba(255, 255, 255, 0.034);
     --border-weaker-focus: rgba(255, 255, 255, 0.138);
-    --border-interactive-base: #a3c1fd;
-    --border-interactive-hover: #7ea9ff;
-    --border-interactive-active: #034cff;
-    --border-interactive-selected: #034cff;
+    --border-interactive-base: #34d399;
+    --border-interactive-hover: #2dd4bf;
+    --border-interactive-active: #10b981;
+    --border-interactive-selected: #10b981;
     --border-interactive-disabled: #505050;
-    --border-interactive-focus: #034cff;
+    --border-interactive-focus: #10b981;
     --border-success-base: #96ec8e;
     --border-success-hover: #7add71;
     --border-success-selected: #12c905;
@@ -519,7 +519,7 @@
     --icon-strong-disabled: #3e3e3e;
     --icon-strong-focus: #fdfcfc;
     --icon-brand-base: #ffffff;
-    --icon-interactive-base: #034cff;
+    --icon-interactive-base: #10b981;
     --icon-success-base: #12c905;
     --icon-success-hover: #35c02d;
     --icon-success-active: #4de144;
@@ -538,8 +538,8 @@
     --icon-on-interactive-base: #ededed;
     --icon-agent-plan-base: #edb2f1;
     --icon-agent-docs-base: #fbb73c;
-    --icon-agent-ask-base: #2090f5;
-    --icon-agent-build-base: #9dbefe;
+    --icon-agent-ask-base: #14b8a6;
+    --icon-agent-build-base: #6ee7b7;
     --icon-on-success-base: rgba(18, 201, 5, 0.9);
     --icon-on-success-hover: rgba(53, 192, 45, 0.9);
     --icon-on-success-selected: rgba(77, 225, 68, 0.9);

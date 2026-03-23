@@ -11,7 +11,7 @@ import { UninstallCommand } from "./cli/cmd/uninstall"
 import { ModelsCommand } from "./cli/cmd/models"
 import { UI } from "./cli/ui"
 import { Installation } from "./installation"
-import { NamedError } from "@opencode-ai/util/error"
+import { NamedError } from "@claudio-code/util/error"
 import { FormatError } from "./cli/error"
 import { ServeCommand } from "./cli/cmd/serve"
 import { WorkspaceServeCommand } from "./cli/cmd/workspace-serve"
@@ -49,18 +49,18 @@ process.on("uncaughtException", (e) => {
 
 let cli = yargs(hideBin(process.argv))
   .parserConfiguration({ "populate--": true })
-  .scriptName("opencode")
+  .scriptName("claudio")
   .wrap(100)
-  .help("help", "show help")
+  .help("help", "mostrar ajuda")
   .alias("help", "h")
-  .version("version", "show version number", Installation.VERSION)
+  .version("version", "mostrar número da versão", Installation.VERSION)
   .alias("version", "v")
   .option("print-logs", {
-    describe: "print logs to stderr",
+    describe: "imprimir logs no stderr",
     type: "boolean",
   })
   .option("log-level", {
-    describe: "log level",
+    describe: "nível de log",
     type: "string",
     choices: ["DEBUG", "INFO", "WARN", "ERROR"],
   })
@@ -76,18 +76,18 @@ let cli = yargs(hideBin(process.argv))
     })
 
     process.env.AGENT = "1"
-    process.env.OPENCODE = "1"
-    process.env.OPENCODE_PID = String(process.pid)
+    process.env.CLAUDIO = "1"
+    process.env.CLAUDIO_PID = String(process.pid)
 
-    Log.Default.info("opencode", {
+    Log.Default.info("claudio", {
       version: Installation.VERSION,
       args: process.argv.slice(2),
     })
 
-    const marker = path.join(Global.Path.data, "opencode.db")
+    const marker = path.join(Global.Path.data, "claudio.db")
     if (!(await Filesystem.exists(marker))) {
       const tty = process.stderr.isTTY
-      process.stderr.write("Performing one time database migration, may take a few minutes..." + EOL)
+      process.stderr.write("Executando migração única do banco de dados; pode levar alguns minutos..." + EOL)
       const width = 36
       const orange = "\x1b[38;5;214m"
       const muted = "\x1b[0;2m"
@@ -118,11 +118,11 @@ let cli = yargs(hideBin(process.argv))
           process.stderr.write(`sqlite-migration:done${EOL}`)
         }
       }
-      process.stderr.write("Database migration complete." + EOL)
+      process.stderr.write("Migração do banco de dados concluída." + EOL)
     }
   })
   .usage("\n" + UI.logo())
-  .completion("completion", "generate shell completion script")
+  .completion("completion", "gerar script de completion do shell")
   .command(AcpCommand)
   .command(McpCommand)
   .command(TuiThreadCommand)

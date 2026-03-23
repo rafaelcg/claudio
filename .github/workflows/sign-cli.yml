@@ -12,8 +12,8 @@ permissions:
 
 jobs:
   sign-cli:
-    runs-on: blacksmith-4vcpu-ubuntu-2404
-    if: github.repository == 'anomalyco/opencode'
+    runs-on: ubuntu-latest
+    if: github.repository == 'rafaelcg/claudio'
     steps:
       - uses: actions/checkout@v3
         with:
@@ -44,11 +44,11 @@ jobs:
           artifact-configuration-slug: ${{ secrets.SIGNPATH_ARTIFACT_CONFIGURATION_SLUG }}
           github-artifact-id: ${{ steps.upload_unsigned_windows_cli.outputs.artifact-id }}
           wait-for-completion: true
-          output-artifact-directory: signed-opencode-cli
+          output-artifact-directory: signed-claudio-cli
 
       - name: Upload signed Windows CLI
         uses: actions/upload-artifact@v4
         with:
           name: signed-opencode-windows-cli
-          path: signed-opencode-cli/*.exe
+          path: signed-claudio-cli/*.exe
           if-no-files-found: error

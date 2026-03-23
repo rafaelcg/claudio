@@ -1,5 +1,5 @@
 {
-  description = "OpenCode development flake";
+  description = "Claudio Code development flake (OpenCode fork)";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";

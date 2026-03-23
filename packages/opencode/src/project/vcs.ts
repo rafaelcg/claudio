@@ -39,7 +39,7 @@ export namespace Vcs {
     current: string | undefined
   }
 
-  export class Service extends ServiceMap.Service<Service, Interface>()("@opencode/Vcs") {}
+  export class Service extends ServiceMap.Service<Service, Interface>()("@claudio/Vcs") {}
 
   export const layer = Layer.effect(
     Service,

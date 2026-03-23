@@ -1,13 +1,13 @@
 import type { Configuration } from "electron-builder"
 
 const channel = (() => {
-  const raw = process.env.OPENCODE_CHANNEL
+  const raw = process.env.CLAUDIO_CHANNEL
   if (raw === "dev" || raw === "beta" || raw === "prod") return raw
   return "dev"
 })()
 
 const getBase = (): Configuration => ({
-  artifactName: "opencode-electron-${os}-${arch}.${ext}",
+  artifactName: "claudio-electron-${os}-${arch}.${ext}",
   directories: {
     output: "dist",
     buildResources: "resources",
@@ -17,7 +17,7 @@ const getBase = (): Configuration => ({
     {
       from: "resources/",
       to: "",
-      filter: ["opencode-cli*"],
+      filter: ["claudio-cli*"],
     },
     {
       from: "native/",
@@ -39,8 +39,8 @@ const getBase = (): Configuration => ({
     sign: true,
   },
   protocols: {
-    name: "OpenCode",
-    schemes: ["opencode"],
+    name: "Claudio Code",
+    schemes: ["claudio"],
   },
   win: {
     icon: `resources/icons/icon.ico`,
@@ -66,29 +66,29 @@ function getConfig() {
     case "dev": {
       return {
         ...base,
-        appId: "ai.opencode.desktop.dev",
-        productName: "OpenCode Dev",
-        rpm: { packageName: "opencode-dev" },
+        appId: "ai.claudio.desktop.dev",
+        productName: "Claudio Code Dev",
+        rpm: { packageName: "claudio-dev" },
       }
     }
     case "beta": {
       return {
         ...base,
-        appId: "ai.opencode.desktop.beta",
-        productName: "OpenCode Beta",
-        protocols: { name: "OpenCode Beta", schemes: ["opencode"] },
-        publish: { provider: "github", owner: "anomalyco", repo: "opencode-beta", channel: "latest" },
-        rpm: { packageName: "opencode-beta" },
+        appId: "ai.claudio.desktop.beta",
+        productName: "Claudio Code Beta",
+        protocols: { name: "Claudio Code Beta", schemes: ["claudio"] },
+        publish: { provider: "github", owner: "rafaelcg", repo: "claudio", channel: "latest" },
+        rpm: { packageName: "claudio-beta" },
       }
     }
     case "prod": {
       return {
         ...base,
-        appId: "ai.opencode.desktop",
-        productName: "OpenCode",
-        protocols: { name: "OpenCode", schemes: ["opencode"] },
-        publish: { provider: "github", owner: "anomalyco", repo: "opencode", channel: "latest" },
-        rpm: { packageName: "opencode" },
+        appId: "ai.claudio.desktop",
+        productName: "Claudio Code",
+        protocols: { name: "Claudio Code", schemes: ["claudio"] },
+        publish: { provider: "github", owner: "rafaelcg", repo: "claudio", channel: "latest" },
+        rpm: { packageName: "claudio" },
       }
     }
   }

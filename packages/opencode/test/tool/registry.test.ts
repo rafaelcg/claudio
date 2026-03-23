@@ -10,10 +10,10 @@ afterEach(async () => {
 })
 
 describe("tool.registry", () => {
-  test("loads tools from .opencode/tool (singular)", async () => {
+  test("loads tools from .claudio/tool (singular)", async () => {
     await using tmp = await tmpdir({
       init: async (dir) => {
-        const opencodeDir = path.join(dir, ".opencode")
+        const opencodeDir = path.join(dir, ".claudio")
         await fs.mkdir(opencodeDir, { recursive: true })
 
         const toolDir = path.join(opencodeDir, "tool")
@@ -44,10 +44,10 @@ describe("tool.registry", () => {
     })
   })
 
-  test("loads tools from .opencode/tools (plural)", async () => {
+  test("loads tools from .claudio/tools (plural)", async () => {
     await using tmp = await tmpdir({
       init: async (dir) => {
-        const opencodeDir = path.join(dir, ".opencode")
+        const opencodeDir = path.join(dir, ".claudio")
         await fs.mkdir(opencodeDir, { recursive: true })
 
         const toolsDir = path.join(opencodeDir, "tools")
@@ -81,7 +81,7 @@ describe("tool.registry", () => {
   test("loads tools with external dependencies without crashing", async () => {
     await using tmp = await tmpdir({
       init: async (dir) => {
-        const opencodeDir = path.join(dir, ".opencode")
+        const opencodeDir = path.join(dir, ".claudio")
         await fs.mkdir(opencodeDir, { recursive: true })
 
         const toolsDir = path.join(opencodeDir, "tools")
@@ -92,7 +92,7 @@ describe("tool.registry", () => {
           JSON.stringify({
             name: "custom-tools",
             dependencies: {
-              "@opencode-ai/plugin": "^0.0.0",
+              "@claudio-code/plugin": "^0.0.0",
               cowsay: "^1.6.0",
             },
           }),

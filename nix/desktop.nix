@@ -24,7 +24,7 @@
   opencode,
 }:
 rustPlatform.buildRustPackage (finalAttrs: {
-  pname = "opencode-desktop";
+  pname = "claudio-desktop";
   inherit (opencode)
     version
     src
@@ -72,7 +72,7 @@ rustPlatform.buildRustPackage (finalAttrs: {
     patchShebangs packages/desktop/node_modules
 
     mkdir -p packages/desktop/src-tauri/sidecars
-    cp ${opencode}/bin/opencode packages/desktop/src-tauri/sidecars/opencode-cli-${stdenv.hostPlatform.rust.rustcTarget}
+    cp ${opencode}/bin/claudio packages/desktop/src-tauri/sidecars/claudio-cli-${stdenv.hostPlatform.rust.rustcTarget}
   '';
 
   # see publish-tauri job in .github/workflows/publish.yml
@@ -86,15 +86,15 @@ rustPlatform.buildRustPackage (finalAttrs: {
   # should be removed once binary is renamed or decided otherwise
   # darwin output is a .app bundle so no conflict
   postFixup = lib.optionalString stdenv.hostPlatform.isLinux ''
-    mv $out/bin/OpenCode $out/bin/opencode-desktop
-    sed -i 's|^Exec=OpenCode$|Exec=opencode-desktop|' $out/share/applications/OpenCode.desktop
+    mv $out/bin/OpenCode $out/bin/claudio-desktop
+    sed -i 's|^Exec=OpenCode$|Exec=claudio-desktop|' $out/share/applications/OpenCode.desktop
   '';
 
   meta = {
     description = "OpenCode Desktop App";
-    homepage = "https://opencode.ai";
+    homepage = "https://github.com/rafaelcg/claudio";
     license = lib.licenses.mit;
-    mainProgram = "opencode-desktop";
+    mainProgram = "claudio-desktop";
     inherit (opencode.meta) platforms;
   };
 })

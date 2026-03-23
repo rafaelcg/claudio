@@ -34,7 +34,7 @@ Byg er **standard**-tilstanden med alle værktøjer aktiveret. Dette er standard
 En begrænset tilstand designet til planlægning og analyse. I plantilstand er følgende værktøjer deaktiveret som standard:
 
 - `write` - Kan ikke oprette nye filer
-- `edit` - Kan ikke ændre eksisterende filer, undtagen filer placeret på `.opencode/plans/*.md` for at detaljere selve planen
+- `edit` - Kan ikke ændre eksisterende filer, undtagen filer placeret på `.claudio/plans/*.md` for at detaljere selve planen
 - `patch` - Kan ikke anvende patches
 - `bash` - Kan ikke udføre shell-kommandoer
 
@@ -88,7 +88,7 @@ Konfigurer tilstande i din `opencode.json`-konfigurationsfil:
 Du kan også definere tilstande ved hjælp af markdown-filer. Placer dem i:
 
 - Globalt: `~/.config/opencode/modes/`
-- Projekt: `.opencode/modes/`
+- Projekt: `.claudio/modes/`
 
 ```markdown title="~/.config/opencode/modes/review.md"
 ---
@@ -268,9 +268,9 @@ Du kan oprette dine egne brugerdefinerede tilstande ved at tilføje dem til konf
 
 ### Brug af markdown-filer
 
-Opret tilstandsfiler i `.opencode/modes/` for projektspecifikke tilstande eller `~/.config/opencode/modes/` for globale tilstande:
+Opret tilstandsfiler i `.claudio/modes/` for projektspecifikke tilstande eller `~/.config/opencode/modes/` for globale tilstande:
 
-```markdown title=".opencode/modes/debug.md"
+```markdown title=".claudio/modes/debug.md"
 ---
 temperature: 0.1
 tools:
