@@ -376,8 +376,6 @@ jobs:
     needs:
       - version
       - build-cli
-      - build-tauri
-      - build-electron
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -450,3 +448,5 @@ jobs:
           GH_REPO: ${{ needs.version.outputs.repo }}
           NPM_CONFIG_PROVENANCE: false
           LATEST_YML_DIR: /tmp/latest-yml
+          CLAUDIO_CLI_ONLY: "1"
+          CLAUDIO_SKIP_DOCKER: "1"

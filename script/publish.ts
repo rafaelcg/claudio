@@ -34,6 +34,8 @@ Add highlights before publishing. Delete this section if no highlights.
 
 console.log("=== publishing ===\n")
 
+const cliOnly = process.env.CLAUDIO_CLI_ONLY === "1"
+
 const pkgjsons = await Array.fromAsync(
   new Bun.Glob("**/package.json").scan({
     absolute: true,
@@ -67,8 +69,12 @@ if (Script.release) {
     await new Promise((resolve) => setTimeout(resolve, 5_000))
   }
 
-  await import(`../packages/desktop/scripts/finalize-latest-json.ts`)
-  await import(`../packages/desktop-electron/scripts/finalize-latest-yml.ts`)
+  if (!cliOnly) {
+    await import(`../packages/desktop/scripts/finalize-latest-json.ts`)
+    await import(`../packages/desktop-electron/scripts/finalize-latest-yml.ts`)
+  } else {
+    console.log("CLAUDIO_CLI_ONLY=1 — skipping desktop release asset finalization.")
+  }
 
   await $`gh release edit v${Script.version} --draft=false --repo ${process.env.GH_REPO}`
 }
