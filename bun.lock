@@ -76,6 +76,15 @@
         "vite-plugin-solid": "catalog:",
       },
     },
+    "packages/claudio-gateway": {
+      "name": "@claudio-code/gateway",
+      "version": "0.0.1",
+      "devDependencies": {
+        "@cloudflare/workers-types": "catalog:",
+        "typescript": "catalog:",
+        "wrangler": "^4.14.0",
+      },
+    },
     "packages/console/app": {
       "name": "@claudio-code/console-app",
       "version": "1.2.27",
@@ -964,6 +973,8 @@
     "@claudio-code/enterprise": ["@claudio-code/enterprise@workspace:packages/enterprise"],
 
     "@claudio-code/function": ["@claudio-code/function@workspace:packages/function"],
+
+    "@claudio-code/gateway": ["@claudio-code/gateway@workspace:packages/claudio-gateway"],
 
     "@claudio-code/plugin": ["@claudio-code/plugin@workspace:packages/plugin"],
 
