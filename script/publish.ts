@@ -82,11 +82,15 @@ if (Script.release) {
 console.log("\n=== cli ===\n")
 await import(`../packages/opencode/script/publish.ts`)
 
-console.log("\n=== sdk ===\n")
-await import(`../packages/sdk/js/script/publish.ts`)
+if (!cliOnly) {
+  console.log("\n=== sdk ===\n")
+  await import(`../packages/sdk/js/script/publish.ts`)
 
-console.log("\n=== plugin ===\n")
-await import(`../packages/plugin/script/publish.ts`)
+  console.log("\n=== plugin ===\n")
+  await import(`../packages/plugin/script/publish.ts`)
+} else {
+  console.log("CLAUDIO_CLI_ONLY=1 — skipping npm publish for @claudio-code/sdk and @claudio-code/plugin.")
+}
 
 const dir = fileURLToPath(new URL("..", import.meta.url))
 process.chdir(dir)

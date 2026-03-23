@@ -24,15 +24,17 @@ const env = {
   CLAUDIO_RELEASE: process.env["CLAUDIO_RELEASE"],
 }
 const CHANNEL = await (async () => {
-  if (env.CLAUDIO_CHANNEL) return env.CLAUDIO_CHANNEL
+  // Bump / explicit semver wins over CLAUDIO_CHANNEL (often set locally to dev/beta for TUI).
   if (env.CLAUDIO_BUMP) return "latest"
+  if (env.CLAUDIO_CHANNEL) return env.CLAUDIO_CHANNEL
   if (env.CLAUDIO_VERSION && !env.CLAUDIO_VERSION.startsWith("0.0.0-")) return "latest"
   return await $`git branch --show-current`.text().then((x) => x.trim())
 })()
 const IS_PREVIEW = CHANNEL !== "latest"
 
 const VERSION = await (async () => {
-  if (env.CLAUDIO_VERSION) return env.CLAUDIO_VERSION
+  // Pin only when not bumping; CLAUDIO_BUMP + stale CLAUDIO_VERSION was publishing the old semver again.
+  if (env.CLAUDIO_VERSION && !env.CLAUDIO_BUMP) return env.CLAUDIO_VERSION
   if (IS_PREVIEW) return `0.0.0-${CHANNEL}-${new Date().toISOString().slice(0, 16).replace(/[-:T]/g, "")}`
   const version = await fetch("https://registry.npmjs.org/@claudio-code%2fcli/latest")
     .then((res) => {
