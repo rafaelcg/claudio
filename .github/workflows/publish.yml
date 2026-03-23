@@ -50,7 +50,6 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Install Claudio Code CLI
-        if: inputs.bump || inputs.version
         run: bun i -g @claudio-code/cli
 
       - id: version

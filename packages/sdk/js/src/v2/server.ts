@@ -1,6 +1,10 @@
 import { spawn } from "node:child_process"
 import { type Config } from "./gen/types.gen.js"
 
+function resolveCliBinary() {
+  return process.env.CLAUDIO_CLI_BINARY ?? process.env.OPENCODE_CLI_BINARY ?? "claudio"
+}
+
 export type ServerOptions = {
   hostname?: string
   port?: number
@@ -31,7 +35,7 @@ export async function createOpencodeServer(options?: ServerOptions) {
   const args = [`serve`, `--hostname=${options.hostname}`, `--port=${options.port}`]
   if (options.config?.logLevel) args.push(`--log-level=${options.config.logLevel}`)
 
-  const proc = spawn(`opencode`, args, {
+  const proc = spawn(resolveCliBinary(), args, {
     signal: options.signal,
     env: {
       ...process.env,
@@ -48,7 +52,7 @@ export async function createOpencodeServer(options?: ServerOptions) {
       output += chunk.toString()
       const lines = output.split("\n")
       for (const line of lines) {
-        if (line.startsWith("opencode server listening")) {
+        if (line.includes("server listening")) {
           const match = line.match(/on\s+(https?:\/\/[^\s]+)/)
           if (!match) {
             throw new Error(`Failed to parse server url from output: ${line}`)
@@ -106,7 +110,7 @@ export function createOpencodeTui(options?: TuiOptions) {
     args.push(`--agent=${options.agent}`)
   }
 
-  const proc = spawn(`opencode`, args, {
+  const proc = spawn(resolveCliBinary(), args, {
     signal: options?.signal,
     stdio: "inherit",
     env: {
