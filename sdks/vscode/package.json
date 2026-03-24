@@ -2,7 +2,7 @@
   "name": "claudio-vscode",
   "displayName": "Claudio Code",
   "description": "Claudio Code para VS Code",
-  "version": "1.2.27",
+  "version": "1.2.29",
   "publisher": "sst-dev",
   "repository": {
     "type": "git",
