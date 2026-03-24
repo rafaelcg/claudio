@@ -264,14 +264,17 @@ export const { use: useSync, provider: SyncProvider } = createSimpleContext({
         }
 
         case "message.updated": {
+          const done = event.properties.info.role === "assistant" && event.properties.info.time.completed
           const messages = store.message[event.properties.info.sessionID]
           if (!messages) {
             setStore("message", event.properties.info.sessionID, [event.properties.info])
+            if (done) void syncManaged()
             break
           }
           const result = Binary.search(messages, event.properties.info.id, (m) => m.id)
           if (result.found) {
             setStore("message", event.properties.info.sessionID, result.index, reconcile(event.properties.info))
+            if (done) void syncManaged()
             break
           }
           setStore(
@@ -300,9 +303,7 @@ export const { use: useSync, provider: SyncProvider } = createSimpleContext({
               )
             })
           }
-          if (event.properties.info.role === "assistant" && event.properties.info.time.completed) {
-            void syncManaged()
-          }
+          if (done) void syncManaged()
           break
         }
         case "message.removed": {
