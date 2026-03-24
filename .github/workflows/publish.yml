@@ -94,6 +94,7 @@ jobs:
         env:
           CLAUDIO_VERSION: ${{ needs.version.outputs.version }}
           CLAUDIO_RELEASE: ${{ needs.version.outputs.release }}
+          CLAUDIO_SKIP_RELEASE_ASSETS: "1"
           GH_REPO: ${{ needs.version.outputs.repo }}
           GH_TOKEN: ${{ steps.committer.outputs.token }}
 
