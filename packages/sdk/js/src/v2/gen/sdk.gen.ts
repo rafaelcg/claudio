@@ -24,6 +24,7 @@ import type {
   EventTuiPromptAppend,
   EventTuiSessionSelect,
   EventTuiToastShow,
+  ExperimentalManagedStatusResponses,
   ExperimentalResourceListResponses,
   ExperimentalSessionListResponses,
   ExperimentalWorkspaceCreateErrors,
@@ -827,13 +828,13 @@ export class Config2 extends HeyApiClient {
   }
 }
 
-export class Tool extends HeyApiClient {
+export class Managed extends HeyApiClient {
   /**
-   * List tool IDs
+   * Get Claudio managed status
    *
-   * Get a list of all available tool IDs, including both built-in tools and dynamically registered tools.
+   * Return the local Claudio managed entitlement and quota snapshot used by the TUI.
    */
-  public ids<ThrowOnError extends boolean = false>(
+  public status<ThrowOnError extends boolean = false>(
     parameters?: {
       directory?: string
       workspace?: string
@@ -851,42 +852,8 @@ export class Tool extends HeyApiClient {
         },
       ],
     )
-    return (options?.client ?? this.client).get<ToolIdsResponses, ToolIdsErrors, ThrowOnError>({
-      url: "/experimental/tool/ids",
-      ...options,
-      ...params,
-    })
-  }
-
-  /**
-   * List tools
-   *
-   * Get a list of available tools with their JSON schema parameters for a specific provider and model combination.
-   */
-  public list<ThrowOnError extends boolean = false>(
-    parameters: {
-      directory?: string
-      workspace?: string
-      provider: string
-      model: string
-    },
-    options?: Options<never, ThrowOnError>,
-  ) {
-    const params = buildClientParams(
-      [parameters],
-      [
-        {
-          args: [
-            { in: "query", key: "directory" },
-            { in: "query", key: "workspace" },
-            { in: "query", key: "provider" },
-            { in: "query", key: "model" },
-          ],
-        },
-      ],
-    )
-    return (options?.client ?? this.client).get<ToolListResponses, ToolListErrors, ThrowOnError>({
-      url: "/experimental/tool",
+    return (options?.client ?? this.client).get<ExperimentalManagedStatusResponses, unknown, ThrowOnError>({
+      url: "/experimental/managed",
       ...options,
       ...params,
     })
@@ -1085,6 +1052,11 @@ export class Resource extends HeyApiClient {
 }
 
 export class Experimental extends HeyApiClient {
+  private _managed?: Managed
+  get managed(): Managed {
+    return (this._managed ??= new Managed({ client: this.client }))
+  }
+
   private _workspace?: Workspace
   get workspace(): Workspace {
     return (this._workspace ??= new Workspace({ client: this.client }))
@@ -1098,6 +1070,72 @@ export class Experimental extends HeyApiClient {
   private _resource?: Resource
   get resource(): Resource {
     return (this._resource ??= new Resource({ client: this.client }))
+  }
+}
+
+export class Tool extends HeyApiClient {
+  /**
+   * List tool IDs
+   *
+   * Get a list of all available tool IDs, including both built-in tools and dynamically registered tools.
+   */
+  public ids<ThrowOnError extends boolean = false>(
+    parameters?: {
+      directory?: string
+      workspace?: string
+    },
+    options?: Options<never, ThrowOnError>,
+  ) {
+    const params = buildClientParams(
+      [parameters],
+      [
+        {
+          args: [
+            { in: "query", key: "directory" },
+            { in: "query", key: "workspace" },
+          ],
+        },
+      ],
+    )
+    return (options?.client ?? this.client).get<ToolIdsResponses, ToolIdsErrors, ThrowOnError>({
+      url: "/experimental/tool/ids",
+      ...options,
+      ...params,
+    })
+  }
+
+  /**
+   * List tools
+   *
+   * Get a list of available tools with their JSON schema parameters for a specific provider and model combination.
+   */
+  public list<ThrowOnError extends boolean = false>(
+    parameters: {
+      directory?: string
+      workspace?: string
+      provider: string
+      model: string
+    },
+    options?: Options<never, ThrowOnError>,
+  ) {
+    const params = buildClientParams(
+      [parameters],
+      [
+        {
+          args: [
+            { in: "query", key: "directory" },
+            { in: "query", key: "workspace" },
+            { in: "query", key: "provider" },
+            { in: "query", key: "model" },
+          ],
+        },
+      ],
+    )
+    return (options?.client ?? this.client).get<ToolListResponses, ToolListErrors, ThrowOnError>({
+      url: "/experimental/tool",
+      ...options,
+      ...params,
+    })
   }
 }
 
@@ -3931,14 +3969,14 @@ export class OpencodeClient extends HeyApiClient {
     return (this._config ??= new Config2({ client: this.client }))
   }
 
-  private _tool?: Tool
-  get tool(): Tool {
-    return (this._tool ??= new Tool({ client: this.client }))
-  }
-
   private _experimental?: Experimental
   get experimental(): Experimental {
     return (this._experimental ??= new Experimental({ client: this.client }))
+  }
+
+  private _tool?: Tool
+  get tool(): Tool {
+    return (this._tool ??= new Tool({ client: this.client }))
   }
 
   private _worktree?: Worktree

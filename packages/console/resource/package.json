@@ -7,7 +7,7 @@
   },
   "exports": {
     ".": {
-      "production": {
+      "workerd": {
         "import": "./resource.cloudflare.ts"
       },
       "import": "./resource.node.ts"

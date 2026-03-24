@@ -115,6 +115,13 @@ export const UsageTable = mysqlTable(
     cost: bigint("cost", { mode: "number" }).notNull(),
     keyID: ulid("key_id"),
     sessionID: varchar("session_id", { length: 30 }),
+    alias: varchar("alias", { length: 64 }),
+    tier: varchar("tier", { length: 16 }),
+    vendor_model: varchar("vendor_model", { length: 128 }),
+    route_id: varchar("route_id", { length: 64 }),
+    install_id: varchar("install_id", { length: 64 }),
+    latency_ms: int("latency_ms"),
+    source: varchar("source", { length: 16 }),
     enrichment: json("enrichment").$type<{
       plan: "sub" | "byok" | "lite"
     }>(),

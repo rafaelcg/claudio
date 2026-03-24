@@ -4,7 +4,7 @@ import { domain, shortDomain } from "./stage"
 const storage = new sst.cloudflare.Bucket("EnterpriseStorage")
 
 const teams = new sst.cloudflare.x.SolidStart("Teams", {
-  domain: shortDomain,
+  ...(shortDomain ? { domain: shortDomain } : {}),
   path: "packages/enterprise",
   buildCommand: "bun run build:cloudflare",
   environment: {

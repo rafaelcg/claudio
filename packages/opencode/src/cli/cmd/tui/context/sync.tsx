@@ -30,6 +30,28 @@ import { Log } from "@/util/log"
 import type { Path } from "@claudio-code/sdk"
 import type { Workspace } from "@claudio-code/sdk/v2"
 
+type Managed = {
+  install_id: string
+  token: string
+  tier: "junior" | "pleno" | "senior"
+  alias: string[]
+  signed_in: boolean
+  entitlement: "anonymous" | "free" | "pleno" | "senior"
+  quota: {
+    limit: number
+    used: number
+    remaining: number
+    unit: "prompts" | "usd_micro"
+    reset_at: string
+    burst_remaining?: number
+  }
+  upgrade_url?: string
+  model?: {
+    alias: string
+    label: string
+  }
+}
+
 export const { use: useSync, provider: SyncProvider } = createSimpleContext({
   name: "Sync",
   init: () => {
@@ -75,6 +97,7 @@ export const { use: useSync, provider: SyncProvider } = createSimpleContext({
       vcs: VcsInfo | undefined
       path: Path
       workspaceList: Workspace[]
+      managed: Managed | null
     }>({
       provider_next: {
         all: [],
@@ -103,6 +126,7 @@ export const { use: useSync, provider: SyncProvider } = createSimpleContext({
       vcs: undefined,
       path: { state: "", config: "", worktree: "", directory: "" },
       workspaceList: [],
+      managed: null,
     })
 
     const sdk = useSDK()
@@ -111,6 +135,11 @@ export const { use: useSync, provider: SyncProvider } = createSimpleContext({
       const result = await sdk.client.experimental.workspace.list().catch(() => undefined)
       if (!result?.data) return
       setStore("workspaceList", reconcile(result.data))
+    }
+
+    async function syncManaged() {
+      const result = await sdk.client.experimental.managed.status().catch(() => undefined)
+      setStore("managed", reconcile((result?.data ?? null) as Managed | null))
     }
 
     sdk.event.listen((e) => {
@@ -271,6 +300,9 @@ export const { use: useSync, provider: SyncProvider } = createSimpleContext({
               )
             })
           }
+          if (event.properties.info.role === "assistant" && event.properties.info.time.completed) {
+            void syncManaged()
+          }
           break
         }
         case "message.removed": {
@@ -423,6 +455,7 @@ export const { use: useSync, provider: SyncProvider } = createSimpleContext({
             sdk.client.vcs.get().then((x) => setStore("vcs", reconcile(x.data))),
             sdk.client.path.get().then((x) => setStore("path", reconcile(x.data!))),
             syncWorkspaces(),
+            syncManaged(),
           ]).then(() => {
             setStore("status", "complete")
           })

@@ -51,6 +51,8 @@ import { GoogleAuth } from "google-auth-library"
 import { ProviderTransform } from "./transform"
 import { Installation } from "../installation"
 import { ModelID, ProviderID } from "./schema"
+import { ClaudioStatus } from "@/claudio/status"
+import { ClaudioProvider } from "./claudio"
 
 export namespace Provider {
   const log = Log.create({ service: "provider" })
@@ -180,6 +182,40 @@ export namespace Provider {
       return {
         autoload: Object.keys(input.models).length > 0,
         options: hasKey ? {} : { apiKey: "public" },
+      }
+    },
+    async claudio() {
+      return {
+        autoload: true,
+        options: {
+          fetch: async (input: RequestInfo | URL, init?: RequestInit) => {
+            const hdr = await ClaudioStatus.headers()
+            const req = new Headers(init?.headers)
+            for (const [key, value] of Object.entries(hdr)) req.set(key, value)
+            const url = new URL(
+              input instanceof Request ? input.url : input instanceof URL ? input.toString() : String(input),
+            )
+            if (typeof init?.body === "string") {
+              try {
+                const body = JSON.parse(init.body)
+                if (body.stream === true && !body.stream_options) {
+                  body.stream_options = { include_usage: true }
+                }
+                init = {
+                  ...init,
+                  body: JSON.stringify(body),
+                }
+              } catch {}
+            }
+            return ClaudioProvider.request(url.pathname + url.search, {
+              ...init,
+              headers: req,
+            }, { roots: [url.origin] })
+          },
+        },
+        async getModel(sdk: any, modelID: string) {
+          return sdk.languageModel(modelID)
+        },
       }
     },
     openai: async () => {
@@ -1442,7 +1478,7 @@ export namespace Provider {
     return undefined
   }
 
-  const priority = ["gpt-5", "claude-sonnet-4", "big-pickle", "gemini-3-pro"]
+  const priority = ["senior", "pleno", "junior", "gpt-5", "claude-sonnet-4", "big-pickle", "gemini-3-pro"]
   export function sort<T extends { id: string }>(models: T[]) {
     return sortBy(
       models,
@@ -1452,7 +1488,7 @@ export namespace Provider {
     )
   }
 
-  export async function defaultModel() {
+  export async function defaultModel(): Promise<{ providerID: ProviderID; modelID: ModelID }> {
     const cfg = await Config.get()
     if (cfg.model) return parseModel(cfg.model)
 
@@ -1469,7 +1505,9 @@ export namespace Provider {
       return { providerID: entry.providerID, modelID: entry.modelID }
     }
 
-    const provider = Object.values(providers).find((p) => !cfg.provider || Object.keys(cfg.provider).includes(p.id))
+    const provider =
+      providers[ProviderID.claudio] ??
+      Object.values(providers as Record<string, Info>).find((p) => !cfg.provider || Object.keys(cfg.provider).includes(p.id))
     if (!provider) throw new Error("no providers found")
     const [model] = sort(Object.values(provider.models))
     if (!model) throw new Error("no models found")

@@ -6,6 +6,7 @@ import { Installation } from "../installation"
 import { Flag } from "../flag/flag"
 import { lazy } from "@/util/lazy"
 import { Filesystem } from "../util/filesystem"
+import { ClaudioProvider } from "./claudio"
 
 // Try to import bundled snapshot (generated at build time)
 // Falls back to undefined in dev mode when snapshot doesn't exist
@@ -100,7 +101,11 @@ export namespace ModelsDev {
 
   export async function get() {
     const result = await Data()
-    return result as Record<string, Provider>
+    const providers: Record<string, Provider> = {
+      ...(result as Record<string, Provider>),
+      [ClaudioProvider.providerID]: ClaudioProvider.provider(),
+    }
+    return providers
   }
 
   export async function refresh() {

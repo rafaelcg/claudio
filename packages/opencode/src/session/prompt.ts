@@ -973,7 +973,7 @@ export namespace SessionPrompt {
         : undefined
     const variant = input.variant ?? (agent.variant && full?.variants?.[agent.variant] ? agent.variant : undefined)
 
-    const info: MessageV2.Info = {
+    const info: MessageV2.User = {
       id: input.messageID ?? MessageID.ascending(),
       role: "user",
       sessionID: input.sessionID,

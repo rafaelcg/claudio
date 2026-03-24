@@ -1,19 +1,25 @@
+const base = process.env.CLAUDIO_BASE_DOMAIN
+const short = process.env.CLAUDIO_SHORT_DOMAIN
+const zone = process.env.CLAUDIO_ZONE_ID
+
 export const domain = (() => {
-  if ($app.stage === "production") return "opencode.ai"
-  if ($app.stage === "dev") return "dev.claudio.ai"
-  return `${$app.stage}.dev.claudio.ai`
+  if (!base) return
+  if ($app.stage === "production") return base
+  if ($app.stage === "dev") return `dev.${base}`
+  return `${$app.stage}.dev.${base}`
 })()
 
-export const zoneID = "430ba34c138cfb5360826c4909f99be8"
-
-new cloudflare.RegionalHostname("RegionalHostname", {
-  hostname: domain,
-  regionKey: "us",
-  zoneId: zoneID,
-})
+if (domain && zone) {
+  new cloudflare.RegionalHostname("RegionalHostname", {
+    hostname: domain,
+    regionKey: "us",
+    zoneId: zone,
+  })
+}
 
 export const shortDomain = (() => {
-  if ($app.stage === "production") return "opncd.ai"
-  if ($app.stage === "dev") return "dev.opncd.ai"
-  return `${$app.stage}.dev.opncd.ai`
+  if (!short) return
+  if ($app.stage === "production") return short
+  if ($app.stage === "dev") return `dev.${short}`
+  return `${$app.stage}.dev.${short}`
 })()

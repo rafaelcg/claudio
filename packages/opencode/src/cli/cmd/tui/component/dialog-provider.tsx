@@ -15,12 +15,13 @@ import { Clipboard } from "@tui/util/clipboard"
 import { useToast } from "../ui/toast"
 
 const PROVIDER_PRIORITY: Record<string, number> = {
-  opencode: 0,
-  "opencode-go": 1,
-  openai: 2,
-  "github-copilot": 3,
-  anthropic: 4,
-  google: 5,
+  claudio: 0,
+  opencode: 1,
+  "opencode-go": 2,
+  openai: 3,
+  "github-copilot": 4,
+  anthropic: 5,
+  google: 6,
 }
 
 export function createDialogProviderOptions() {
@@ -36,6 +37,7 @@ export function createDialogProviderOptions() {
         title: provider.name,
         value: provider.id,
         description: {
+          claudio: "(Recommended)",
           opencode: "(Recommended)",
           anthropic: "(API key)",
           openai: "(ChatGPT Plus/Pro or API key)",
@@ -237,6 +239,17 @@ function ApiMethod(props: ApiMethodProps) {
       placeholder="API key"
       description={
         {
+          claudio: (
+            <box gap={1}>
+              <text fg={theme.textMuted}>
+                Claudio gives you managed access to Claudio Junior, Claudio Pleno, and Claudio Senior with built-in
+                quotas and white-labeled model routing.
+              </text>
+              <text fg={theme.text}>
+                Add your Claudio API key or continue with the built-in anonymous Claudio Junior trial
+              </text>
+            </box>
+          ),
           opencode: (
             <box gap={1}>
               <text fg={theme.textMuted}>

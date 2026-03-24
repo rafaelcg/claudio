@@ -1,4 +1,4 @@
-import { Resource } from "sst"
+import { Resource } from "@claudio-code/console-resource"
 import { defineConfig } from "drizzle-kit"
 
 export default defineConfig({

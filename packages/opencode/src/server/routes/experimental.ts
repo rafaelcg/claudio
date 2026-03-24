@@ -12,9 +12,35 @@ import { zodToJsonSchema } from "zod-to-json-schema"
 import { errors } from "../error"
 import { lazy } from "../../util/lazy"
 import { WorkspaceRoutes } from "./workspace"
+import { ClaudioStatus } from "@/claudio/status"
 
 export const ExperimentalRoutes = lazy(() =>
   new Hono()
+    .get(
+      "/managed",
+      describeRoute({
+        summary: "Get Claudio managed status",
+        description: "Return the local Claudio managed entitlement and quota snapshot used by the TUI.",
+        operationId: "experimental.managed.status",
+        responses: {
+          200: {
+            description: "Managed status",
+            content: {
+              "application/json": {
+                schema: resolver(ClaudioStatus.Info.nullable()),
+              },
+            },
+          },
+        },
+      }),
+      async (c) => {
+        try {
+          return c.json(await ClaudioStatus.get())
+        } catch {
+          return c.json(null)
+        }
+      },
+    )
     .get(
       "/tool/ids",
       describeRoute({

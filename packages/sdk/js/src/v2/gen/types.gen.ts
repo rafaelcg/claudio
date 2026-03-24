@@ -2440,6 +2440,46 @@ export type ConfigProvidersResponses = {
 
 export type ConfigProvidersResponse = ConfigProvidersResponses[keyof ConfigProvidersResponses]
 
+export type ExperimentalManagedStatusData = {
+  body?: never
+  path?: never
+  query?: {
+    directory?: string
+    workspace?: string
+  }
+  url: "/experimental/managed"
+}
+
+export type ExperimentalManagedStatusResponses = {
+  /**
+   * Managed status
+   */
+  200: {
+    install_id: string
+    token: string
+    tier: "junior" | "pleno" | "senior"
+    alias: Array<string>
+    signed_in: boolean
+    entitlement: "anonymous" | "free" | "pleno" | "senior"
+    quota: {
+      limit: number
+      used: number
+      remaining: number
+      unit: "prompts" | "usd_micro"
+      reset_at: string
+      burst_remaining?: number
+    }
+    upgrade_url?: string
+    model?: {
+      alias: string
+      label: string
+    }
+  } | null
+}
+
+export type ExperimentalManagedStatusResponse =
+  ExperimentalManagedStatusResponses[keyof ExperimentalManagedStatusResponses]
+
 export type ToolIdsData = {
   body?: never
   path?: never

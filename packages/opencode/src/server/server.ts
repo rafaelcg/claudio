@@ -43,6 +43,7 @@ import { PermissionRoutes } from "./routes/permission"
 import { GlobalRoutes } from "./routes/global"
 import { MDNS } from "./mdns"
 import { lazy } from "@/util/lazy"
+import { ClaudioProvider } from "@/provider/claudio"
 
 // @ts-ignore This global is needed to prevent ai-sdk from logging warnings to stdout https://github.com/vercel/ai/blob/2dc67e0ef538307f21368db32d5a12345d98831b/packages/ai/src/logger/log-warnings.ts#L85
 globalThis.AI_SDK_LOG_WARNINGS = false
@@ -498,12 +499,22 @@ export namespace Server {
       )
       .all("/*", async (c) => {
         const path = c.req.path
+        const host = Flag.CLAUDIO_MANAGED_API_URL ?? ClaudioProvider.live
+        if (!host) {
+          return c.json(
+            new NamedError.Unknown({
+              message: "Claudio hosted console is not configured. Set CLAUDIO_MANAGED_API_URL.",
+            }).toObject(),
+            503,
+          )
+        }
 
-        const response = await proxy(`https://app.claudio.ai${path}`, {
+        const url = new URL(path, host).toString()
+        const response = await proxy(url, {
           ...c.req,
           headers: {
             ...c.req.raw.headers,
-            host: "app.claudio.ai",
+            host: new URL(host).host,
           },
         })
         response.headers.set(

@@ -31,4 +31,4 @@ jobs:
           CLAUDIO_API_KEY: ${{ secrets.CLAUDIO_API_KEY }}
           CLAUDIO_PERMISSION: '{"bash": "deny"}'
         with:
-          model: claudio/claude-opus-4-5
+          model: claudio/junior

@@ -9,6 +9,7 @@ import { Log } from "../../util/log"
 import { lazy } from "../../util/lazy"
 
 const log = Log.create({ service: "server" })
+const rank = (id: string) => ({ claudio: 0, opencode: 1 }[id] ?? 99)
 
 export const ConfigRoutes = lazy(() =>
   new Hono()
@@ -83,8 +84,9 @@ export const ConfigRoutes = lazy(() =>
       async (c) => {
         using _ = log.time("providers")
         const providers = await Provider.list().then((x) => mapValues(x, (item) => item))
+        const list = Object.values(providers).sort((a, b) => rank(a.id) - rank(b.id) || a.name.localeCompare(b.name))
         return c.json({
-          providers: Object.values(providers),
+          providers: list,
           default: mapValues(providers, (item) => Provider.sort(Object.values(item.models))[0].id),
         })
       },

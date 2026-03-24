@@ -69,6 +69,8 @@ export namespace Flag {
   export const CLAUDIO_EXPERIMENTAL_MARKDOWN = !falsy("CLAUDIO_EXPERIMENTAL_MARKDOWN")
   export const CLAUDIO_MODELS_URL = process.env["CLAUDIO_MODELS_URL"]
   export const CLAUDIO_MODELS_PATH = process.env["CLAUDIO_MODELS_PATH"]
+  export const CLAUDIO_MANAGED_API_URL = process.env["CLAUDIO_MANAGED_API_URL"]
+  export const CLAUDIO_MANAGED_BOOTSTRAP_URL = process.env["CLAUDIO_MANAGED_BOOTSTRAP_URL"]
   export const CLAUDIO_DB = process.env["CLAUDIO_DB"]
   export const CLAUDIO_DISABLE_CHANNEL_DB = truthy("CLAUDIO_DISABLE_CHANNEL_DB")
   export const CLAUDIO_SKIP_MIGRATIONS = truthy("CLAUDIO_SKIP_MIGRATIONS")

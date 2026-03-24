@@ -9,6 +9,7 @@ import { useCommandDialog } from "@tui/component/dialog-command"
 import { useKeybind } from "../../context/keybind"
 import { Flag } from "@/flag/flag"
 import { useTerminalDimensions } from "@opentui/solid"
+import { Link } from "@tui/ui/link"
 
 const Title = (props: { session: Accessor<Session> }) => {
   const { theme } = useTheme()
@@ -26,6 +27,36 @@ const ContextInfo = (props: { context: Accessor<string | undefined>; cost: Acces
       <text fg={theme.textMuted} wrapMode="none" flexShrink={0}>
         {props.context()} ({props.cost()})
       </text>
+    </Show>
+  )
+}
+
+const ManagedInfo = (props: {
+  plan: Accessor<string | undefined>
+  quota: Accessor<string | undefined>
+  reset: Accessor<string | undefined>
+  cta: Accessor<string | undefined>
+  url: Accessor<string | undefined>
+}) => {
+  const { theme } = useTheme()
+  return (
+    <Show when={props.plan()}>
+      <box flexDirection="row" gap={1} flexShrink={0}>
+        <text fg={theme.textMuted} wrapMode="none" flexShrink={0}>
+          {props.plan()}
+          <Show when={props.quota()}>
+            <span> • {props.quota()}</span>
+          </Show>
+          <Show when={props.reset()}>
+            <span> • {props.reset()}</span>
+          </Show>
+        </text>
+        <Show when={props.url() && props.cta()}>
+          <Link href={props.url()!} fg={theme.primary}>
+            {props.cta()!}
+          </Link>
+        </Show>
+      </box>
     </Show>
   )
 }
@@ -56,6 +87,34 @@ export function Header() {
       style: "currency",
       currency: "USD",
     }).format(total)
+  })
+
+  const currentProvider = createMemo(() => {
+    const last = messages().findLast((x) => x.role === "assistant" || x.role === "user")
+    if (!last) return undefined
+    if (last.role === "assistant") return last.providerID
+    return last.model.providerID
+  })
+
+  const managed = createMemo(() => (currentProvider() === "claudio" ? sync.data.managed : null))
+  const plan = createMemo(() => managed()?.model?.label ?? (managed() ? `Claudio ${managed()!.tier}` : undefined))
+  const quota = createMemo(() => {
+    const info = managed()
+    if (!info) return undefined
+    if (info.quota.unit === "prompts") return `${info.quota.remaining} left`
+    return `${(info.quota.remaining / 100_000_000).toFixed(2)} included`
+  })
+  const reset = createMemo(() => {
+    const raw = managed()?.quota.reset_at
+    if (!raw) return undefined
+    const date = new Date(raw)
+    if (Number.isNaN(date.valueOf())) return undefined
+    return `resets ${new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric" }).format(date)}`
+  })
+  const cta = createMemo(() => {
+    const info = managed()
+    if (!info?.upgrade_url) return undefined
+    return info.entitlement === "senior" ? "Manage" : "Upgrade"
   })
 
   const context = createMemo(() => {
@@ -116,7 +175,9 @@ export function Header() {
                   </text>
                 )}
 
-                <ContextInfo context={context} cost={cost} />
+                <Show when={managed()} fallback={<ContextInfo context={context} cost={cost} />}>
+                  <ManagedInfo plan={plan} quota={quota} reset={reset} cta={cta} url={() => managed()?.upgrade_url} />
+                </Show>
               </box>
               <box flexDirection="row" gap={2}>
                 <box
@@ -162,7 +223,9 @@ export function Header() {
               ) : (
                 <Title session={session} />
               )}
-              <ContextInfo context={context} cost={cost} />
+              <Show when={managed()} fallback={<ContextInfo context={context} cost={cost} />}>
+                <ManagedInfo plan={plan} quota={quota} reset={reset} cta={cta} url={() => managed()?.upgrade_url} />
+              </Show>
             </box>
           </Match>
         </Switch>

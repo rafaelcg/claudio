@@ -28,8 +28,8 @@ jobs:
           opencode-app-secret: ${{ secrets.CLAUDIO_APP_SECRET }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Install OpenCode
-        run: bun i -g opencode-ai
+      - name: Install Claudio
+        run: bun i -g @claudio-code/cli
 
       - name: Sync beta branch
         env:

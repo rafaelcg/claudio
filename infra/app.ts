@@ -1,8 +1,8 @@
 import { domain } from "./stage"
+import { EMAILOCTOPUS_API_KEY } from "./shared"
 
 const GITHUB_APP_ID = new sst.Secret("GITHUB_APP_ID")
 const GITHUB_APP_PRIVATE_KEY = new sst.Secret("GITHUB_APP_PRIVATE_KEY")
-export const EMAILOCTOPUS_API_KEY = new sst.Secret("EMAILOCTOPUS_API_KEY")
 const ADMIN_SECRET = new sst.Secret("ADMIN_SECRET")
 const DISCORD_SUPPORT_BOT_TOKEN = new sst.Secret("DISCORD_SUPPORT_BOT_TOKEN")
 const DISCORD_SUPPORT_CHANNEL_ID = new sst.Secret("DISCORD_SUPPORT_CHANNEL_ID")
@@ -11,7 +11,7 @@ const FEISHU_APP_SECRET = new sst.Secret("FEISHU_APP_SECRET")
 const bucket = new sst.cloudflare.Bucket("Bucket")
 
 export const api = new sst.cloudflare.Worker("Api", {
-  domain: `api.${domain}`,
+  ...(domain ? { domain: `api.${domain}` } : {}),
   handler: "packages/function/src/api.ts",
   environment: {
     WEB_DOMAIN: domain,
@@ -49,7 +49,7 @@ export const api = new sst.cloudflare.Worker("Api", {
 })
 
 new sst.cloudflare.x.Astro("Web", {
-  domain: "docs." + domain,
+  ...(domain ? { domain: "docs." + domain } : {}),
   path: "packages/web",
   environment: {
     // For astro config
@@ -59,7 +59,7 @@ new sst.cloudflare.x.Astro("Web", {
 })
 
 new sst.cloudflare.StaticSite("WebApp", {
-  domain: "app." + domain,
+  ...(domain ? { domain: "app." + domain } : {}),
   path: "packages/app",
   build: {
     command: "bun turbo build",

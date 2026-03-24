@@ -2,6 +2,8 @@ import type { KVNamespaceListOptions, KVNamespaceListResult, KVNamespacePutOptio
 import { Resource as ResourceBase } from "sst"
 import Cloudflare from "cloudflare"
 
+const base = ResourceBase as Record<string, any>
+
 export const waitUntil = async (promise: Promise<any>) => {
   await promise
 }
@@ -9,8 +11,8 @@ export const waitUntil = async (promise: Promise<any>) => {
 export const Resource = new Proxy(
   {},
   {
-    get(_target, prop: keyof typeof ResourceBase) {
-      const value = ResourceBase[prop]
+    get(_target, prop: string) {
+      const value = base[prop]
       if ("type" in value) {
         // @ts-ignore
         if (value.type === "sst.cloudflare.Bucket") {
@@ -21,11 +23,11 @@ export const Resource = new Proxy(
         // @ts-ignore
         if (value.type === "sst.cloudflare.Kv") {
           const client = new Cloudflare({
-            apiToken: ResourceBase.CLOUDFLARE_API_TOKEN.value,
+            apiToken: base.CLOUDFLARE_API_TOKEN.value,
           })
           // @ts-ignore
           const namespaceId = value.namespaceId
-          const accountId = ResourceBase.CLOUDFLARE_DEFAULT_ACCOUNT_ID.value
+          const accountId = base.CLOUDFLARE_DEFAULT_ACCOUNT_ID.value
           return {
             get: (k: string | string[]) => {
               const isMulti = Array.isArray(k)

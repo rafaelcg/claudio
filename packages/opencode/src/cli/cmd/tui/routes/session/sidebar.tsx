@@ -12,6 +12,7 @@ import { useDirectory } from "../../context/directory"
 import { useKV } from "../../context/kv"
 import { TodoItem } from "../../component/todo-item"
 import { useTuiI18n } from "@tui/i18n/context"
+import { Link } from "@tui/ui/link"
 
 export function Sidebar(props: { sessionID: string; overlay?: boolean }) {
   const sync = useSync()
@@ -50,6 +51,33 @@ export function Sidebar(props: { sessionID: string; overlay?: boolean }) {
     }).format(total)
   })
 
+  const currentProvider = createMemo(() => {
+    const last = messages().findLast((x) => x.role === "assistant" || x.role === "user")
+    if (!last) return undefined
+    if (last.role === "assistant") return last.providerID
+    return last.model.providerID
+  })
+
+  const managed = createMemo(() => (currentProvider() === "claudio" ? sync.data.managed : null))
+  const quota = createMemo(() => {
+    const info = managed()
+    if (!info) return undefined
+    if (info.quota.unit === "prompts") return `${info.quota.remaining} left`
+    return `${(info.quota.remaining / 100_000_000).toFixed(2)} included`
+  })
+  const reset = createMemo(() => {
+    const raw = managed()?.quota.reset_at
+    if (!raw) return undefined
+    const date = new Date(raw)
+    if (Number.isNaN(date.valueOf())) return undefined
+    return `Resets ${new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric" }).format(date)}`
+  })
+  const cta = createMemo(() => {
+    const info = managed()
+    if (!info?.upgrade_url) return undefined
+    return info.entitlement === "senior" ? "Manage plan" : "Upgrade plan"
+  })
+
   const context = createMemo(() => {
     const last = messages().findLast((x) => x.role === "assistant" && x.tokens.output > 0) as AssistantMessage
     if (!last) return
@@ -66,7 +94,9 @@ export function Sidebar(props: { sessionID: string; overlay?: boolean }) {
   const kv = useKV()
 
   const hasProviders = createMemo(() =>
-    sync.data.provider.some((x) => x.id !== "opencode" || Object.values(x.models).some((y) => y.cost?.input !== 0)),
+    sync.data.provider.some(
+      (x) => !["opencode", "claudio"].includes(x.id) || Object.values(x.models).some((y) => y.cost?.input !== 0),
+    ),
   )
   const gettingStartedDismissed = createMemo(() => kv.get("dismissed_getting_started", false))
 
@@ -110,9 +140,25 @@ export function Sidebar(props: { sessionID: string; overlay?: boolean }) {
               <text fg={theme.textMuted}>
                 {context()?.percentage ?? 0}% {t("tui.sidebar.used")}
               </text>
-              <text fg={theme.textMuted}>
-                {cost()} {t("tui.sidebar.spent")}
-              </text>
+              <Show
+                when={managed()}
+                fallback={
+                  <text fg={theme.textMuted}>
+                    {cost()} {t("tui.sidebar.spent")}
+                  </text>
+                }
+              >
+                <text fg={theme.textMuted}>{managed()!.model?.label ?? `Claudio ${managed()!.tier}`}</text>
+                <text fg={theme.textMuted}>{quota()}</text>
+                <Show when={reset()}>
+                  <text fg={theme.textMuted}>{reset()}</text>
+                </Show>
+                <Show when={managed()!.upgrade_url && cta()}>
+                  <Link href={managed()!.upgrade_url!} fg={theme.primary}>
+                    {cta()!}
+                  </Link>
+                </Show>
+              </Show>
             </box>
             <Show when={mcpEntries().length > 0}>
               <box>

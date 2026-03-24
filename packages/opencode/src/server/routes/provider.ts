@@ -12,6 +12,7 @@ import { lazy } from "../../util/lazy"
 import { Log } from "../../util/log"
 
 const log = Log.create({ service: "server" })
+const rank = (id: string) => ({ claudio: 0, opencode: 1 }[id] ?? 99)
 
 export const ProviderRoutes = lazy(() =>
   new Hono()
@@ -56,8 +57,9 @@ export const ProviderRoutes = lazy(() =>
           mapValues(filteredProviders, (x) => Provider.fromModelsDevProvider(x)),
           connected,
         )
+        const all = Object.values(providers).sort((a, b) => rank(a.id) - rank(b.id) || a.name.localeCompare(b.name))
         return c.json({
-          all: Object.values(providers),
+          all,
           default: mapValues(providers, (item) => Provider.sort(Object.values(item.models))[0].id),
           connected: Object.keys(connected),
         })
